@@ -33,14 +33,19 @@ import { body, query, param } from "express-validator";
 //   );
 
 export const createUserValidator = [
-  body("firstname").notEmpty().withMessage("Firstname is required"),
+  body("firstname")
+    .notEmpty()
+    .withMessage("Firstname is required"),
 
-  body("lastname").notEmpty().withMessage("Lastname is required"),
+  body("lastname")
+    .notEmpty()
+    .withMessage("Lastname is required"),
 
   body("username")
     .isString()
     .notEmpty()
     .withMessage("Username is required")
+
     .custom(async (value) => {
       const user = await UserCollection.findUserByUsername(value);
       if (user) {
@@ -48,21 +53,27 @@ export const createUserValidator = [
       }
     }),
 
-    body("email")
-      .isEmail()
-      .notEmpty()
-      .withMessage("Email is required")
-      .custom(async (value) => {
-        const user = await UserCollection.findUserByEmail(value);
-        if (user) {
-          throw new Error("Email already in use");
-        }
-      }),
+  body("email")
+    .isEmail()
+    .notEmpty()
+    .withMessage("Email is required")
 
-  body("birthdate").isDate().notEmpty().withMessage("Birthdate is required"),
+    .custom(async (value) => {
+      const user = await UserCollection.findUserByEmail(value);
+      if (user) {
+        throw new Error("Email already in use");
+      }
+    }),
 
-  body("password").isString().notEmpty().withMessage("Password is required"),
+  body("birthdate")
+    .isDate()
+    .notEmpty()
+    .withMessage("Birthdate is required"),
 
+  body("password")
+    .isString()
+    .notEmpty()
+    .withMessage("Password is required"),
 ];
 
 const findUserValidator = [
