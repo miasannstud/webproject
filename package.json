@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node server",
-    "dev": "node --watch --env-file=.env server"
+    "start": "node backend/server",
+    "dev": "node --watch --env-file=.env backend/server"
   },
   "repository": {
     "type": "git",
