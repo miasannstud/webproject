@@ -1,30 +1,35 @@
-import { validationResult } from "express-validator";
-import { researcherService } from "../Schema/researcher-Schema.js";
+import bcrypt from 'bcrypt';
+import Researcher from '../models/researcherSchema.js';
 
-// // [GET, POST] /researchers;
+export const registerUser = async (req, res) => {
+    try {
+        const { firstName, lastName, username, email, password, institution } = req.body;
 
-// researchersRouter.get('/', (req, res) => {
-//     new Error("not implemented")
-// });
+        const existingUser = await Researcher.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists!" });
+        }
 
-export function getAllResearchers(req, res) {
-    // Decide how to respond 404 400 or 201
-    // Todo use researcherservice to find/crete/update researcher (and interact with mongodb)
-    new Error("not implemented")
-}
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = await Researcher.create({ firstName, lastName, username, email, password: hashedPassword, institution });
 
-export function createResearcher(req, res) {
-    new Error("not implemented")
-}
+        res.status(201).json({ message: "User registered successfully!", user: newUser });
+    } catch (error) {
+        res.status(500).json({ message: "Error registering user", error });
+    }
+};
 
-export function getResearcher(req, res) {
-    new Error("not implemented")
-}
+export const loginUser = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await Researcher.findOne({ username });
 
-export function updateResearcher(req, res) {
-    new Error("not implemented")
-}
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
 
-export function deleteResearcher(req, res) {
-    new Error("not implemented")
-}
+        res.render('dashboard', { user });
+    } catch (error) {
+        res.status(500).json({ message: "Error logging in", error });
+    }
+};

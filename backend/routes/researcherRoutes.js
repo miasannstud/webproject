@@ -1,8 +1,12 @@
-import express from 'express'
-const ResearcherRouter = express.Router();
+import express from 'express';
+import { registerUser, loginUser } from '../controllers/researcherController.js';
 
-// Get post researcher
-ResearcherRouter.get('/', ResearcherValidators.findResearcher,researcherController.getResearcher);
-ResearcherRouter.post('/', ResearcherValidators.createResearcher,researcherController.createResearcher);
+const router = express.Router();
 
-export default ResearcherRouter
+// Route for user registration
+router.post('/signup', registerUser);
+
+// Route for user login
+router.post('/login', loginUser);
+
+export default router;

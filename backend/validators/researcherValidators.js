@@ -76,11 +76,11 @@ export const createUserValidator = [
     .withMessage("Password is required"),
 ];
 
-const findUserValidator = [
-  param("userid")
-    .isMongoId()
-    .withMessage("Invalid User ID or user is not alive"),
-];
+// const findUserValidator = [
+//   param("userid")
+//     .isMongoId()
+//     .withMessage("Invalid User ID or user is not alive"),
+// ];
 
 const searchByAllowedOptions = [
   "firstname",
