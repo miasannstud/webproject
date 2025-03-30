@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+/* import mongoose from 'mongoose';
 
 // create the schema for the studies
 const studySchema = new mongoose.Schema({
@@ -8,4 +8,4 @@ const studySchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model('Study', studySchema);
+export default mongoose.model('Study', studySchema); */

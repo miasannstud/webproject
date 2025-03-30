@@ -1,55 +1,54 @@
-const Artifact = require('../models/artifactSchema');
-const fs = require('fs');
+import Artifact from '../models/artifactSchema.js';
+import fs from 'fs';
 
-exports.uploadArtifact = async (req, res) => {
+export const uploadArtifact = async (req, res) => {
     try {
-        if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+        if (!req.file) return res.status(400).json({ message: 'No artifact uploaded' });
 
-    const fileData = new File({
-        filename: req.file.filename,
-        mimetype: req.file.mimetype,
-        path: req.file.path,
-        size: req.file.size
-    });
-    
+        const artifactData = new Artifact({
+            filename: req.file.filename,
+            mimetype: req.file.mimetype,
+            path: req.file.path,
+            size: req.file.size
+        });
 
-    await fileData.save();
-
+        await artifactData.save();
+        res.status(201).json({ message: 'Artifact uploaded successfully', artifact: artifactData });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
-exports.retrieveArtifact = async (req, res) => {
+export const retrieveArtifact = async (req, res) => {
     try {
         const { limit = 10, skip = 0, sort = 'createdAt' } = req.query;
-        const files = await File.find()
+        const artifacts = await Artifact.find()
             .sort({ [sort]: -1 })
             .skip(parseInt(skip))
             .limit(parseInt(limit));
 
-        res.json(files);
+        res.json(artifacts);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
-exports.deleteArtifact = async (req, res) => {
+export const deleteArtifact = async (req, res) => {
     try {
-       
-        const file = await File.findByIdAndDelete(req.params.id);
-        
-        if (!file) return res.status(404).json({ message: 'File not found' });
+        const artifact = await Artifact.findByIdAndDelete(req.params.id);
 
-        fs.unlink(file.path, err => {
+        if (!artifact) return res.status(404).json({ message: 'Artifact not found' });
+
+        fs.unlink(artifact.path, err => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ error: 'Error: Metadata wiped from server, but file could not be deleted from disk'});
+                return res.status(500).json({ error: 'Error: Metadata wiped from server, but artifact could not be deleted from disk' });
             }
-            res.json({ message: 'File has been deleted' });
+            res.json({ message: 'Artifact has been deleted' });
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
+export default { uploadArtifact, retrieveArtifact, deleteArtifact };
