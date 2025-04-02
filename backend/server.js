@@ -1,9 +1,7 @@
 import express from 'express';
-// import studyRoutes from './routes/studyRoutes.js';
 import connectDB from './config/db.js';
 import researcherRoutes from './routes/researcherRoutes.js';
- 
-import studyRoutes from './routes/studyRoutes.js';
+//import studyRoutes from './routes/studyRoutes.js';
 import artifactRoutes from './routes/artifactRoutes.js';
 
 const app = express();
@@ -19,7 +17,7 @@ app.use(express.urlencoded({ extended: false })); // why do i need this?
 // // add routes here eventually..
 // app.use('/api/studies', studyRoutes);
 app.use('/', researcherRoutes);
-app.use('/api/studies', studyRoutes);
+//app.use('/api/studies', studyRoutes);
 app.use('/api/artifact', artifactRoutes);
 
 // use ejs as the vew wngine

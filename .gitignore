@@ -1,8 +1,4 @@
 .env
-<<<<<<< HEAD
 node_modules
 notes
-=======
-node_modules/
 uploads/
->>>>>>> e41e04cd0d172a8a5b52ac7eba32ab9df24ea37e
