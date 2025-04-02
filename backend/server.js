@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false })); // why do i need this?
 
 // // add routes here eventually..
 // app.use('/api/studies', studyRoutes);
-app.use('/login', researcherRoutes);
+app.use('/', researcherRoutes);
 
 
 // use ejs as the vew wngine

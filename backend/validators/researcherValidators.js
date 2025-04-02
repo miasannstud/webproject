@@ -1,36 +1,6 @@
-//NB  ikke ferdig!!
 
 import { validationResult } from "express-validator";
 import { body, query, param } from "express-validator";
-
-// const ResearcherSchema = new Schema({
-//     "firstName":   { type: String, required: true},
-//     "lastName":    { type: String, required: true},
-//     "username":    { type: String, required: true, unique: true},
-//     "email":       { type: String, required: true, unique: true},
-//     "password":    { type: String, required: true},
-//     "institution": { type: String, enum:["NTNU", "Other"]},
-//     "createdAt":   { type: Date, default: Date.now,}
-// });
-
-// app.post(
-//     '/create-user',
-//     body('email').custom(async value => {
-//       const user = await UserCollection.findUserByEmail(value);
-//       if (user) {
-//         throw new Error('Email already in use');
-//       }
-//     }),
-//     body('username').custom(async value => {
-//       const user = await UserCollection.findUserByUsername(value);
-//       if (user) {
-//         throw new Error('Username already in use');
-//       }
-//     }),
-//     (req, res) => {
-//       // Handle the request
-//     },
-//   );
 
 export const createUserValidator = [
   body("firstname")
@@ -47,7 +17,7 @@ export const createUserValidator = [
     .withMessage("Username is required")
 
     .custom(async (value) => {
-      const user = await UserCollection.findUserByUsername(value);
+      const user = await UserCollection.findOne({ username: value});
       if (user) {
         throw new Error("Username already in use");
       }
@@ -59,7 +29,7 @@ export const createUserValidator = [
     .withMessage("Email is required")
 
     .custom(async (value) => {
-      const user = await UserCollection.findUserByEmail(value);
+      const user = await UserCollection.findOne({password: value});
       if (user) {
         throw new Error("Email already in use");
       }
@@ -99,5 +69,8 @@ const findUsersValidatorArr = [
         searchByAllowedOptions.join(", ")
     ),
 
-  query("SearchValue"),
+  query("SearchValue")
+  .isString()
+  .notEmpty()
+  .withMessage("search value is required")
 ];

@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import Researcher from '../models/researcherSchema.js';
+import jwt from 'jsonwebtoken';
 
 export const registerUser = async (req, res) => {
     try {
@@ -27,6 +28,8 @@ export const loginUser = async (req, res) => {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
+        // Create JWT token
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.render('dashboard', { user });
     } catch (error) {

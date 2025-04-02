@@ -1,4 +1,6 @@
 import express from 'express';
+import { createUserValidator } from '../validators/researcherValidators.js';
+import { handleValidationErrors } from '../middelware/vaildateErrors.js';
 import { registerUser, loginUser } from '../controllers/researcherController.js';
 
 const router = express.Router();
