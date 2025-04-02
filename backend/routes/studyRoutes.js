@@ -1,4 +1,4 @@
-/* import express from 'express';
+import express from 'express';
 import {studyController} from '../controllers/studyController.js';
 
 const studyRoutes = express.Router();
@@ -18,4 +18,4 @@ studyRoutes.post('/:studyId/questions', studyController.createQuestion);
 studyRoutes.patch('/:studyId/questions/:questionId', studyController.updateQuestion);
 studyRoutes.delete('/:studyId/questions/:questionId', studyController.deleteQuestion);
 
-export default studyRoutes; */
+export default studyRoutes;
