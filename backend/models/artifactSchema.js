@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// create the schema for the studies
+// create the schema for the artifact upload
 const artifactSchema = new mongoose.Schema({
     filename: {
         type: String,
