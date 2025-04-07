@@ -9,14 +9,16 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 const storage = multer.diskStorage({
-  destination: function (req, artifact, cb) {
+  destination: function (req, file, cb) {
     cb(null, uploadDir);
   },
-  filename: function (req, artifact, cb) {
-    cb(null, Date.now() + '-' + artifact.originalname);
+  filename: function (req, file, cb) {
+    const uniqueName = Date.now() + '-' + file.originalname;
+    file.originalName = file.originalname; // Save the original name
+    cb(null, uniqueName);
   }
 });
 
 const upload = multer({ storage });
 
-export default upload.single('artifact');
+export default upload.single('artifact'); // Ensure 'artifact' matches the frontend form field name

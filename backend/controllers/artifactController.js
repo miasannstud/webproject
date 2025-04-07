@@ -6,30 +6,31 @@ export const uploadArtifact = async (req, res) => {
         if (!req.file) return res.status(400).json({ message: 'No artifact uploaded' });
 
         const artifactData = new Artifact({
-            filename: req.file.filename,
-            mimetype: req.file.mimetype,
+            filename: req.file.originalName || req.file.originalname, 
+            mimetype: req.file.mimetype, 
             path: req.file.path,
-            size: req.file.size
+            size: req.file.size,
+            url: `http://localhost:8080/uploads/${req.file.filename}`
         });
 
+        console.log('Uploaded artifact:', artifactData);
         await artifactData.save();
         res.status(201).json({ message: 'Artifact uploaded successfully', artifact: artifactData });
     } catch (err) {
+        console.error('Error uploading artifact:', err.message);
         res.status(500).json({ error: err.message });
     }
 };
 
 export const retrieveArtifact = async (req, res) => {
     try {
-        const { limit = 10, skip = 0, sort = 'createdAt' } = req.query;
-        const artifacts = await Artifact.find()
-            .sort({ [sort]: -1 })
-            .skip(parseInt(skip))
-            .limit(parseInt(limit));
-
-        res.json(artifacts);
+        console.log('Fetching artifacts from the database...');
+        const artifacts = await Artifact.find();
+        console.log('Artifacts retrieved:', artifacts);
+        res.status(200).json(artifacts);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('Error retrieving artifacts:', err.message);
+        res.status(500).json({ error: 'Failed to retrieve artifacts' });
     }
 };
 
@@ -51,4 +52,14 @@ export const deleteArtifact = async (req, res) => {
     }
 };
 
-export default { uploadArtifact, retrieveArtifact, deleteArtifact };
+export const getAllArtifacts = async () => {
+    try {
+        const artifacts = await Artifact.find(); // Fetch all artifacts from the database
+        return artifacts;
+    } catch (err) {
+        console.error('Error fetching artifacts:', err.message);
+        throw new Error('Failed to fetch artifacts');
+    }
+};
+
+export default { uploadArtifact, retrieveArtifact, deleteArtifact, getAllArtifacts };
