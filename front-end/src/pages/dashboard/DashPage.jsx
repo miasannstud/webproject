@@ -19,7 +19,8 @@ function DashPage() {
 
   return (
     <div className={styles.dashboardContainer}>
-      <h1>Dashboard</h1>
+      {/* <h1>Hello {firstname}</h1> */}
+      <h1>Hello</h1>
       <div className={styles.cardsContainer}>
         {studies && studies.length > 0 ? (
           studies.map((study) => <DashCard key={study._id} study={study} />)

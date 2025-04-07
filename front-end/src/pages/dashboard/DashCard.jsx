@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function DashCard({study, onStudyDeleted}) {
     const navigate = useNavigate();
-    const {_id, text, published} = study;
+    const {_id, studyTitle, published} = study;
 
     // navigate to the edit page
     async function handleEdit() {
@@ -19,7 +19,7 @@ function DashCard({study, onStudyDeleted}) {
 
     // delete the study and notify the parent component
     async function handleDelete() {
-        if (window.confirm(`Are you sure you want to delete "${text}"?`)) {
+        if (window.confirm(`Are you sure you want to delete "${studyTitle}"?`)) {
             try {
                 await deleteStudy(_id);
                 alert('Study deleted');
@@ -41,7 +41,7 @@ function DashCard({study, onStudyDeleted}) {
 
     return (
         <div className={styles.card}>
-            <h2>{text}</h2>
+            <h2>{studyTitle}</h2>
             <p>Published: {published.toString()}</p>
             <div className={styles.actions}>
                 <button onClick={handleEdit}>Edit</button>

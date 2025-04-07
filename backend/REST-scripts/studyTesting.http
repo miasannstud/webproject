@@ -8,14 +8,44 @@
 ### create a study
 POST http://localhost:8080/api/studies
 Content-Type: application/json
-Authorization: {{token}}
 
 {
-  "studyTitle": "First study test",
-  "description": "A study about poems",
+  "studyTitle": "Sleep study 2",
+  "description": "A study about sleep",
   "published": false,
-  "questions": []
+  "questions": [
+    {
+      "questionText": "How many hours do you sleep on average?",
+      "questionType": "slider",
+      "artifact": [],
+      "options": []
+    },
+    {
+      "questionText": "What is your preferred sleep environment?",
+      "questionType": "multiple-choice",
+      "artifact": [],
+      "options": [
+        { "text": "Quiet" },
+        { "text": "Dark" },
+        { "text": "Cool" },
+        { "text": "Comfortable bed" }
+      ]
+    },
+    {
+      "questionText": "Describe any sleep disorders you have experienced.",
+      "questionType": "text-box",
+      "artifact": [],
+      "options": []
+    }
+  ]
 }
+
+# {
+#   "studyTitle": "Sleep study",
+#   "description": "A study about sleep",
+#   "published": false,
+#   "questions": []
+# }
 
 ### get all studies
 GET http://localhost:8080/api/studies
