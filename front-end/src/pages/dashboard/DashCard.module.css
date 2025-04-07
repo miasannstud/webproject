@@ -1,0 +1,40 @@
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card h2 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.actions button {
+  flex: 1;
+  margin: 8px 4px;
+  padding: 8px 12px;
+  background-color: #26a07a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.actions button:hover {
+  background-color: #307e65;
+}

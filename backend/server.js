@@ -3,9 +3,14 @@ import connectDB from './config/db.js';
 import researcherRoutes from './routes/researcherRoutes.js';
 import studyRoutes from './routes/studyRoutes.js';
 import artifactRoutes from './routes/artifactRoutes.js';
+import sessionRoutes from './routes/sessionRoutes.js';
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+// enable CORS for all routes
+app.use(cors());
 
 // calling the function to connect to mongoDB
 connectDB();
@@ -18,6 +23,7 @@ app.use(express.urlencoded({ extended: false })); // why do i need this?
 app.use('/api/users', researcherRoutes);
 app.use('/api/studies', studyRoutes);
 app.use('/api/artifact', artifactRoutes);
+app.use('api/studies', sessionRoutes);
 
 // use ejs as the vew wngine
 app.set('view engine', 'ejs');

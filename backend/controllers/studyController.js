@@ -1,4 +1,4 @@
-import Study from '../models/studyModel.js';
+import Study from '../models/studySchema.js';
 
 // retrieve all studies
 // GET /studies
@@ -152,6 +152,15 @@ const getStudyData = async (req, res) => {
     }
 };
 
+// waiting a bit on this one..??
+const downloadStudyData = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // create a question
 // POST /studies/:studyId/questions
 const createQuestion = async (req, res) => {
@@ -246,6 +255,7 @@ export const studyController = {
     publishStudy,
     getStudyLink,
     getStudyData,
+    downloadStudyData,
     createQuestion,
     updateQuestion,
     deleteQuestion,
