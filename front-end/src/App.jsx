@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
@@ -9,7 +8,7 @@ import ArtifactApp from './pages/createStudy/createStudy';
 
 function App() {
   return (
-    <BrowserRouterBrowserRouter>
+    <BrowserRouter>
     <Navbar/>
       <Routes>
         <Route path="/" element={<DashPage />} />
