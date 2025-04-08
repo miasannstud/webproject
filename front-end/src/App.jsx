@@ -14,6 +14,7 @@ function App() {
         <Route path="/" element={<DashPage />} />
         {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
         <Route path="/results/:studyId" element={<ResultsPage />} />
+        <Route path="/createStudy" element={<ArtifactApp />} />
       </Routes>
       </BrowserRouter>
   )
