@@ -4,6 +4,7 @@ function ArtifactApp() {
     const [artifacts, setArtifacts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [message, setMessage] = useState('');
+    const [expandedTextIds, setExpandedTextIds] = useState({});
 
     const fetchArtifacts = async () => {
         try {
@@ -69,6 +70,13 @@ function ArtifactApp() {
         }
     };
 
+    const toggleText = (artifactId) => {
+        setExpandedTextIds((prevState) => ({
+            ...prevState,
+            [artifactId]: !prevState[artifactId],
+        }));
+    };
+
     const renderArtifactContent = (artifact) => {
         if (!artifact.mimetype) {
             return <p>Unknown artifact type</p>; // Handle missing MIME type
@@ -79,7 +87,37 @@ function ArtifactApp() {
             return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '200px', maxHeight: '200px' }} />;
         } else if (artifact.mimetype === 'text/plain') {
             // Render text
-            return <p>{artifact.filename}</p>;
+            const isExpanded = expandedTextIds[artifact._id] || false;
+
+            const content = artifact.content || 'No content available';
+            return (
+                <div>
+                    <p>
+                        {isExpanded
+                            ? content
+                            : content.slice(0, 100) + (content.length > 100 ? '...' : '')}
+                    </p>
+                    {content.length > 100 && (
+                        <button onClick={() => toggleText(artifact._id)}>
+                            {isExpanded ? 'Show Less' : 'Read More'}
+                        </button>
+                    )}
+                </div>
+            );
+        } else if (artifact.mimetype.startsWith('audio/')) {
+            return (
+                <audio controls>
+                    <source src={artifact.url} type={artifact.mimetype} />
+                    Your browser does not support the audio element.
+                </audio>
+            );
+        } else if (artifact.mimetype.startsWith('video/')) {
+            return (
+                <video controls width="300">
+                    <source src={artifact.url} type={artifact.mimetype} />
+                    Your browser does not support the video tag.
+                </video>
+            );
         } else {
             // Render as a downloadable file
             return (
