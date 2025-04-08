@@ -6,7 +6,7 @@ function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.navLeft}>
         <NavLink to="/" className={styles.brand}>
-          Dare to compare
+          CompareCraft
         </NavLink>
       </div>
       <div className={styles.navRight}>
