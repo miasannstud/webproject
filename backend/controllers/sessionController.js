@@ -1,4 +1,4 @@
-import Session from '../models/sessionSchema';
+import Session from '../models/sessionSchema.js';
 
 export const createSession = async (req, res) => {
     try {

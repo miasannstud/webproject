@@ -3,6 +3,7 @@ import connectDB from './config/db.js';
 import researcherRoutes from './routes/researcherRoutes.js';
 import studyRoutes from './routes/studyRoutes.js';
 import artifactRoutes from './routes/artifactRoutes.js';
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -12,7 +13,9 @@ connectDB();
 
 // json body parsing
 app.use(express.json());
-app.use(express.urlencoded({ extended: false })); // why do i need this?
+app.use(express.urlencoded({ extended: false })); 
+app.use(cors({origin: 'http://localhost:5173', credentials: true,
+}));
 
 // // add routes here eventually..
 app.use('/api/users', researcherRoutes);
