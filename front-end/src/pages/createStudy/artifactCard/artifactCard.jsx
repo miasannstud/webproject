@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import styles from './artifactCard.module.css';
 
 function ArtifactApp() {
     const [artifacts, setArtifacts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [message, setMessage] = useState('');
-    const [expandedTextIds, setExpandedTextIds] = useState({});
+    const fileInputRef = useRef(null);
 
     const fetchArtifacts = async () => {
         try {
@@ -47,6 +48,7 @@ function ArtifactApp() {
             }
             setMessage('Artifact has been uploaded');
             setSelectedFile(null);
+            fileInputRef.current.value = '';
             fetchArtifacts();
         } catch (error) {
             console.error(error);
@@ -70,13 +72,6 @@ function ArtifactApp() {
         }
     };
 
-    const toggleText = (artifactId) => {
-        setExpandedTextIds((prevState) => ({
-            ...prevState,
-            [artifactId]: !prevState[artifactId],
-        }));
-    };
-
     const renderArtifactContent = (artifact) => {
         if (!artifact.mimetype) {
             return <p>Unknown artifact type</p>; // Handle missing MIME type
@@ -86,23 +81,9 @@ function ArtifactApp() {
             // Render image
             return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '200px', maxHeight: '200px' }} />;
         } else if (artifact.mimetype === 'text/plain') {
-            // Render text
-            const isExpanded = expandedTextIds[artifact._id] || false;
-
-            const content = artifact.content || 'No content available';
+            // Render text file
             return (
-                <div>
-                    <p>
-                        {isExpanded
-                            ? content
-                            : content.slice(0, 100) + (content.length > 100 ? '...' : '')}
-                    </p>
-                    {content.length > 100 && (
-                        <button onClick={() => toggleText(artifact._id)}>
-                            {isExpanded ? 'Show Less' : 'Read More'}
-                        </button>
-                    )}
-                </div>
+                <iframe src={artifact.url} title={artifact.filename} style={{ width: '300px', height: '200px' }} />
             );
         } else if (artifact.mimetype.startsWith('audio/')) {
             return (
@@ -119,7 +100,6 @@ function ArtifactApp() {
                 </video>
             );
         } else {
-            // Render as a downloadable file
             return (
                 <a href={artifact.url} download={artifact.filename}>
                     Download {artifact.filename}
@@ -129,25 +109,28 @@ function ArtifactApp() {
     };
 
     return (
-        <>
+        <div className={styles.artifactContainer}>
             <h1>Artifact Management</h1>
             {message && <p>{message}</p>}
-            <form onSubmit={handleUpload}>
-                <input type="file" onChange={handleFileChange} />
+            <form className={styles.uploadForm} onSubmit={handleUpload}>
+                <label className={styles.customFileInput} htmlFor="fileInput">Choose File</label>
+                <input id="fileInput" type="file" onChange={handleFileChange} ref={fileInputRef} />
+                {selectedFile && <p className={styles.fileName}>{selectedFile.name}</p>}
                 <button type="submit">Upload</button>
             </form>
             <h2>Uploaded Artifacts</h2>
-            <ul>
+            <ul className={styles.artifactList}>
                 {artifacts.map((artifact) => (
-                    <li key={artifact._id}>
-                        <p><strong>Name:</strong> {artifact.filename || 'Unknown'}</p>
+                    <li key={artifact._id} className={styles.artifactCard}>
+                        <p><strong>Name:</strong> {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, '') : 'Unknown'}</p>
                         <p><strong>Type:</strong> {artifact.mimetype || 'Unknown'}</p>
                         {renderArtifactContent(artifact)}
+                        <br></br>
                         <button onClick={() => handleDelete(artifact._id)}>Delete</button>
                     </li>
                 ))}
             </ul>
-        </>
+        </div>
     );
 }
 

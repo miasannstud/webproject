@@ -1,0 +1,82 @@
+.artifactContainer {
+  margin: 40px auto;
+  text-align: center;
+  width: 80%;
+}
+
+.artifactCard {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.artifactCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.artifactCard h2 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+}
+
+.uploadForm {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hide the default file input */
+.uploadForm input[type="file"] {
+  display: none;
+}
+
+/* Style the custom file input button */
+.customFileInput {
+  padding: 8px 12px;
+  background-color: #26a07a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  margin: 20px;
+}
+
+.customFileInput:hover {
+  background-color: #307e65;
+}
+
+/* Style the file name text */
+.fileName {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.uploadForm button {
+  padding: 8px 12px;
+  background-color: #26a07a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.uploadForm button:hover {
+  background-color: #307e65;
+}
+
+.artifactList {
+  list-style: none;
+  padding: 0;
+}
+
+.artifactList li {
+  margin-bottom: 20px;
+}
