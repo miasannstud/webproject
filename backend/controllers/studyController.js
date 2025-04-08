@@ -173,6 +173,7 @@ const downloadStudyDataJSON = async (req, res) => {
 };
 
 // helper function that converts an array of session objects into scv format
+// it is only used once and only here so we have it in the controller instead of making a separate file for it
 function convertSessionsToCSV(sessions) {
   if (!sessions || sessions.length === 0) {
     return "";
