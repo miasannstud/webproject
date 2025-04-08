@@ -1,252 +1,325 @@
-import Study from '../models/studyModel.js';
+import Study from "../models/studySchema.js";
+import Session from "../models/sessionSchema.js";
+
+// STUDY ROUTES
 
 // retrieve all studies
 // GET /studies
 const getStudies = async (req, res) => {
-    try {
-        const studies = await Study.find();
-        res.status(200).json(studies);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const studies = await Study.find();
+    res.status(200).json(studies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // retrieve one study
 // GET /studies/:studyId
 const getStudyById = async (req, res) => {
-    try {
-        // the reason for the { } is because we only want to extract the studyId
-        // and not anything else from the req.params, if we remove them we get everything
-        const { studyId } = req.params;
-        const study = await Study.findById(studyId);
+  try {
+    // the reason for the { } is because we only want to extract the studyId
+    // and not anything else from the req.params, if we remove them we get everything
+    const { studyId } = req.params;
+    const study = await Study.findById(studyId);
 
-        if (!study) {
-            return res.status(404).json({ message: "Study not found" });
-        }
-
-        res.status(200).json(study);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    res.status(200).json(study);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // create study
 // POST /studies
 const createStudy = async (req, res) => {
-    try {
-        const { studyTitle, description, published, questions } = req.body;
-        const createdBy = req.user._id;
+  try {
+    const { studyTitle, description, published, questions } = req.body;
+    const createdBy = req.user._id;
 
-        const newStudy = new Study({
-            createdBy,
-            studyTitle,
-            description,
-            published,
-            // can be an empty array
-            questions,
-        });
+    const newStudy = new Study({
+      createdBy,
+      studyTitle,
+      description,
+      published,
+      // can be an empty array
+      questions,
+    });
 
-        // save the new study to the database
-        await newStudy.save();
-        res.status(201).json(newStudy);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    // save the new study to the database
+    await newStudy.save();
+    res.status(201).json(newStudy);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // update a study with the request body data
 // PATCH /api/studies/:studyId
 const updateStudy = async (req, res) => {
-    try {
-        const { studyId } = req.params;
-        // get the updated data from the request body
-        const updateData = req.body;
+  try {
+    const { studyId } = req.params;
+    // get the updated data from the request body
+    const updateData = req.body;
 
-        const updatedStudy = await Study.findByIdAndUpdate(
-            studyId,
-            updateData,
-            // new: true returns the updated document
-            { new: true }
-        );
+    const updatedStudy = await Study.findByIdAndUpdate(
+      studyId,
+      updateData,
+      // new: true returns the updated document
+      { new: true }
+    );
 
-        if (!updatedStudy) {
-            return res.status(404).json({ message: "Study not found" });
-        }
-
-        res.status(200).json(updatedStudy);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!updatedStudy) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    res.status(200).json(updatedStudy);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // delete study
 // DELETE /studies/:studyId
 const deleteStudy = async (req, res) => {
-    try {
-        const { studyId } = req.params;
-        const study = await Study.findById(studyId);
+  try {
+    const { studyId } = req.params;
+    const study = await Study.findById(studyId);
 
-        if (!study) {
-            return res.status(404).json({ message: 'Study not found' });
-        }
-
-        await study.deleteOne();
-        res.status(200).json({ message: `Study ${studyId} got deleted` });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    await study.deleteOne();
+    res.status(200).json({ message: `Study ${studyId} got deleted` });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // publish a study, change published to true
 // PATCH /studies/:studyId/public
 const publishStudy = async (req, res) => {
-    try {
-        const { studyId } = req.params;
-        const study = await Study.findById(studyId);
+  try {
+    const { studyId } = req.params;
+    const study = await Study.findById(studyId);
 
-        if (!study) {
-            return res.status(404).json({ message: 'Study not found' });
-        }
-
-        study.published = true;
-        await study.save();
-
-        res.status(200).json({ message: 'Study is now published', study });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    study.published = true;
+    await study.save();
+
+    res.status(200).json({ message: "Study is now published", study });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// dont know how to make a url..??
+// creating a url for participants
 // GET /studies/:studyId/studyUrl
 const getStudyLink = async (req, res) => {
-    try {
-        const { studyId } = req.params;
-        const study = await Study.findById(studyId);
+  try {
+    const { studyId } = req.params;
+    const study = await Study.findById(studyId);
 
-        if (!study) {
-            return res.status(404).json({ message: 'Study not found' });
-        }
-
-        // make sure the study is published before making a link
-        if (!study.published) {
-            return res.status(400).json({ message: 'Study is not published yet' });
-        }
-
-        // i dont get this, read more, and change it to better:
-        // const baseUrl = `${req.protocol}://${req.get('host')}`;
-        // const studyUrl = `${baseUrl}/studies/${studyId}/take`;
-
-        res.status(200).json({ studyUrl });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    // make sure the study is published before making a link
+    if (!study.published) {
+      return res.status(400).json({ message: "Study is not published yet" });
+    }
+
+    // build the url using the requests protocol and host
+    // request protocol being: http
+    // host being: localhost somthing.. 8080 in our case
+    // the study page should be served at /api/studies/:studyId
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const studyUrl = `${baseUrl}/api/studies/${studyId}`;
+
+    res.status(200).json({ studyUrl });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// waiting a bit on this one..??
-const getStudyData = async (req, res) => {
-    try {
-        
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+// download study data as json for a specific study
+// GET /studies/:studyId/sessions/download/json
+const downloadStudyDataJSON = async (req, res) => {
+  try {
+    const { studyId } = req.params;
+    const sessions = await Session.find({ studyId });
+    // convert sessions to a formatted json string
+    const jsonData = JSON.stringify(sessions, null, 2);
+
+    // set headers to trigger download as a json file
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=studyResults.json"
+    );
+
+    res.status(200).send(jsonData);
+  } catch (error) {
+    console.error("Error in downloadStudyData:", error);
+    res.status(500).json({ message: error.message });
+  }
 };
+
+// helper function that converts an array of session objects into scv format
+// it is only used once and only here so we have it in the controller instead of making a separate file for it
+function convertSessionsToCSV(sessions) {
+  if (!sessions || sessions.length === 0) {
+    return "";
+  }
+  // the fields we want to export
+  const headers = ["_id", "studyId", "demographics", "answers", "createdAt"];
+  const csvRows = [];
+  csvRows.push(headers.join(","));
+
+  sessions.forEach((session) => {
+    // for arrays like demographics and answers, convert them to JSON string
+    const row = [
+      session._id,
+      session.studyId,
+      JSON.stringify(session.demographics), // age and gender
+      JSON.stringify(session.answers), // entire answers array
+      session.createdAt,
+    ];
+    // join row fields with commas
+    csvRows.push(row.join(","));
+  });
+
+  return csvRows.join("\n");
+}
+
+// download study data as csv for a specific study
+// GET /studies/:studyId/sessions/download/csv
+const downloadStudyDataCSV = async (req, res) => {
+  try {
+    const { studyId } = req.params;
+    const sessions = await Session.find({ studyId });
+    // convert sessions to csv string
+    const csvData = convertSessionsToCSV(sessions);
+
+    // set headers for csv download
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=studyResults.csv"
+    );
+    res.status(200).send(csvData);
+  } catch (error) {
+    console.error("Error downloading CSV:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// QUESTION ROUTES
 
 // create a question
 // POST /studies/:studyId/questions
 const createQuestion = async (req, res) => {
-    try {
-        const { studyId } = req.params;
-        const { questionText, questionType, artifact, options } = req.body;
-        const study = await Study.findById(studyId);
+  try {
+    const { studyId } = req.params;
+    const { questionText, questionType, artifact, options } = req.body;
+    const study = await Study.findById(studyId);
 
-        if (!study) {
-            return res.status(404).json({ message: 'Study not found' });
-        }
-
-        const newQuestion = {
-            questionText,
-            questionType,
-            artifact: artifact || [],
-            options: options || []
-        };
-
-        study.questions.push(newQuestion);
-        await study.save();
-        res.status(200).json(newQuestion);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    const newQuestion = {
+      questionText,
+      questionType,
+      artifact: artifact || [],
+      options: options || [],
+    };
+
+    study.questions.push(newQuestion);
+    await study.save();
+    res.status(200).json(newQuestion);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // update question
 // PATCH /studies/:studyId/questions/:questionId
 const updateQuestion = async (req, res) => {
-    try {
-        const { studyId, questionId } = req.params;
+  try {
+    const { studyId, questionId } = req.params;
 
-        const study = await Study.findById(studyId);
-        if (!study) {
-            return res.status(404).json({ message: 'Study not found' });
-        }
-
-        const question = study.questions.id(questionId);
-        if (!question) {
-            return res.status(404).json({ message: 'Question not found' });
-        }
-
-        // update the question fields if provided in the request body
-        if (req.body.questionText) {
-            question.questionText = req.body.questionText;
-        }
-        if (req.body.questionType) {
-            question.questionType = req.body.questionType;
-        }
-        // replace the entire options array if this is updated
-        if (req.body.options) {
-            question.options = req.body.options;
-        }
-
-        await study.save();
-        res.status(200).json({ message: 'Question got updated', question });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    const study = await Study.findById(studyId);
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    const question = study.questions.id(questionId);
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+
+    // update the question fields if provided in the request body
+    if (req.body.questionText) {
+      question.questionText = req.body.questionText;
+    }
+    if (req.body.questionType) {
+      question.questionType = req.body.questionType;
+    }
+    // replace the entire options array if this is updated
+    if (req.body.options) {
+      question.options = req.body.options;
+    }
+
+    await study.save();
+    res.status(200).json({ message: "Question got updated", question });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // delete question
 // DELETE /studies/:studyId/questions/:questionId
 const deleteQuestion = async (req, res) => {
-    try {
-        const { studyId, questionId } = req.params;
-        const study = await Study.findById(studyId);
-        if (!study) {
-            return res.status(404).json({ message: 'Study not found' });
-        }
-
-        const question = study.questions.id(questionId);
-        if (!question) {
-            return res.status(404).json({ message: 'Question not found' });
-        }
-
-        question.remove();
-        await study.save();
-        res.status(200).json({ message: 'Question got deleted' });        
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+  try {
+    const { studyId, questionId } = req.params;
+    const study = await Study.findById(studyId);
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
     }
+
+    const question = study.questions.id(questionId);
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+
+    question.remove();
+    await study.save();
+    res.status(200).json({ message: "Question got deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const studyController = {
-    getStudies,
-    getStudyById,
-    createStudy,
-    updateStudy,
-    deleteStudy,
-    publishStudy,
-    getStudyLink,
-    getStudyData,
-    createQuestion,
-    updateQuestion,
-    deleteQuestion,
+  getStudies,
+  getStudyById,
+  createStudy,
+  updateStudy,
+  deleteStudy,
+  publishStudy,
+  getStudyLink,
+  downloadStudyDataJSON,
+  downloadStudyDataCSV,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
 };

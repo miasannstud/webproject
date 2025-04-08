@@ -1,21 +1,51 @@
 ### token eventually
 @token = 987654321
 ### study id
-@studyId = 123456789
+@studyId = 67f41fa9f93b80b85b5e2716
 ### questions id
-@questionId = 0192837465
+@questionId = 67f41fa9f93b80b85b5e2717
 
 ### create a study
 POST http://localhost:8080/api/studies
 Content-Type: application/json
-Authorization: {{token}}
 
 {
-  "studyTitle": "First study test",
-  "description": "A study about poems",
+  "studyTitle": "Sleep study 2",
+  "description": "A study about sleep",
   "published": false,
-  "questions": []
+  "questions": [
+    {
+      "questionText": "How many hours do you sleep on average?",
+      "questionType": "slider",
+      "artifact": [],
+      "options": []
+    },
+    {
+      "questionText": "What is your preferred sleep environment?",
+      "questionType": "multiple-choice",
+      "artifact": [],
+      "options": [
+        { "text": "Quiet" },
+        { "text": "Dark" },
+        { "text": "Cool" },
+        { "text": "Comfortable bed" }
+      ]
+    },
+    {
+      "questionText": "Describe any sleep disorders you have experienced.",
+      "questionType": "text-box",
+      "artifact": [],
+      "options": []
+    }
+  ]
 }
+
+# {
+#   "studyTitle": "Sleep study",
+#   "description": "A study about sleep",
+#   "published": false,
+#   "questions": []
+# }
 
 ### get all studies
 GET http://localhost:8080/api/studies
@@ -76,3 +106,25 @@ Authorization: {{token}}
 ### delete question
 DELETE http://localhost:8080/api/studies/{{studyId}}/questions/{{questionId}}
 Authorization: {{token}}
+
+
+### session
+POST http://localhost:8080/api/studies/{{studyId}}/sessions
+Content-Type: application/json
+
+{
+  "demographics": {
+    "age": 44,
+    "gender": "Female"
+  },
+  "answers": [
+    {
+      "questionId": "67f41fa9f93b80b85b5e2718",
+      "response": "Quiet"
+    },
+    {
+      "questionId": "67f41fa9f93b80b85b5e271d",
+      "response": "Insomnia"
+    }
+  ]
+}

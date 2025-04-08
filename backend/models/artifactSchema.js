@@ -1,21 +1,13 @@
 import mongoose from 'mongoose';
 
-// create the schema for the artifact upload
 const artifactSchema = new mongoose.Schema({
-    filename: {
-        type: String,
-        required: true
-    },
-    path: {
-        type: String,
-        required: true
-    },
-    mimeType: {
-        type: String,
-    },
-    size: {
-        type: Number
-    }, 
-}, {timestamps: true });
+    filename: { type: String, required: true }, // Ensure filename is stored
+    mimetype: { type: String, required: true }, // Ensure MIME type is stored
+    path: { type: String, required: true },
+    size: { type: Number, required: true },
+    url: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
+});
 
-export default mongoose.model('Artifact', artifactSchema);
+const Artifact = mongoose.model('Artifact', artifactSchema);
+export default Artifact;

@@ -1,12 +1,22 @@
 import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors'; // Import cors
 import connectDB from './config/db.js';
 import researcherRoutes from './routes/researcherRoutes.js';
 import studyRoutes from './routes/studyRoutes.js';
 import artifactRoutes from './routes/artifactRoutes.js';
 import cors from 'cors';
+import sessionRoutes from './routes/sessionRoutes.js';
 
+
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+
+// Enable CORS
+app.use(cors()); // Allow all origins by default
+app.use('/uploads', express.static('uploads'));
 
 // calling the function to connect to mongoDB
 connectDB();
@@ -17,12 +27,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors({origin: 'http://localhost:5173', credentials: true,
 }));
 
-// // add routes here eventually..
+// Add routes
 app.use('/api/users', researcherRoutes);
 app.use('/api/studies', studyRoutes);
 app.use('/api/artifact', artifactRoutes);
+app.use('/api/session', sessionRoutes);
 
-// use ejs as the vew wngine
+// Use ejs as the view engine
 app.set('view engine', 'ejs');
 
 app.get("/", (req, res) => {

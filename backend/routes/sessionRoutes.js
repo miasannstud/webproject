@@ -1,10 +1,10 @@
 import express from 'express';
-import {createSession, getSessions} from '../controllers/sessionController.js';
+import {createSession, countSessions} from '../controllers/sessionController.js';
 
-const sessionRoutes = express.Router();
+const sessionRoutes = express.Router(); 
 
-// overview of all the routes. This functionality is created in studyController.js
-studyRoutes.post('/', createSession);
-studyRoutes.get('/:studyId', getSessions);
+// this functionality is created in sessionController.js
+sessionRoutes.post('/:studyId/sessions', createSession);
+sessionRoutes.get('/:studyId/sessions/count', countSessions);
 
 export default sessionRoutes;
