@@ -3,7 +3,7 @@ import './App.css'
 import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
-import ArtifactApp from './pages/createStudy/createStudy';
+import CreateStudy from './pages/createStudy/CreateStudy';
 
 
 function App() {

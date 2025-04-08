@@ -4,7 +4,6 @@ function ArtifactApp() {
     const [artifacts, setArtifacts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [message, setMessage] = useState('');
-    const [expandedTextIds, setExpandedTextIds] = useState({});
 
     const fetchArtifacts = async () => {
         try {
@@ -34,6 +33,7 @@ function ArtifactApp() {
             setMessage('You must select a file to upload');
             return;
         }
+        
         const formData = new FormData();
         formData.append('artifact', selectedFile);
 
@@ -70,12 +70,6 @@ function ArtifactApp() {
         }
     };
 
-    const toggleText = (artifactId) => {
-        setExpandedTextIds((prevState) => ({
-            ...prevState,
-            [artifactId]: !prevState[artifactId],
-        }));
-    };
 
     const renderArtifactContent = (artifact) => {
         if (!artifact.mimetype) {
@@ -86,23 +80,9 @@ function ArtifactApp() {
             // Render image
             return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '200px', maxHeight: '200px' }} />;
         } else if (artifact.mimetype === 'text/plain') {
-            // Render text
-            const isExpanded = expandedTextIds[artifact._id] || false;
-
-            const content = artifact.content || 'No content available';
+            // Render text file
             return (
-                <div>
-                    <p>
-                        {isExpanded
-                            ? content
-                            : content.slice(0, 100) + (content.length > 100 ? '...' : '')}
-                    </p>
-                    {content.length > 100 && (
-                        <button onClick={() => toggleText(artifact._id)}>
-                            {isExpanded ? 'Show Less' : 'Read More'}
-                        </button>
-                    )}
-                </div>
+                <iframe src={artifact.url} title={artifact.filename} style={{ width: '300px', height: '200px' }} />
             );
         } else if (artifact.mimetype.startsWith('audio/')) {
             return (
