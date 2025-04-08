@@ -24,3 +24,14 @@ export const createSession = async (req, res) => {
     res.status(500).json({ error: 'Failed to create session' });
   }
 };
+
+export const countSessions = async (req, res) => {
+  try {
+    const { studyId } = req.params;
+    const count = await Session.countDocuments({ studyId });
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error("Error counting sessions:", error);
+    res.status(500).json({ error: 'Failed to count sessions' });
+  }
+};

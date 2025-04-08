@@ -1,9 +1,9 @@
 ### token eventually
 @token = 987654321
 ### study id
-@studyId = 123456789
+@studyId = 67f41fa9f93b80b85b5e2716
 ### questions id
-@questionId = 0192837465
+@questionId = 67f41fa9f93b80b85b5e2717
 
 ### create a study
 POST http://localhost:8080/api/studies
@@ -106,3 +106,25 @@ Authorization: {{token}}
 ### delete question
 DELETE http://localhost:8080/api/studies/{{studyId}}/questions/{{questionId}}
 Authorization: {{token}}
+
+
+### session
+POST http://localhost:8080/api/studies/{{studyId}}/sessions
+Content-Type: application/json
+
+{
+  "demographics": {
+    "age": 44,
+    "gender": "Female"
+  },
+  "answers": [
+    {
+      "questionId": "67f41fa9f93b80b85b5e2718",
+      "response": "Quiet"
+    },
+    {
+      "questionId": "67f41fa9f93b80b85b5e271d",
+      "response": "Insomnia"
+    }
+  ]
+}

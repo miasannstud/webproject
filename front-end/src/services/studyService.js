@@ -126,17 +126,31 @@ export async function getStudyLink(studyId) {
   }
 }
 
-// for downloading session data from a study
-export async function downloadStudyData(studyId) {
+// for downloading session data from a study, as json
+export async function downloadStudyDataJSON(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/download`);
+    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/download/json`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
-    // For file downloads, you might handle the response as a blob:
+    // For file downloads, you might handle the response as a blob: ...??
     return await res.blob();
   } catch (error) {
     console.error('Error downloading study data:', error);
+    throw error;
+  }
+}
+
+// for downloading session data from a study, as csv
+export async function downloadStudyDataCSV(studyId) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/download/csv`);
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return await res.blob();
+  } catch (error) {
+    console.error('Error downloading study data (CSV):', error);
     throw error;
   }
 }

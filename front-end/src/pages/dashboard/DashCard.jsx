@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './DashCard.module.css';
-import { deleteStudy } from '../../services/studyService';
+import { deleteStudy, getStudyLink } from '../../services/studyService';
 import { useNavigate } from 'react-router-dom';
 
 function DashCard({study, onStudyDeleted}) {
@@ -34,10 +34,19 @@ function DashCard({study, onStudyDeleted}) {
         }
     }
 
-    // i think what to do here is to get a link that will be used to display the study for the participants
-    function handleGetLink() {
-        // some stuff
-    }
+    // get the link that participant will need to take the study
+    async function handleGetLink() {
+        try {
+          const data = await getStudyLink(_id);
+          const { studyUrl } = data;
+          // copy the link to clipboard
+          await navigator.clipboard.writeText(studyUrl);
+          alert(`Study link copied to clipboard:\n${studyUrl}`);
+        } catch (error) {
+          console.error("Error getting study link:", error);
+          alert("Failed to retrieve study link. Try again.");
+        }
+      }
 
     return (
         <div className={styles.card}>
