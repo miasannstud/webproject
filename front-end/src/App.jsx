@@ -3,7 +3,6 @@ import React from 'react'
 import { useState } from 'react'
 import { BrowserRouter, Router, Routes, Route} from 'react-router-dom'
 import LoginPage from './pages/auth/loginPage'
-import HomePage from './pages/home/homePage'
 import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
