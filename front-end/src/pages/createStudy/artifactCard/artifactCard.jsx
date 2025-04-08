@@ -1,12 +1,10 @@
-import styles from './createStudy.module.css';
-
-function CreateStudy() {
 import { useState, useEffect } from 'react';
 
 function ArtifactApp() {
     const [artifacts, setArtifacts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [message, setMessage] = useState('');
+    const [expandedTextIds, setExpandedTextIds] = useState({});
 
     const fetchArtifacts = async () => {
         try {
@@ -36,7 +34,6 @@ function ArtifactApp() {
             setMessage('You must select a file to upload');
             return;
         }
-        
         const formData = new FormData();
         formData.append('artifact', selectedFile);
 
@@ -73,6 +70,12 @@ function ArtifactApp() {
         }
     };
 
+    const toggleText = (artifactId) => {
+        setExpandedTextIds((prevState) => ({
+            ...prevState,
+            [artifactId]: !prevState[artifactId],
+        }));
+    };
 
     const renderArtifactContent = (artifact) => {
         if (!artifact.mimetype) {
@@ -83,9 +86,23 @@ function ArtifactApp() {
             // Render image
             return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '200px', maxHeight: '200px' }} />;
         } else if (artifact.mimetype === 'text/plain') {
-            // Render text file
+            // Render text
+            const isExpanded = expandedTextIds[artifact._id] || false;
+
+            const content = artifact.content || 'No content available';
             return (
-                <iframe src={artifact.url} title={artifact.filename} style={{ width: '300px', height: '200px' }} />
+                <div>
+                    <p>
+                        {isExpanded
+                            ? content
+                            : content.slice(0, 100) + (content.length > 100 ? '...' : '')}
+                    </p>
+                    {content.length > 100 && (
+                        <button onClick={() => toggleText(artifact._id)}>
+                            {isExpanded ? 'Show Less' : 'Read More'}
+                        </button>
+                    )}
+                </div>
             );
         } else if (artifact.mimetype.startsWith('audio/')) {
             return (
@@ -113,8 +130,25 @@ function ArtifactApp() {
 
     return (
         <>
+            <h1>Artifact Management</h1>
+            {message && <p>{message}</p>}
+            <form onSubmit={handleUpload}>
+                <input type="file" onChange={handleFileChange} />
+                <button type="submit">Upload</button>
+            </form>
+            <h2>Uploaded Artifacts</h2>
+            <ul>
+                {artifacts.map((artifact) => (
+                    <li key={artifact._id}>
+                        <p><strong>Name:</strong> {artifact.filename || 'Unknown'}</p>
+                        <p><strong>Type:</strong> {artifact.mimetype || 'Unknown'}</p>
+                        {renderArtifactContent(artifact)}
+                        <button onClick={() => handleDelete(artifact._id)}>Delete</button>
+                    </li>
+                ))}
+            </ul>
         </>
     );
 }
 
-export default CreateStudy;
+export default ArtifactApp;

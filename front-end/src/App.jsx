@@ -5,19 +5,18 @@ import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
 import CreateStudy from './pages/createStudy/CreateStudy';
 
-
 function App() {
   return (
     <BrowserRouter>
     <Navbar/>
       <Routes>
-        <Route path="/" element={<DashPage />} />
+        <Route path="/dashboard" element={<DashPage />} />
         {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
         <Route path="/results/:studyId" element={<ResultsPage />} />
         <Route path="/createStudy" element={<ArtifactApp />} />
       </Routes>
       </BrowserRouter>
-  )
+  );
 }
 
 export default App;

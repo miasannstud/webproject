@@ -7,7 +7,6 @@ import studyRoutes from './routes/studyRoutes.js';
 import artifactRoutes from './routes/artifactRoutes.js';
 import sessionRoutes from './routes/sessionRoutes.js';
 
-
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
