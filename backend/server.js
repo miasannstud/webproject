@@ -6,7 +6,7 @@ import researcherRoutes from './routes/researcherRoutes.js';
 import studyRoutes from './routes/studyRoutes.js';
 import artifactRoutes from './routes/artifactRoutes.js';
 import sessionRoutes from './routes/sessionRoutes.js';
-import cors from 'cors';
+
 
 dotenv.config();
 const app = express();
