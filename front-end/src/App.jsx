@@ -1,14 +1,15 @@
-import {Route, Routes, Navigate} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
+import ArtifactApp from './pages/createStudy/createStudy';
+
 
 function App() {
-
   return (
-    <BrowserRouter>
+    <BrowserRouterBrowserRouter>
     <Navbar/>
       <Routes>
         <Route path="/" element={<DashPage />} />
@@ -19,4 +20,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
