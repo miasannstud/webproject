@@ -5,7 +5,6 @@ import connectDB from './config/db.js';
 import researcherRoutes from './routes/researcherRoutes.js';
 import studyRoutes from './routes/studyRoutes.js';
 import artifactRoutes from './routes/artifactRoutes.js';
-import cors from 'cors';
 import sessionRoutes from './routes/sessionRoutes.js';
 
 

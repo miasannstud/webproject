@@ -26,9 +26,12 @@ const handleLogin = async (event) => {
     if (response.ok) {
       setSuccessMessage("Login successful!");
       setError("");
-      localStorage.setItem("token", data.token);
 
-      window.location.href = "/home";
+      // Store the token and userId in localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.id);
+
+      window.location.href = "/dashboard";
   } else {
     setError(data.message || "Login failed.");
     setSuccessMessage("");
