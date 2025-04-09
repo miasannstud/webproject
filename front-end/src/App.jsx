@@ -3,7 +3,7 @@ import './App.css'
 import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
-import ArtifactApp from './pages/createStudy/createStudy';
+import CreateStudy from './pages/createStudy/createStudy';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Route path="/dashboard" element={<DashPage />} />
         {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
         <Route path="/results/:studyId" element={<ResultsPage />} />
-        <Route path='/createStudy' element={<ArtifactApp />} />
+        <Route path='/createStudy' element={<CreateStudy />} />
       </Routes>
       </BrowserRouter>
   );

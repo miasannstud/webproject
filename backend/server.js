@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/users', researcherRoutes);
 app.use('/api/studies', studyRoutes);
 app.use('/api/artifact', artifactRoutes);
-app.use('/api/session', sessionRoutes);
+app.use('/api/studies', sessionRoutes);
 
 // Use ejs as the view engine
 app.set('view engine', 'ejs');
