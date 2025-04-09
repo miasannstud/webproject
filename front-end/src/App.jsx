@@ -17,7 +17,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
         <Route path="/results/:studyId" element={<ResultsPage />} />
-        <Route path="/createStudy" element={<ArtifactApp />} />
+        <Route path="/createStudy" element={<CreateStudy />} />
       </Routes>
       </BrowserRouter>
   );
