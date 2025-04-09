@@ -5,7 +5,27 @@ function ArtifactApp() {
     const [artifacts, setArtifacts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [message, setMessage] = useState('');
+    const [currentResearcherID, setCurrentResearcherID] = useState(null); // Fetch dynamically
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        // Fetch the current user's researcherID from the session
+        const fetchCurrentResearcherID = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/api/session'); // Adjust endpoint as needed
+                if (!response.ok) {
+                    throw new Error("Couldn't fetch session data");
+                }
+                const data = await response.json();
+                setCurrentResearcherID(data.researcherID);
+            } catch (error) {
+                console.error(error);
+                setMessage("Couldn't fetch session data");
+            }
+        };
+
+        fetchCurrentResearcherID();
+    }, []);
 
     const fetchArtifacts = async () => {
         try {
@@ -37,6 +57,7 @@ function ArtifactApp() {
         }
         const formData = new FormData();
         formData.append('artifact', selectedFile);
+        formData.append('researcherID', currentResearcherID); // Include researcherID
 
         try {
             const response = await fetch('http://localhost:8080/api/artifact/upload', {
@@ -57,6 +78,12 @@ function ArtifactApp() {
     };
 
     const handleDelete = async (artifactId) => {
+        const artifact = artifacts.find((artifact) => artifact._id === artifactId);
+        if (artifact.researcherID !== currentResearcherID) {
+            setMessage('You are not authorized to delete this artifact');
+            return;
+        }
+
         try {
             const response = await fetch(`http://localhost:8080/api/artifact/${artifactId}`, {
                 method: 'DELETE'
@@ -79,11 +106,11 @@ function ArtifactApp() {
 
         if (artifact.mimetype.startsWith('image/')) {
             // Render image
-            return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '200px', maxHeight: '200px' }} />;
+            return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '100px', maxHeight: '100px' }} />;
         } else if (artifact.mimetype === 'text/plain') {
             // Render text file
             return (
-                <iframe src={artifact.url} title={artifact.filename} style={{ width: '300px', height: '200px' }} />
+                <iframe src={artifact.url} title={artifact.filename} style={{ width: '100px', height: '100px' }} />
             );
         } else if (artifact.mimetype.startsWith('audio/')) {
             return (
@@ -94,7 +121,7 @@ function ArtifactApp() {
             );
         } else if (artifact.mimetype.startsWith('video/')) {
             return (
-                <video controls width="300">
+                <video controls width="100px" height="100px">
                     <source src={artifact.url} type={artifact.mimetype} />
                     Your browser does not support the video tag.
                 </video>
@@ -111,25 +138,27 @@ function ArtifactApp() {
     return (
         <div className={styles.artifactContainer}>
             <h1>Artifact Management</h1>
-            {message && <p>{message}</p>}
-            <form className={styles.uploadForm} onSubmit={handleUpload}>
-                <label className={styles.customFileInput} htmlFor="fileInput">Choose File</label>
-                <input id="fileInput" type="file" onChange={handleFileChange} ref={fileInputRef} />
-                {selectedFile && <p className={styles.fileName}>{selectedFile.name}</p>}
-                <button type="submit">Upload</button>
-            </form>
-            <h2>Uploaded Artifacts</h2>
-            <ul className={styles.artifactList}>
-                {artifacts.map((artifact) => (
-                    <li key={artifact._id} className={styles.artifactCard}>
-                        <p><strong>Name:</strong> {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, '') : 'Unknown'}</p>
-                        <p><strong>Type:</strong> {artifact.mimetype || 'Unknown'}</p>
-                        {renderArtifactContent(artifact)}
-                        <br></br>
-                        <button onClick={() => handleDelete(artifact._id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            <div className={styles.artifactCard}>
+                <h2>Uploaded Artifacts</h2>
+                {message && <p className={styles.message}>{message}</p>}
+                <form className={styles.uploadForm} onSubmit={handleUpload}>
+                    <label className={styles.customFileInput} htmlFor="fileInput">Choose File</label>
+                    <input id="fileInput" type="file" onChange={handleFileChange} ref={fileInputRef} />
+                    {selectedFile && <p className={styles.fileName}>{selectedFile.name}</p>}
+                    <button type="submit">Upload</button>
+                </form>
+                <ul className={styles.artifactList}>
+                    {artifacts.map((artifact) => (
+                        <li key={artifact._id}>
+                            <p><strong>Name:</strong> {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, '') : 'Unknown'}</p>
+                            <p><strong>Type:</strong> {artifact.mimetype || 'Unknown'}</p>
+                            {renderArtifactContent(artifact)}
+                            <br />
+                            <button onClick={() => handleDelete(artifact._id)}>Delete</button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 }
