@@ -1,0 +1,97 @@
+/* StudySession.css */
+.study-session-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.description {
+  margin-bottom: 1rem;
+}
+
+.consent-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.start-button,
+.continue-button,
+.submit-button {
+  background-color: #4C51BF;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.start-button:hover,
+.continue-button:hover,
+.submit-button:hover {
+  background-color: #3b3fcb;
+}
+
+.form-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.study-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.study-card:hover {
+  background-color: #f0f0f0;
+}
+
+.study-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.study-description {
+  font-size: 1rem;
+  color: #666;
+}
+
+.question {
+  margin-bottom: 1.5rem;
+}
+
+.question-text {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}

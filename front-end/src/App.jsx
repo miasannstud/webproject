@@ -7,6 +7,7 @@ import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
 import CreateStudy from './pages/createStudy/createStudy';
+import StudySession from './pages/studySession/studypage'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
         <Route path="/results/:studyId" element={<ResultsPage />} />
         <Route path="/createStudy" element={<CreateStudy />} />
+        <Route path="/startStudy" element={<StudySession />} />
       </Routes>
       </BrowserRouter>
   );
