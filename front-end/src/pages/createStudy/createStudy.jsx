@@ -1,6 +1,6 @@
 import styles from "./createStudy.module.css";
 import { useState } from "react";
-import StudyPreview from "./studyPreview/studyPreview";
+import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 // import QuestionCard from "./questionCard/QuestionCard";
 
@@ -22,9 +22,9 @@ function CreateStudy() {
       <div className={styles.artifactContainer}>
         <ArtifactApp />
       </div>
-      {/* <div className={styles.questionContainer}>
+      <div className={styles.questionContainer}>
         <QuestionCard />
-      </div> */}
+      </div>
       
       {/* <button className={styles.saveButton} onClick={handleSaveStudy}> */}
       <button className={styles.saveButton}>

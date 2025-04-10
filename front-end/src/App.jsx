@@ -1,12 +1,10 @@
 import './App.css'
-import React from 'react'
-import { useState } from 'react'
 import { BrowserRouter, Router, Routes, Route} from 'react-router-dom'
-import LoginPage from './pages/auth/loginPage'
+import LoginPage from './pages/auth/LoginPage'
 import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
-import CreateStudy from './pages/createStudy/createStudy';
+import CreateStudy from './pages/createStudy/CreateStudy';
 import ParticipantPage from './pages/participant/ParticipantPage'
 
 function App() {
