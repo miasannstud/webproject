@@ -1,5 +1,4 @@
-// src/pages/participant/ParticipantPage.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useParticipantStudy from '../../hooks/useParticipantStudy';
 import useParticipantNavigation from '../../hooks/useParticipantNavigation';

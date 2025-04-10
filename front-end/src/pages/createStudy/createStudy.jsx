@@ -1,5 +1,5 @@
 import styles from "./createStudy.module.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import StudyPreview from "./studyPreview/studyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 // import QuestionCard from "./questionCard/QuestionCard";

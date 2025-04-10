@@ -1,5 +1,4 @@
-// src/pages/participant/ParticipantQuestions.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./ParticipantQuestions.module.css";
 import { answerQuestions } from "../../services/sessionService";
 

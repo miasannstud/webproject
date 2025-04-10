@@ -1,5 +1,3 @@
-// src/pages/participant/DemographicsForm.jsx
-import React from 'react';
 import styles from './DemographicsForm.module.css';
 
 function DemographicsForm({ demographics, onChange, onSubmit }) {

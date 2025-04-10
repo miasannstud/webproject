@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './DashCard.module.css';
 import { deleteStudy, getStudyLink } from '../../services/studyService';
 import { useNavigate } from 'react-router-dom';

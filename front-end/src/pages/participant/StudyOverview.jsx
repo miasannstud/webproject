@@ -1,5 +1,3 @@
-// src/pages/participant/StudyOverview.jsx
-import React from 'react';
 import styles from './StudyOverview.module.css';
 
 function StudyOverview({ study }) {

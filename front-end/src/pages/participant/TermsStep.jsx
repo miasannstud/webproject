@@ -1,5 +1,3 @@
-// src/pages/participant/TermsStep.jsx
-import React from 'react';
 import styles from './TermsStep.module.css';
 
 function TermsStep({ agreeTerms, onTermsChange }) {
