@@ -1,1 +1,11 @@
-import React, {useState} from "react";
+
+import Signup from "./signUpForm";
+
+export default function SignupPage() {
+  return (
+    <div>
+      <h1>Signup</h1>
+      <Signup />
+    </div>
+  );
+}
