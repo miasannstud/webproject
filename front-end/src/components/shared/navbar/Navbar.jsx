@@ -1,7 +1,17 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
 
 function Navbar() {
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    
+    navigate('/');
+  }
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.navLeft}>
@@ -32,14 +42,12 @@ function Navbar() {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                isActive ? styles.activeLink : styles.link
-              }
-            >
-              Log out
-            </NavLink>
+              <button 
+                onClick={handleLogout}
+                className={styles.logoutButton}
+                >
+                Logout
+              </button>
           </li>
         </ul>
       </div>

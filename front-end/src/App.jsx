@@ -1,26 +1,30 @@
 import './App.css'
-import React from 'react'
 import { useState } from 'react'
 import { BrowserRouter, Router, Routes, Route} from 'react-router-dom'
-import LoginPage from './pages/auth/loginPage'
-import SignupPage from './pages/auth/signupPage'
+
+// Components
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 import Navbar from './components/shared/navbar/Navbar';
+
+// Pages
+import ArtifactApp from './pages/createStudy/createStudy';
+import LoginPage from './pages/auth/LoginPage'
+import SignupPage from './pages/auth/SignupPage'
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
-import ArtifactApp from './pages/createStudy/createStudy';
-
 
 function App() {
   return (
     <BrowserRouter>
     <Navbar/>
       <Routes>
-        <Route path="/dashboard" element={<DashPage />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
-        <Route path="/results/:studyId" element={<ResultsPage />} />
-        <Route path="/createStudy" element={<ArtifactApp />} />
+
+          <Route path="/dashboard" element={<ProtectedRoutes> <DashPage /> </ProtectedRoutes>}/>
+          <Route path="/results/:studyId" element={<ProtectedRoutes> <ResultsPage /> </ProtectedRoutes>} />
+          <Route path="/createStudy" element={<ProtectedRoutes> <ArtifactApp /> </ProtectedRoutes>} />
       </Routes>
       </BrowserRouter>
   );
