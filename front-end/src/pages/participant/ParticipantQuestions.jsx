@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./ParticipantQuestions.module.css";
 import { answerQuestions } from "../../services/sessionService";
 
-function ParticipantQuestions({ questions, sessionData, studyId }) {
+function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [loading, setLoading] = useState(false);
@@ -107,19 +107,12 @@ function ParticipantQuestions({ questions, sessionData, studyId }) {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex(currentIndex + 1);
       } else {
-        // Last question answered – you can show a message or finish up.
-        alert("All questions answered. Thank you!");
+        onComplete();
       }
     } catch (error) {
       setLoading(false);
       console.error("Error submitting answer:", error);
       alert("Error submitting answer. Please try again.");
-    }
-  }
-
-  function handleBack() {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
     }
   }
 
