@@ -1,7 +1,6 @@
 // import InputField from "../InputField";
 import { useState } from "react";
 
-
 export default function LoginForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState(null);
