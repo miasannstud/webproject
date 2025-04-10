@@ -4,7 +4,6 @@
 // You see the data flow from the service/hook into child components right away.
 // You can progressively refine child components without breaking the overall page structure.
 
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import useFetchStudies from "../../hooks/useFetchStudies";
 import DashCard from "./DashCard";

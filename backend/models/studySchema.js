@@ -9,7 +9,6 @@ const studySchema = new mongoose.Schema({
     },
     studyTitle: {
         type: String,
-        required: true,
         max: 70,
     },
     description: {
@@ -43,7 +42,7 @@ const studySchema = new mongoose.Schema({
             ],
             options: [
                 {
-                    text: { type: String, required: true },
+                    text: { type: String },
                 }
             ],
         }

@@ -1,0 +1,9 @@
+.previewCard {
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+}

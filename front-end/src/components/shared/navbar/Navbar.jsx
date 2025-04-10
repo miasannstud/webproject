@@ -5,7 +5,7 @@ function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navLeft}>
-        <NavLink to="/" className={styles.brand}>
+        <NavLink to="/dashboard" className={styles.brand}>
           CompareCraft
         </NavLink>
       </div>
@@ -13,7 +13,7 @@ function Navbar() {
         <ul className={styles.navList}>
           <li>
             <NavLink
-              to="/"
+              to="/dashboard"
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.link
               }

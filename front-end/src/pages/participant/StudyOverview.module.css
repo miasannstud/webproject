@@ -1,0 +1,19 @@
+.overviewContainer {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .overviewContainer h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .overviewContainer p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
