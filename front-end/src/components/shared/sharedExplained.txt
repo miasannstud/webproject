@@ -1,2 +1,0 @@
-If you notice repeated patterns (e.g., a styled card or a special button)
-that appear across different pages, move them into src/components/Shared/
