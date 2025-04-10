@@ -1,48 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './artifactCard.module.css';
+import { fetchArtifacts, uploadArtifact, deleteArtifact } from '../../../services/artifactService';
 
 function ArtifactApp() {
     const [artifacts, setArtifacts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [message, setMessage] = useState('');
-    const [currentResearcherID, setCurrentResearcherID] = useState(null); // Fetch dynamically
     const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        // Fetch the current user's researcherID from the session
-        const fetchCurrentResearcherID = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/session'); // Adjust endpoint as needed
-                if (!response.ok) {
-                    throw new Error("Couldn't fetch session data");
-                }
-                const data = await response.json();
-                setCurrentResearcherID(data.researcherID);
-            } catch (error) {
-                console.error(error);
-                setMessage("Couldn't fetch session data");
-            }
-        };
-
-        fetchCurrentResearcherID();
-    }, []);
-
-    const fetchArtifacts = async () => {
+    const fetchArtifactsList = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/artifact');
-            if (!response.ok) {
-                throw new Error("Couldn't fetch artifacts");
-            }
-            const data = await response.json();
+            const data = await fetchArtifacts(); // Fetch artifacts using the service
             setArtifacts(data);
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching artifacts:', error);
             setMessage("Couldn't fetch artifacts");
         }
     };
 
     useEffect(() => {
-        fetchArtifacts();
+        fetchArtifactsList();
     }, []);
 
     const handleFileChange = (e) => {
@@ -55,46 +32,26 @@ function ArtifactApp() {
             setMessage('You must select a file to upload');
             return;
         }
-        const formData = new FormData();
-        formData.append('artifact', selectedFile);
-        formData.append('researcherID', currentResearcherID); // Include researcherID
 
         try {
-            const response = await fetch('http://localhost:8080/api/artifact/upload', {
-                method: 'POST',
-                body: formData
-            });
-            if (!response.ok) {
-                throw new Error("Couldn't upload artifact, try again");
-            }
+            await uploadArtifact(selectedFile); // Upload artifact using the service
             setMessage('Artifact has been uploaded');
             setSelectedFile(null);
             fileInputRef.current.value = '';
-            fetchArtifacts();
+            fetchArtifactsList(); // Refresh the artifact list
         } catch (error) {
-            console.error(error);
+            console.error('Error uploading artifact:', error);
             setMessage('There was an error uploading the artifact');
         }
     };
 
     const handleDelete = async (artifactId) => {
-        const artifact = artifacts.find((artifact) => artifact._id === artifactId);
-        if (artifact.researcherID !== currentResearcherID) {
-            setMessage('You are not authorized to delete this artifact');
-            return;
-        }
-
         try {
-            const response = await fetch(`http://localhost:8080/api/artifact/${artifactId}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error('Delete failed');
-            }
+            await deleteArtifact(artifactId); // Delete artifact using the service
             setMessage('Artifact was deleted');
-            fetchArtifacts();
+            fetchArtifactsList(); // Refresh the artifact list
         } catch (error) {
-            console.error(error);
+            console.error('Error deleting artifact:', error);
             setMessage('There was an error deleting the artifact');
         }
     };
@@ -137,9 +94,8 @@ function ArtifactApp() {
 
     return (
         <div className={styles.artifactContainer}>
-            <h1>Artifact Management</h1>
             <div className={styles.artifactCard}>
-                <h2>Uploaded Artifacts</h2>
+                <h2>Upload Artifacts</h2>
                 {message && <p className={styles.message}>{message}</p>}
                 <form className={styles.uploadForm} onSubmit={handleUpload}>
                     <label className={styles.customFileInput} htmlFor="fileInput">Choose File</label>
