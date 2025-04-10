@@ -2,7 +2,7 @@ import styles from "./createStudy.module.css";
 import { useState } from "react";
 import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
-// import QuestionCard from "./questionCard/QuestionCard";
+import QuestionCard from "./questionCard/QuestionCard";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
