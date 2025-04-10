@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './artifactCard.module.css';
-import { fetchArtifacts, uploadArtifact, deleteArtifact } from '../../../services/artifactService';
+import { fetchArtifacts, uploadArtifact, deleteArtifact } from '../../../services/ArtifactService';
 
 function ArtifactApp() {
     const [artifacts, setArtifacts] = useState([]);

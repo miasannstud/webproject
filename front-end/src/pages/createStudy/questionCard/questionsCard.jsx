@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createQuestion } from '../../../services/studyService';
-import { fetchArtifacts } from '../../../services/artifactService';
+import { fetchArtifacts } from '../../../services/ArtifactService';
 import styles from './questionsCard.module.css';
 
 function QuestionsCard() {
