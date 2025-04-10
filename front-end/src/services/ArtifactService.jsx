@@ -51,20 +51,34 @@ export async function deleteArtifact(artifactId) {
   }
 }
 
-export function getArtifactContent(artifact) {
+export function renderArtifactContent(artifact) {
   if (!artifact.mimetype) {
-    return { type: 'unknown', content: 'Unknown artifact type' };
+    return <p>Unknown artifact type</p>;
   }
 
   if (artifact.mimetype.startsWith('image/')) {
-    return { type: 'image', url: artifact.url, alt: artifact.filename };
+    return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '100px', maxHeight: '100px' }} />;
   } else if (artifact.mimetype === 'text/plain') {
-    return { type: 'text', url: artifact.url, title: artifact.filename };
+    return <iframe src={artifact.url} title={artifact.filename} style={{ width: '100px', height: '100px' }} />;
   } else if (artifact.mimetype.startsWith('audio/')) {
-    return { type: 'audio', url: artifact.url, mimetype: artifact.mimetype };
+    return (
+      <audio controls>
+        <source src={artifact.url} type={artifact.mimetype} />
+        Your browser does not support the audio element.
+      </audio>
+    );
   } else if (artifact.mimetype.startsWith('video/')) {
-    return { type: 'video', url: artifact.url, mimetype: artifact.mimetype };
+    return (
+      <video controls width="100px" height="100px">
+        <source src={artifact.url} type={artifact.mimetype} />
+        Your browser does not support the video tag.
+      </video>
+    );
   } else {
-    return { type: 'download', url: artifact.url, filename: artifact.filename };
+    return (
+      <a href={artifact.url} download={artifact.filename}>
+        Download {artifact.filename}
+      </a>
+    );
   }
 }
