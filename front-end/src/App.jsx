@@ -1,10 +1,10 @@
 import './App.css'
-import { BrowserRouter, Router, Routes, Route} from 'react-router-dom'
-import LoginPage from './pages/auth/loginPage'
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
+import LoginPage from './pages/auth/LoginPage'
 import Navbar from './components/shared/navbar/Navbar';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
-import CreateStudy from './pages/createStudy/createStudy';
+import CreateStudy from './pages/createStudy/CreateStudy';
 import ParticipantPage from './pages/participant/ParticipantPage'
 
 function App() {

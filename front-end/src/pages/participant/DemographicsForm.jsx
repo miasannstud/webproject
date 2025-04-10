@@ -28,7 +28,7 @@ function DemographicsForm({ demographics, onChange, onSubmit }) {
           value={demographics.gender}
           onChange={handleGenderChange}
         >
-          <option value="">Select...</option>
+          <option value="" disabled>Select...</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
