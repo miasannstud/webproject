@@ -230,11 +230,17 @@ const downloadStudyDataCSV = async (req, res) => {
 const createQuestion = async (req, res) => {
   try {
     const { studyId } = req.params;
+    console.log('Received studyId:', studyId); // Log the studyId
     const { questionText, questionType, artifact, options } = req.body;
+
     const study = await Study.findById(studyId);
 
     if (!study) {
       return res.status(404).json({ message: "Study not found" });
+    }
+
+    if (artifact && !Array.isArray(artifact)) {
+      return res.status(400).json({ message: "Invalid artifact format" });
     }
 
     const newQuestion = {
@@ -248,7 +254,8 @@ const createQuestion = async (req, res) => {
     await study.save();
     res.status(200).json(newQuestion);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error creating question:", error.message); // Log the error
+    res.status(500).json({ message: "Failed to create question", error: error.message });
   }
 };
 
@@ -278,6 +285,9 @@ const updateQuestion = async (req, res) => {
     // replace the entire options array if this is updated
     if (req.body.options) {
       question.options = req.body.options;
+    }
+    if (req.body.artifact) {
+      question.artifact = req.body.artifact;
     }
 
     await study.save();

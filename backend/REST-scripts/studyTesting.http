@@ -86,7 +86,7 @@ Authorization: {{token}}
 {
   "questionText": "What poem is happiest?",
   "questionType": "multiple-choice",
-  "atifact": [],
+  "artifact": [],
   "options": [
     { "text": "The poem about summer" },
     { "text": "The poem about rain" }
