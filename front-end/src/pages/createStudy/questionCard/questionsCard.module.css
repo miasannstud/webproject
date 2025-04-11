@@ -151,3 +151,81 @@
   text-overflow: ellipsis;
   max-width: 120px;
 }
+
+
+.addedQuestionsCard {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.questionsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.questionsContainer::-webkit-scrollbar {
+  height: 8px;
+}
+
+.questionsContainer::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.questionsContainer::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.questionCard {
+  flex: 0 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  background-color: #fff;
+}
+
+.questionCard h4 {
+  margin-bottom: 10px;
+}
+
+.optionsList {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.optionItem {
+  margin-bottom: 5px;
+}
+
+.removeButton {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.removeButton:hover {
+  background-color: #cc0000;
+}
+
+.noQuestionsMessage {
+  font-size: 1rem;
+  color: #777;
+  text-align: center;
+  margin: 20px 0;
+}

@@ -1,18 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
-import { fetchArtifacts, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/artifactService';
+import { fetchArtifacts, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/ArtifactService';
 import styles from './ArtifactCard.module.css';
 
-function ArtifactApp() {
+function ArtifactApp({ onArtifactsChange }) {
   const [artifacts, setArtifacts] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [message, setMessage] = useState('');
   const fileInputRef = useRef(null);
 
-
   const fetchArtifactsList = async () => {
     try {
       const data = await fetchArtifacts();
       setArtifacts(data);
+      onArtifactsChange(data); 
     } catch (error) {
       console.error('Error fetching artifacts:', error);
       setMessage("Couldn't fetch artifacts");
@@ -21,7 +21,7 @@ function ArtifactApp() {
 
   useEffect(() => {
     fetchArtifactsList();
-  }, []);
+  }, );
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);

@@ -1,9 +1,41 @@
 .previewCard {
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  width: 77.5%;
+  margin: 0 auto;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+  color: #333;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  max-width: 60%;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #26a07a;
+  box-shadow: 0 0 5px rgba(38, 160, 122, 0.5);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
 }

@@ -13,8 +13,6 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-
-
 .artifactCard h2 {
   margin: 0 0 12px;
   font-size: 1.5rem;
@@ -33,7 +31,6 @@
   display: none;
 }
 
-
 .customFileInput {
   padding: 8px 12px;
   background-color: #26a07a;
@@ -48,7 +45,6 @@
 .customFileInput:hover {
   background-color: #307e65;
 }
-
 
 .uploadForm button {
   padding: 10px 14px ;
@@ -66,16 +62,29 @@
 
 .artifactList {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 20px;
-  justify-content: center;
+  overflow-x: auto;
   padding: 0;
   list-style: none;
   max-height: 300px;
-  overflow-y: auto;
+}
+
+.artifactList::-webkit-scrollbar {
+  height: 8px;
+}
+
+.artifactList::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.artifactList::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
 }
 
 .artifactList li {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
