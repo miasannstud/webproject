@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchArtifacts, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/ArtifactService';
 import styles from './ArtifactCard.module.css';
 
@@ -8,7 +8,7 @@ function ArtifactApp({ onArtifactsChange }) {
   const [message, setMessage] = useState('');
   const fileInputRef = useRef(null);
 
-  const fetchArtifactsList = async () => {
+  const fetchArtifactsList = useCallback(async () => {
     try {
       const data = await fetchArtifacts();
       setArtifacts(data);
@@ -17,11 +17,11 @@ function ArtifactApp({ onArtifactsChange }) {
       console.error('Error fetching artifacts:', error);
       setMessage("Couldn't fetch artifacts");
     }
-  };
+  }, [onArtifactsChange]);
 
   useEffect(() => {
     fetchArtifactsList();
-  }, []);
+  }, [fetchArtifactsList]);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -47,6 +47,9 @@ function ArtifactApp({ onArtifactsChange }) {
   };
 
   const handleDelete = async (artifactId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this artifact?');
+    if (!confirmDelete) return;
+
     try {
       await deleteArtifact(artifactId);
       setMessage('Artifact was deleted');
