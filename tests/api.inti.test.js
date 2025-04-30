@@ -1,10 +1,23 @@
+/* 
+  Use parts of the code from the Lecture about intergration testing The code 
+  is similiar structured to how our Teacher showed us in from this repo https://github.com/aliakseix/IDG2671_25_unit.testing
+*/
+
 // Import the nessesary stuff
 // trenger sikkert noe mer her
 import { describe, it, before, after } from "node:test";
 import assert from "node:assert";
 import fetch from "node-fetch";
-
 import { app } from "../backend/server.js";
+
+// Might add mocking to ensure we dont mess with our orginal database
+  // Note to self skjekk ut aleksi sin kode hvordan han bruker nock til mock koden
+
+// Before test do stuff;
+  // get db connection
+
+// After test do stuff
+  // after each test or the whole test clear the database off stuff i added
 
 describe("API Intergration Tests! :D", () => {
 
