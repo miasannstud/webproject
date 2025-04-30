@@ -1,35 +1,3 @@
-<<<<<<< HEAD
-import { validationResult } from "express-validator";
-import { researcherService } from "../Schema/researcher-Schema.js";
-
-// // [GET, POST] /researchers;
-
-// researchersRouter.get('/', (req, res) => {
-//     new Error("not implemented")
-// });
-
-export function getAllResearchers(req, res) {
-    // Decide how to respond 404 400 or 201
-    // Todo use researcherservice to find/crete/update researcher (and interact with mongodb)
-    new Error("not implemented")
-}
-
-export function createResearcher(req, res) {
-    new Error("not implemented")
-}
-
-export function getResearcher(req, res) {
-    new Error("not implemented")
-}
-
-export function updateResearcher(req, res) {
-    new Error("not implemented")
-}
-
-export function deleteResearcher(req, res) {
-    new Error("not implemented")
-}
-=======
 import bcrypt from 'bcrypt';
 import Researcher from '../models/researcherSchema.js';
 import jwt from 'jsonwebtoken';
@@ -75,4 +43,3 @@ export const loginUser = async (req, res) => {
         res.status(500).json({ message: "Error logging in", error: error.message });
     }
 };
->>>>>>> 49ad9388a459427b898415829234b7f7f4982060

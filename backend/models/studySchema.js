@@ -1,14 +1,5 @@
 import mongoose from 'mongoose';
 
-<<<<<<< HEAD
-// create the schema for the studies
-const studySchema = new mongoose.Schema({
-    text: {
-        type: String,
-        required: true,
-    }
-});
-=======
 // create the schema for the studies with embedded questions
 const studySchema = new mongoose.Schema({
     createdBy: {
@@ -57,6 +48,5 @@ const studySchema = new mongoose.Schema({
         }
     ]
 }, { timestamps: true });
->>>>>>> 49ad9388a459427b898415829234b7f7f4982060
 
 export default mongoose.model('Study', studySchema);
