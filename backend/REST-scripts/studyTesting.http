@@ -1,0 +1,130 @@
+### token eventually
+@token = 987654321
+### study id
+@studyId = 67f41fa9f93b80b85b5e2716
+### questions id
+@questionId = 67f41fa9f93b80b85b5e2717
+
+### create a study
+POST http://localhost:8080/api/studies
+Content-Type: application/json
+
+{
+  "studyTitle": "Sleep study 2",
+  "description": "A study about sleep",
+  "published": false,
+  "questions": [
+    {
+      "questionText": "How many hours do you sleep on average?",
+      "questionType": "slider",
+      "artifact": [],
+      "options": []
+    },
+    {
+      "questionText": "What is your preferred sleep environment?",
+      "questionType": "multiple-choice",
+      "artifact": [],
+      "options": [
+        { "text": "Quiet" },
+        { "text": "Dark" },
+        { "text": "Cool" },
+        { "text": "Comfortable bed" }
+      ]
+    },
+    {
+      "questionText": "Describe any sleep disorders you have experienced.",
+      "questionType": "text-box",
+      "artifact": [],
+      "options": []
+    }
+  ]
+}
+
+# {
+#   "studyTitle": "Sleep study",
+#   "description": "A study about sleep",
+#   "published": false,
+#   "questions": []
+# }
+
+### get all studies
+GET http://localhost:8080/api/studies
+
+### get study by id
+GET http://localhost:8080/api/studies/{{studyId}}
+
+### update study
+PATCH http://localhost:8080/api/studies/{{studyId}}
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "studyTitle": "Updated study test",
+  "description": "A study about books"
+}
+
+### delete study
+DELETE http://localhost:8080/api/studies/{{studyId}}
+Authorization: {{token}}
+
+### publish study
+PATCH http://localhost:8080/api/studies/{{studyId}}/public
+Authorization: {{token}}
+
+### get study sharable url
+GET http://localhost:8080/api/studies/{{studyId}}/studyUrl
+
+### download every session from a study
+GET http://localhost:8080/api/studies/{{studyId}}/sessions/download
+
+
+### make a question for a study
+POST http://localhost:8080/api/studies/{{studyId}}/questions
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "questionText": "What poem is happiest?",
+  "questionType": "multiple-choice",
+  "artifact": [],
+  "options": [
+    { "text": "The poem about summer" },
+    { "text": "The poem about rain" }
+  ]
+}
+
+### update question
+PATCH http://localhost:8080/api/studies/{{studyId}}/questions/{{questionId}}
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "questionText": "How did the poem make you feel?",
+  "questionType": "text-box"
+}
+
+### delete question
+DELETE http://localhost:8080/api/studies/{{studyId}}/questions/{{questionId}}
+Authorization: {{token}}
+
+
+### session
+POST http://localhost:8080/api/studies/{{studyId}}/sessions
+Content-Type: application/json
+
+{
+  "demographics": {
+    "age": 44,
+    "gender": "Female"
+  },
+  "answers": [
+    {
+      "questionId": "67f41fa9f93b80b85b5e2718",
+      "response": "Quiet"
+    },
+    {
+      "questionId": "67f41fa9f93b80b85b5e271d",
+      "response": "Insomnia"
+    }
+  ]
+}
