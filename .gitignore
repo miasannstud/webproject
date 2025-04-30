@@ -2,3 +2,5 @@
 node_modules
 notes
 uploads/
+.vscode/
+.DS_Store

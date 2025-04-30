@@ -7,8 +7,8 @@ import Navbar from './components/shared/navbar/Navbar';
 
 // Pages
 import CreateStudy from './pages/createStudy/CreateStudy';
-import LoginPage from './pages/auth/LoginPage'
-import SignupPage from './pages/auth/SignupPage'
+import LoginPage from './pages/auth/LoginPage';
+import SignupPage from './pages/auth/SignupPage';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
 import ParticipantPage from './pages/participant/ParticipantPage';
