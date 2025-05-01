@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./SignupForm.css";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -11,13 +13,25 @@ export default function Signup() {
   });
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleSignup = async (event) => {
-    event.preventDefault();
+  event.preventDefault();
+      // Frontend validation
+  if (formData.username.length > 150) {
+    setError("Username cannot exceed 150 characters.");
+    return;
+  }
+
+  if (formData.password.length < 5) {
+    setError("Password must be at least 5 characters long.");
+    return;
+  }
+
     try {
       const response = await fetch("http://localhost:8080/api/users/signup", {
         method: "POST",
@@ -29,7 +43,7 @@ export default function Signup() {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccessMessage(<p>Signup successful! <a href="http://localhost:5173/">Please login here</a></p>);
+        setSuccessMessage('Signup successful! Redirecting to login...'); 
         setError(null);
         setFormData({
           firstName: "",
@@ -39,8 +53,20 @@ export default function Signup() {
           password: "",
           institution: "NTNU",
         });
+      
+      // Redirect to login page after 2 seconds
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+
       } else {
-        setError(data.message || "Signup failed.");
+        // Display all validation errors
+        if (data.errors) {
+          const errorMessages = data.errors.map((err) => `${err.path}: ${err.msg}`).join("\n");
+          setError(errorMessages);
+        } else {
+          setError(data.message || "Signup failed.");
+        }
         setSuccessMessage("");
       }
     } catch (error) {
@@ -118,8 +144,7 @@ export default function Signup() {
           <button type="submit">Signup</button>
         </div>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-    </div>
+      {error && <p className="errorMessage">{error}</p>}
+      {successMessage && <p className="successMessage">{successMessage}</p>}    </div>
   );
 }
