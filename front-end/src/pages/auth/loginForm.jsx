@@ -67,7 +67,7 @@ return (
         </div>
       
         <div className="container">
-          <p>New here? <a href="/signup">Sign Up here !</a></p>
+          <p>New here? <a data-testid="signup-link" href="/signup">Sign Up here !</a></p>
         </div>
       </form> 
   );

@@ -3,6 +3,14 @@ import artifactController from '../controllers/artifactController.js';
 import uploadMiddleware from '../middelware/uploadMiddleware.js';
 import path from 'path';
 
+/* testing area */ 
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
+/* testing area */
+
 const router = express.Router();
 
 router.post('/upload', uploadMiddleware, artifactController.uploadArtifact);

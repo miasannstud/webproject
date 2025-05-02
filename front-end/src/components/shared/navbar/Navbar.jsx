@@ -43,6 +43,7 @@ function Navbar() {
           </li>
           <li>
               <button 
+                data-testid="header-logout"
                 onClick={handleLogout}
                 className={styles.logoutButton}
                 >

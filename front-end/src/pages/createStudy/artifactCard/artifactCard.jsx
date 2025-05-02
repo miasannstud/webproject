@@ -77,10 +77,10 @@ function ArtifactApp({ onArtifactsChange }) {
           {artifacts.map((artifact) => (
             <li key={artifact._id}>
               <p>
-                <strong>Name:</strong> {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, '') : 'Unknown'}
+                Name: {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, '') : 'Unknown'}
               </p>
               <p>
-                <strong>Type:</strong> {artifact.mimetype || 'Unknown'}
+                Type: {artifact.mimetype || 'Unknown'}
               </p>
               {renderArtifactContent(artifact)}
               <br />

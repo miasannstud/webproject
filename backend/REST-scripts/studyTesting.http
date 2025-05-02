@@ -10,14 +10,17 @@ POST http://localhost:8080/api/studies
 Content-Type: application/json
 
 {
-  "studyTitle": "Sleep study 2",
-  "description": "A study about sleep",
-  "published": false,
+  "studyTitle": "Sleep study 3",
+  "description": "A study about sleep patterns and habits",
+  "published": true,
   "questions": [
     {
       "questionText": "How many hours do you sleep on average?",
       "questionType": "slider",
-      "artifact": [],
+      "artifact": [{
+        "arturl": "uploads/1744025459548-dolphin.png",
+        "arttype": "image"
+      }],
       "options": []
     },
     {
@@ -28,11 +31,13 @@ Content-Type: application/json
         { "text": "Quiet" },
         { "text": "Dark" },
         { "text": "Cool" },
-        { "text": "Comfortable bed" }
+        { "text": "White noise" },
+        { "text": "Warm" },
+         { "text": "Bright" }
       ]
     },
     {
-      "questionText": "Describe any sleep disorders you have experienced.",
+      "questionText": "Have you experienced any sleep disorders?",
       "questionType": "text-box",
       "artifact": [],
       "options": []

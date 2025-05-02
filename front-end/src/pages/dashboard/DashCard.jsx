@@ -54,9 +54,9 @@ function DashCard({study, onStudyDeleted}) {
             <p>Published: {published.toString()}</p>
             <div className={styles.actions}>
                 <button onClick={handleEdit}>Edit</button>
-                <button onClick={handleResults}>Results</button>
-                <button onClick={handleDelete}>Delete</button>
-                <button onClick={handleGetLink}>Get Link</button>
+                <button data-testid="dashcard-results" onClick={handleResults}>Results</button>
+                <button data-testid="dashcard-delete" onClick={handleDelete}>Delete</button>
+                <button data-testid="dashcard-getlink" onClick={handleGetLink}>Get Link</button>
             </div>
         </div>
     );
