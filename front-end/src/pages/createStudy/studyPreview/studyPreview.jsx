@@ -1,4 +1,4 @@
-import styles from "./studyPreview.module.css";
+import styles from "./StudyPreview.module.css";
 
 function StudyPreview({ title, description, onTitleChange, onDescriptionChange }) {
     return (

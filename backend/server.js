@@ -11,7 +11,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-
 // Enable CORS
 app.use(cors()); // Allow all origins by default
 app.use('/uploads', express.static('uploads'));
@@ -30,16 +29,5 @@ app.use('/api/users', researcherRoutes);
 app.use('/api/studies', studyRoutes);
 app.use('/api/artifact', artifactRoutes);
 app.use('/api/studies', sessionRoutes);
-
-// Use ejs as the view engine
-app.set('view engine', 'ejs');
-
-app.get("/", (req, res) => {
-  res.render("login");
-});
-
-app.get("/signup", (req, res) => {
-    res.render("signup");
-});
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

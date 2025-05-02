@@ -1,0 +1,32 @@
+# version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+    container_name: project-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    # depends_on:
+    #   - mongodb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
+
+# only need this if using local mongo container, and we dont so..
+  # mongodb:
+  #   image: mongo:latest
+  #   container_name: project-mongodb
+  #   ports:
+  #     - "27017:27017"
+  #   healthcheck:
+  #     test: ["CMD", "mongodb", "--eval", "db.runCommand('ping')"]
+  #     interval: 30s
+  #     retries: 3
+  #     start_period: 10s
+  #     timeout: 10s
