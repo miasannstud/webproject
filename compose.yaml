@@ -3,12 +3,16 @@
 services:
   backend:
     build:
-      context: .
+      context: ./backend
+    command: ["npm", "run", "dev"] # use watch script: node --watch --env-file=.env server
+    volumes:
+      - ./backend:/app # bind‐mount your working dir into /app
+      - /app/node_modules # prevent overwriting container’s node_modules
     container_name: project-backend
     ports:
       - "8080:8080"
     env_file:
-      - .env
+      - ./backend/.env
     # depends_on:
     #   - mongodb
     healthcheck:
@@ -17,6 +21,15 @@ services:
       retries: 3
       start_period: 10s
       timeout: 10s
+
+  frontend:
+    build:
+      context: ./front-end
+    container_name: project-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
 
 # only need this if using local mongo container, and we dont so..
   # mongodb:

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { renderArtifactContent } from "../../../services/ArtifactService";
 import styles from "./QuestionsCard.module.css";
-import artifactStyles from "../artifactCard/artifactCard.module.css";
+import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 
 function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }) {
   const [questionText, setQuestionText] = useState("");

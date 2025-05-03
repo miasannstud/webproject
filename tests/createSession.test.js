@@ -1,6 +1,6 @@
 // run the test with: node --test tests/createSession.test.js
 
-import { describe, it, before, after } from "node:test";
+import { describe, it } from "node:test";
 import assert from "node:assert";
 import request from "supertest";
 import express from "express";
@@ -10,11 +10,10 @@ import { createSession } from "../backend/controllers/sessionController.js";
 import { validateCreateSession } from "../backend/validators/sessionValidators.js";
 import Session from "../backend/models/sessionSchema.js";
 
-// mock session model
+// mock setup: mock session model
 Session.prototype.save = async function () { return this; };
-Session.countDocuments = async () => 5;
 
-// set up isolated Express app
+// express app for isolated testing
 const app = express();
 app.use(bodyParser.json());
 app.post("/sessions/:studyId", validateCreateSession, createSession);

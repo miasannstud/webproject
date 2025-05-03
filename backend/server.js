@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Enable CORS
-app.use(cors()); // Allow all origins by default
+// app.use(cors()); // Allow all origins by default
 app.use('/uploads', express.static('uploads'));
 
 // calling the function to connect to mongoDB
@@ -21,7 +21,11 @@ connectDB();
 // json body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); 
-app.use(cors({origin: 'http://localhost:5173', credentials: true,
+// app.use(cors({origin: 'http://localhost:5173', credentials: true,
+// }));
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  credentials: true,
 }));
 
 // Add routes
