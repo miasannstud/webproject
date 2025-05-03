@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node server",
-    "dev": "node --watch --env-file=.env server"
+    "dev": "node --watch --env-file=.env server",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
