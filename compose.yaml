@@ -3,7 +3,7 @@
 services:
   backend:
     build:
-      context: ./backend
+      context: .
     command: ["npm", "run", "dev"] # use watch script: node --watch --env-file=.env server
     volumes:
       - ./backend:/app # bind‐mount your working dir into /app
