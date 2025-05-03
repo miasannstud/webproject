@@ -1,0 +1,40 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #26a07a;
+  padding: 25px;
+  font-size: 1.2rem;
+}
+
+.brand {
+  font-size: 1.5rem; /* Bigger font for the brand */
+  color: #fff;
+  text-decoration: none;
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.activeLink {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.logoutButton {
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}

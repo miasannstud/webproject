@@ -1,0 +1,27 @@
+.termsContainer {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .termsContainer h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .termsContainer p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  .checkboxLabel {
+    display: block;
+    font-size: 1rem;
+    margin: 20px 0;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,44 @@
+# Image Artifact
+POST http://localhost:8080/api/artifact/upload
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="artifact"; filename="deleteme.png"
+Content-Type: image/png
+
+< C:\Users\Skybu\Downloads\Playing_card_heart_A.png
+------Boundary--
+
+### Text Artifact
+POST http://localhost:8080/api/artifact/upload
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="artifact"; filename="textfile.txt"
+Content-Type: text/plain
+
+< C:\Users\Skybu\Downloads\texttest.txt
+------Boundary--
+
+### Video Artifact
+POST http://localhost:8080/api/artifact/upload
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="artifact"; filename="testvideo.mp4"
+Content-Type: video/mp4
+
+< C:\Users\Skybu\Downloads\20250328_1536_Trump's Playful Dance Moves_remix_01jqejxdk3fder4bwxhzk1tpgg.mp4
+------Boundary--
+
+
+### Music Artifact
+POST http://localhost:8080/api/artifact/upload
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="artifact"; filename="testsong.mp3"
+Content-Type: audio/mpeg
+
+< C:\Users\Skybu\Downloads\testsong.mp3
+------Boundary--
