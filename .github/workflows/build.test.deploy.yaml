@@ -15,9 +15,9 @@ jobs:
         with:
           node-version: 23.x
           cache: npm
-      - run: npm ci --prefix ./backend
+      - run: npm ci
       - name: all of our tests
-        run: npm run test --prefix ./backend
+        run: npm run test
 
 #   build:
 #     runs-on: ubuntu-latest
