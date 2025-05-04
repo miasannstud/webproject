@@ -39,8 +39,8 @@ test('sign-up-missingfields', async () => {
   const err = await page.waitForSelector('.error', { visible: true });
   const text = await err.evaluate(el => el.textContent);
   assert.ok(
-    /Error registering user/i.test(text),
-    `Expected a "Error registering user" error, got: "${text}"`
+    /Password must be at least 5 characters long./i.test(text),
+    `Expected a "Password must be at least 5 characters long." error, got: "${text}"`
   );
 })
 
@@ -57,11 +57,11 @@ test('signup rejects duplicate username', async () => {
   const err = await page.waitForSelector('.error', { visible: true });
   const text = await err.evaluate(el => el.textContent);
   assert.ok(
-    /User already exists!/i.test(text),
-    `Expected a "User already exists!" error, got: "${text}"`
+    /username: Username already in use/i.test(text),
+    `Expected a "username: Username already in use" error, got: "${text}"`
   );
 });
-æ
+
 // 
 test('creating a user and logging in', async () => {
   await page.goto('http://localhost:8186/', { waitUntil: 'domcontentloaded' });

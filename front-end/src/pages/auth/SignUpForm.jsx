@@ -43,7 +43,7 @@ export default function Signup() {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href="http://localhost:5173/">Please login here</a></p>);
+        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href="http://localhost:8186/">Please login here</a></p>);
         setError(null);
         setFormData({
           firstName: "",
