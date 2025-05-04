@@ -17,7 +17,7 @@ export const createUserValidator = [
     .withMessage("Username is required")
 
     .custom(async (value) => {
-      const user = await UserCollection.findOne({ username: value});
+      const user = await UserCollection.findOne({ username: value });
       if (user) {
         throw new Error("Username already in use");
       }
@@ -29,7 +29,7 @@ export const createUserValidator = [
     .withMessage("Email is required")
 
     .custom(async (value) => {
-      const user = await UserCollection.findOne({password: value});
+      const user = await UserCollection.findOne({ password: value });
       if (user) {
         throw new Error("Email already in use");
       }
@@ -66,11 +66,11 @@ const findUsersValidatorArr = [
     .isIn(searchByAllowedOptions)
     .withMessage(
       "Invalid searchBy option. Allowed options are: " +
-        searchByAllowedOptions.join(", ")
+      searchByAllowedOptions.join(", ")
     ),
 
   query("SearchValue")
-  .isString()
-  .notEmpty()
-  .withMessage("search value is required")
+    .isString()
+    .notEmpty()
+    .withMessage("search value is required")
 ];

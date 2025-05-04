@@ -29,7 +29,7 @@ export default function Signup() {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccessMessage(<p>Signup successful! <a href="http://localhost:5173/">Please login here</a></p>);
+        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href="http://localhost:5173/">Please login here</a></p>);
         setError(null);
         setFormData({
           firstName: "",
@@ -115,10 +115,10 @@ export default function Signup() {
             <option value="Other">Other</option>
           </select>
 
-          <button type="submit">Signup</button>
+          <button data-testid="signup-signupButton" type="submit">Signup</button>
         </div>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error" style={{ color: "red" }}>{error}</p>}
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
     </div>
   );

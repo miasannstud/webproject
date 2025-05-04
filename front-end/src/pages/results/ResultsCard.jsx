@@ -65,11 +65,11 @@ function ResultsCard({ study }) {
       <p className={styles.info}>
         <strong>Expiration Date:</strong> {new Date(updatedAt).toLocaleString()}
       </p>
-      <button className={styles.downloadButton} onClick={handleDownloadJSON}>
+      <button data-testid="results-downloadjson" className={styles.downloadButton} onClick={handleDownloadJSON}>
         Download data as JSON
       </button>
-      <button className={styles.downloadButton} onClick={handleDownloadCSV}>
-          Download data as CSV
+      <button data-testid="results-downloadcsv" className={styles.downloadButton} onClick={handleDownloadCSV}>
+        Download data as CSV
       </button>
     </div>
   );

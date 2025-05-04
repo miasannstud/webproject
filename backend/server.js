@@ -34,4 +34,15 @@ app.use('/api/studies', studyRoutes);
 app.use('/api/artifact', artifactRoutes);
 app.use('/api/studies', sessionRoutes);
 
+// Use ejs as the view engine
+app.set('view engine', 'ejs');
+
+app.get("/", (req, res) => {
+  res.render("login");
+});
+
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

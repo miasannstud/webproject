@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // Components
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
@@ -16,16 +16,17 @@ import ParticipantPage from './pages/participant/ParticipantPage'
 function App() {
   return (
     <BrowserRouter>
-      <Navbar/>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
-          <Route path="/participant/:studyId" element={<ParticipantPage />} />
-          <Route path="/dashboard" element={<ProtectedRoutes> <DashPage /> </ProtectedRoutes>}/>
-          <Route path="/results/:studyId" element={<ProtectedRoutes> <ResultsPage /> </ProtectedRoutes>} />
-          <Route path="/createStudy" element={<ProtectedRoutes> <CreateStudy /> </ProtectedRoutes>} />
-        </Routes>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        {/* <Route path="/edit/:studyId" element={<EditPage />}/> */}
+        <Route path="/participant/:studyId" element={<ParticipantPage />} />
+        <Route path="/dashboard" element={<ProtectedRoutes> <DashPage /> </ProtectedRoutes>} />
+        <Route path="/results/:studyId" element={<ProtectedRoutes> <ResultsPage /> </ProtectedRoutes>} />
+        <Route path="/createStudy" element={<ProtectedRoutes> <CreateStudy /> </ProtectedRoutes>} />
+        
+      </Routes>
     </BrowserRouter>
   );
 }

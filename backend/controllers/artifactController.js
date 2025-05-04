@@ -6,8 +6,8 @@ export const uploadArtifact = async (req, res) => {
         if (!req.file) return res.status(400).json({ message: 'No artifact uploaded' });
 
         const artifactData = new Artifact({
-            filename: req.file.originalName || req.file.originalname, 
-            mimetype: req.file.mimetype, 
+            filename: req.file.originalName || req.file.originalname,
+            mimetype: req.file.mimetype,
             path: req.file.path,
             size: req.file.size,
             url: `http://localhost:8080/uploads/${req.file.filename}`

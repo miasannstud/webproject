@@ -1,9 +1,9 @@
 import express from 'express';
-import {studyController} from '../controllers/studyController.js';
+import { studyController } from '../controllers/studyController.js';
 
 const studyRoutes = express.Router();
 
-// overview of all the routes. Theis functionality is created in studyController.js
+// overview of all the routes. Their functionality is created in studyController.js
 studyRoutes.get('/', studyController.getStudies);
 studyRoutes.get('/:studyId', studyController.getStudyById);
 studyRoutes.post('/', studyController.createStudy);

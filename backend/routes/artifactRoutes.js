@@ -3,6 +3,12 @@ import artifactController from '../controllers/artifactController.js';
 import uploadMiddleware from '../middelware/uploadMiddleware.js';
 import path from 'path';
 
+/* for puppeteer */
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+/* normal code below */
+
 const router = express.Router();
 
 router.post('/upload', uploadMiddleware, artifactController.uploadArtifact);

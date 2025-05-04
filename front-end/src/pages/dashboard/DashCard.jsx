@@ -2,9 +2,9 @@ import styles from './DashCard.module.css';
 import { deleteStudy, getStudyLink } from '../../services/studyService';
 import { useNavigate } from 'react-router-dom';
 
-function DashCard({study, onStudyDeleted}) {
+function DashCard({ study, onStudyDeleted }) {
     const navigate = useNavigate();
-    const {_id, studyTitle, published} = study;
+    const { _id, studyTitle, published } = study;
 
     // navigate to the edit page
     async function handleEdit() {
@@ -37,16 +37,16 @@ function DashCard({study, onStudyDeleted}) {
     // get the link that participant will need to take the study
     async function handleGetLink() {
         try {
-          const data = await getStudyLink(_id);
-          const { studyUrl } = data;
-          // copy the link to clipboard
-          await navigator.clipboard.writeText(studyUrl);
-          alert(`Study link copied to clipboard:\n${studyUrl}`);
+            const data = await getStudyLink(_id);
+            const { studyUrl } = data;
+            // copy the link to clipboard
+            await navigator.clipboard.writeText(studyUrl);
+            alert(`Study link copied to clipboard:\n${studyUrl}`);
         } catch (error) {
-          console.error("Error getting study link:", error);
-          alert("Failed to retrieve study link. Try again.");
+            console.error("Error getting study link:", error);
+            alert("Failed to retrieve study link. Try again.");
         }
-      }
+    }
 
     return (
         <div className={styles.card}>
@@ -54,9 +54,9 @@ function DashCard({study, onStudyDeleted}) {
             <p>Published: {published.toString()}</p>
             <div className={styles.actions}>
                 <button onClick={handleEdit}>Edit</button>
-                <button onClick={handleResults}>Results</button>
-                <button onClick={handleDelete}>Delete</button>
-                <button onClick={handleGetLink}>Get Link</button>
+                <button data-testid="dashcard-results" onClick={handleResults}>Results</button>
+                <button data-testid="dashcard-delete" onClick={handleDelete}>Delete</button>
+                <button data-testid="dashcard-getlink" onClick={handleGetLink}>Get Link</button>
             </div>
         </div>
     );

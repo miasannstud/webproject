@@ -51,8 +51,8 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
         return (
           <div className={styles.sliderContainer}>
             <div className={styles.sliderLabels}>
-              <span>Don't like</span>
-              <span>Like</span>
+              <span>1</span>
+              <span>10</span>
             </div>
             <input
               type="range"
@@ -118,14 +118,34 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
 
   return (
     <div className={styles.questionsContainer}>
+      {/* Conditionally display different images for slider and text-box questions */}
+      {currentQuestion.questionType === "slider" && (
+        <div className={styles.imageContainer}>
+          <img
+            src="http://localhost:8080/uploads/1744368271870-dessert.png"
+            alt="Slider question related"
+            className={styles.questionImage}
+          />
+        </div>
+      )}
+      {currentQuestion.questionType === "text-box" && (
+        <div className={styles.imageContainer}>
+          <img
+            src="http://localhost:8080/uploads/1744368277783-beaver.png"
+            alt="Text question related"
+            className={styles.questionImage}
+          />
+        </div>
+      )}
+
       <h2>
         Question {currentIndex + 1} of {questions.length}
       </h2>
       <p>{currentQuestion.questionText || 'No question text provided.'}</p>
-      
+
       {/* render the input based on question type */}
       {renderAnswerInput()}
-      
+
       <div className={styles.buttonContainer}>
         <button
           onClick={handleNext}
