@@ -28,7 +28,7 @@ export default function Signup() {
     return;
   }
 
-  if (formData.password.length < 5) {
+  if (formData.password.length <= 5) {
     setError("Password must be at least 5 characters long.");
     return;
   }
@@ -54,7 +54,7 @@ export default function Signup() {
 
     } catch (error) {
       console.error("Signup error:", error);
-      setError("An error occurred. Please try again.");
+      setError(error.message || "An error occurred. Please try again.");
       setSuccessMessage("");
     }
   };
@@ -128,8 +128,8 @@ export default function Signup() {
           <button data-testid="signup-signupButton" type="submit">Signup</button>
         </div>
       </form>
-      {error && <p className="error errorMessage">{error}</p>}
-      {successMessage && <p className="successMessage">{successMessage}</p>}
+      {error && <div className="error errorMessage">{error}</div>}
+      {successMessage && <div className="successMessage">{successMessage}</div>}
     </div>
   );
 }
