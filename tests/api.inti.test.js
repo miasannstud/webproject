@@ -107,6 +107,28 @@ describe("API Intergration Tests! :D", () => {
 
   describe("Boundary Test Cases", () => {
 
+    describe("Create a user with too short passwprd", () => {
+        it("It should fail and return a 400", async () => {
+          const response = await fetch(`${backendUrl}/api/users/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              firstName: "Carlos",
+              lastName: "Teacher",
+              username: "Car",
+              email: "carlos@gmail.com",
+              password: "123",
+              institution: "NTNU",
+            }),
+          });
+
+          const data = await response.json();
+
+          assert.strictEqual(response.status, 400, "Expected status code 400");
+          assert.strictEqual(data.errors[0].msg, "Password must be longer, at least 5 characters");
+        });
+    })
+
     describe("Create a user with a password that has the minimun length required off 5 chara, POST", () => {
       describe("Given that user does not exist in the database", () => {
         it("It should succeed and return 201", async () => {
@@ -139,13 +161,33 @@ describe("API Intergration Tests! :D", () => {
 
   describe("Egde Test Cases", () => {
 
+    describe("Register a user with a username containing special characters, POST", () => {
+      it("It should fail and return a 400", async () => {
+        const response = await fetch(`${backendUrl}/api/users/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstName: "Carlos",
+            lastName: "Teacher",
+            username: "Car@los!",
+            email: "carlos@gmail.com",
+            password: "12345",
+            institution: "NTNU",
+          }),
+        });
+
+        const data = await response.json();
+        
+        assert.strictEqual(response.status, 400, "Expected status code 400");
+        assert.strictEqual(data.errors[0].msg, "Username cannot contain special characters");
+      });
+    });
+
     describe("Register a user with no username, POST", () => {
       it("It should fail and return a 400 when createing a user", async () => {
       const response = await fetch(`${backendUrl}/api/users/signup`, {
         method: "POST",
-
         headers: { "Content-Type": "application/json" },
-
         body: JSON.stringify({
           firstName: "Carlos",
           lastName: "Teacher",
@@ -162,12 +204,31 @@ describe("API Intergration Tests! :D", () => {
         // console.log("Response body:", data);
 
         assert.strictEqual(response.status, 400, "Expected status code 400");
-        assert.strictEqual(data.errors[0].msg,"Invalid value", `Expected error message "Invalid value" but got instead"${data.errors[0].msg}"`);
+        assert.strictEqual(data.errors[0].msg,"Username is required");
       });
     });
   });
 
   describe("Negative Test Cases", () => {
+
+    describe("Log in a user with an empty password, POST", () => {
+      it("It should fail and return a 400", async () => {
+        const response = await fetch(`${backendUrl}/api/users/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: "mia",
+            password: "", // Empty password
+          }),
+        });
+
+        const data = await response.json();
+
+        assert.strictEqual(response.status, 400, "Expected status code 400");
+        assert.strictEqual(data.message, "Invalid credentials");
+      });
+    });
+
     describe("Log in a user that does not exist, POST", () => {
       it("it should fail and return a 400", async () => {
         const response = await fetch(`${backendUrl}/api/users/login`, {

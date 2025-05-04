@@ -12,20 +12,21 @@ export const createUserValidator = [
     .notEmpty()
     .withMessage("Lastname is required"),
 
-  body("username")
+    body("username")
     .isString()
     .notEmpty()
-    .isLength({max:150})
     .withMessage("Username is required")
+    .isLength({ max: 150 })
     .withMessage("Username cannot exceed 150 characters")
-
+    .isAlphanumeric()
+    .withMessage("Username cannot contain special characters")
     .custom(async (value) => {
-      const user = await Researcher.findOne({ username: value});
+      const user = await Researcher.findOne({ username: value });
       if (user) {
         throw new Error("Username already in use");
       }
     }),
-
+    
   body("email")
     .isEmail()
     .withMessage("Invalid email format")
