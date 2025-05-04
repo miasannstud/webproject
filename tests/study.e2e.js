@@ -8,10 +8,10 @@ describe('Login flow', () => {
         ({ browser, page } = await launchBrowser());
     });
 
-    /* afterAll(async () => browser.close()); */
+    afterAll(async () => browser.close());
 
     test('allows a user to log in with valid credentials', async () => {
-        await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' })
+        await page.goto('http://localhost:8186/', { waitUntil: 'domcontentloaded' })
         /*         await page.waitForSelector('input[name="username"]', { visible: true, timeout: 5000 }); */
         await page.type('input[name="username"]', 'admin')
         await page.type('input[name="password"]', 'admin')

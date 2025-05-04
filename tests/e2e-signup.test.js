@@ -26,7 +26,7 @@ after(async () => {
 
 
 test('sign-up-missingfields', async () => {
-  await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' });
+  await page.goto('http://localhost:8186/', { waitUntil: 'domcontentloaded' });
   await page.click('[data-testid="signup-link"]');
 
   // Intentionally bypassing the "required" attribute in the form field
@@ -46,7 +46,7 @@ test('sign-up-missingfields', async () => {
 
 test('signup rejects duplicate username', async () => {
 
-  await page.goto('http://localhost:5173/signup', { waitUntil: 'domcontentloaded' });
+  await page.goto('http://localhost:8186/signup', { waitUntil: 'domcontentloaded' });
   await page.type('input[name=firstName]', 'admin');
   await page.type('input[name=lastName]', 'admin');
   await page.type('input[name=username]', 'admin');
@@ -64,7 +64,7 @@ test('signup rejects duplicate username', async () => {
 æ
 // 
 test('creating a user and logging in', async () => {
-  await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' });
+  await page.goto('http://localhost:8186/', { waitUntil: 'domcontentloaded' });
   await page.click('[data-testid="signup-link"]');
 
   await page.waitForSelector('input[name=firstName]');

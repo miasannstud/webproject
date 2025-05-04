@@ -11,7 +11,7 @@ describe('Login flow', () => {
     afterAll(async () => browser.close());
 
     test('Logs the user in to retrieve a study link, and the results for the study', async () => {
-        await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' })
+        await page.goto('http://localhost:8186/', { waitUntil: 'domcontentloaded' })
         await page.type('input[name="username"]', 'admin')
         await page.type('input[name="password"]', 'admin')
 
