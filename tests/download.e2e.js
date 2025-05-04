@@ -1,17 +1,17 @@
-const { launchBrowser } = require('./helpers/puppeteer');
-const path = require('path');
+const puppeteer = require('puppeteer');
 
-describe('Login flow', () => {
+describe('Download JSON from results', () => {
     let browser, page;
 
     beforeAll(async () => {
-        ({ browser, page } = await launchBrowser());
-    });
+        browser = await puppeteer.launch({ headless: false, slowMo: 50 });
+        page = await browser.newPage();
+      });
 
     afterAll(async () => browser.close());
 
     test('Logs the user in to retrieve a study link, and the results for the study', async () => {
-        await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' })
+        await page.goto('http://localhost:8186/', { waitUntil: 'domcontentloaded' })
         await page.type('input[name="username"]', 'admin')
         await page.type('input[name="password"]', 'admin')
 

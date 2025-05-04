@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    port: 8186,          // keep matching Apache’s HTTP proxy
+    port: 8186,
     proxy: {
       '/api': {
         target: 'http://backend:8080',

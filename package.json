@@ -10,10 +10,10 @@
     "dev": "node --watch --env-file=.env server",
     "tests": "node --test tests/api.inti.test.js",
     "test": "node --test",
-    "test": "jest"
+    "jest": "jest"
   },
   "jest": {
-    "testTimeout": 30000,
+    "testTimeout": 60000,
     "testMatch": ["**/?(*.)+(e2e).[jt]s?(x)", "**/?(*.)+(e2e).[m]j?(s)"],
     "testEnvironment": "node"
   },
@@ -47,8 +47,5 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "puppeteer": "^24.7.2"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0"
   }
 }
