@@ -6,12 +6,12 @@ import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 import Navbar from './components/shared/navbar/Navbar';
 
 // Pages
-import LoginPage from './pages/auth/LoginPage'
-import SignupPage from './pages/auth/SignupPage'
+import CreateStudy from './pages/createStudy/CreateStudy';
+import LoginPage from './pages/auth/LoginPage';
+import SignupPage from './pages/auth/SignupPage';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
-import CreateStudy from './pages/createStudy/CreateStudy';
-import ParticipantPage from './pages/participant/ParticipantPage'
+import ParticipantPage from './pages/participant/ParticipantPage';
 
 function App() {
   return (

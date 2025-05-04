@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors'; // Import cors
+import cors from 'cors'; 
 import connectDB from './config/db.js';
 import researcherRoutes from './routes/researcherRoutes.js';
 import studyRoutes from './routes/studyRoutes.js';
@@ -46,3 +46,5 @@ app.get("/signup", (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+
+export { app };
