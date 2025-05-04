@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 
 dotenv.config();
 
-describe('User signup and login ', () => {
+describe('User signup and login testing, removing required attribute', () => {
   let browser, page;
   const testUsername = 'aliaksei';
 
