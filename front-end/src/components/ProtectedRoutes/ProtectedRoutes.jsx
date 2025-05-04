@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 
- export default function CheckToken({ children }) {
+// check if the user logged in has a token
+ export default function ProtectedRoutes({ children }) {
     const token = localStorage.getItem("token");
     
     if (!token){
