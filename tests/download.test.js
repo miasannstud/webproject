@@ -26,7 +26,7 @@ describe('Download JSON from results', () => {
 
     const results = await page.$$('[data-testid="dashcard-getlink"]');
 
-    
+
     if (results.length > 4) {
       await results[4].click();
     } else {

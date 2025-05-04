@@ -35,12 +35,15 @@ describe('Login and create a study', () => {
     await page.type('[data-testid="create-study-title"]', 'E2E Test');
     await page.type('[data-testid="create-study-description"]', 'Testing the page with E2E');
 
+    
     await page.waitForSelector('#fileInput');
     const fileInput1 = await page.$('#fileInput');
     const filePath1 = resolve(__dirname, 'assets', 'redpanda.png');
     await fileInput1.uploadFile(filePath1);
     await page.click('button[type="submit"]');
-
+    
+    // I'm aware adding "2" at the end is silly but I made a helper but it wasn't working properly so I just opted to do it like this
+    // the point of this is just to test that the user can upload multiple file types
     await page.waitForSelector('#fileInput');
     const fileInput2 = await page.$('#fileInput');
     const filePath2 = resolve(__dirname, 'assets', 'veldiglangtekstfil.txt');
