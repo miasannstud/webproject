@@ -1,11 +1,12 @@
-const { launchBrowser } = require('./helpers/puppeteer');
+const puppeteer = require('puppeteer');
 const path = require('path');
 
-describe('Login flow', () => {
+describe('Login and create a study', () => {
+    
     let browser, page;
-
     beforeAll(async () => {
-        ({ browser, page } = await launchBrowser());
+        browser = await puppeteer.launch({ headless: false, slowMo: 50 });
+        page = await browser.newPage();
     });
 
     afterAll(async () => browser.close());
