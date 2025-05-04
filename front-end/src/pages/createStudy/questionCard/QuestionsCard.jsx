@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { renderArtifactContent } from "../../../services/ArtifactService";
+import { renderArtifactContent } from "../../../services/artifactService";
 import styles from "./QuestionsCard.module.css";
 import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 

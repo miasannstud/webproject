@@ -138,7 +138,7 @@ const getStudyLink = async (req, res) => {
 
     // build the url using the requests protocol and host
     // request protocol being: http
-    // host being: localhost somthing.. 5173 in our case
+    // host being: localhost somthing.. 8186 in our case
     // the study page should be served at /participant/:studyId
     // Use an environment variable for the frontend URL if set, fallback otherwise.
     const frontendUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { fetchArtifacts, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/ArtifactService';
+import { fetchArtifacts, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/artifactService';
 import styles from './ArtifactCard.module.css';
 
 function ArtifactApp({ onArtifactsChange }) {

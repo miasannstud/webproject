@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchSignupUser } from "../../services/authService";
 import "./SignupForm.css";
 
 export default function Signup() {
@@ -33,16 +34,8 @@ export default function Signup() {
   }
 
     try {
-      const response = await fetch("http://localhost:8080/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const data = await fetchSignupUser(formData);
 
-      const data = await response.json();
-      if (response.ok) {
         setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href="http://localhost:8186/">Please login here</a></p>);
         setError(null);
         setFormData({
@@ -54,22 +47,13 @@ export default function Signup() {
           institution: "NTNU",
         });
       
-      // Redirect to login page after 2 seconds
+      // redirect to login page after 2 seconds
       setTimeout(() => {
         navigate("/");
       }, 2000);
 
-      } else {
-        // Display all validation errors
-        if (data.errors) {
-          const errorMessages = data.errors.map((err) => `${err.path}: ${err.msg}`).join("\n");
-          setError(errorMessages);
-        } else {
-          setError(data.message || "Signup failed.");
-        }
-        setSuccessMessage("");
-      }
     } catch (error) {
+      console.error("Signup error:", error);
       setError("An error occurred. Please try again.");
       setSuccessMessage("");
     }
@@ -145,6 +129,7 @@ export default function Signup() {
         </div>
       </form>
       {error && <p className="error errorMessage">{error}</p>}
-      {successMessage && <p className="successMessage">{successMessage}</p>}    </div>
+      {successMessage && <p className="successMessage">{successMessage}</p>}
+    </div>
   );
 }

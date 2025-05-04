@@ -1,5 +1,6 @@
 // import InputField from "../InputField";
 import { useState } from "react";
+import { fetchLoginUser } from "../../services/authService";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -13,29 +14,18 @@ export default function LoginForm() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const data = await fetchLoginUser(formData);
+      setSuccessMessage("Login successful!");
+      setError(null);
 
-      const data = await response.json();
-      if (response.ok) {
-        setSuccessMessage("Login successful!");
-        setError("");
+      // store the token and userId
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.id);
 
-        // Store the token and userId in localStorage
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.id);
-
-        window.location.href = "/dashboard";
-      } else {
-        setError(data.message || "Login failed.");
-        setSuccessMessage("");
-      }
+      // redirect after login
+      window.location.href = "/dashboard";
     } catch (error) {
+      console.error("Login error:", error);
       setError("An error happend. Please try again.");
       setSuccessMessage("");
     }
