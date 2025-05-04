@@ -22,16 +22,6 @@ export default function Signup() {
 
   const handleSignup = async (event) => {
   event.preventDefault();
-      // Frontend validation
-  if (formData.username.length > 150) {
-    setError("Username cannot exceed 150 characters.");
-    return;
-  }
-
-  if (formData.password.length <= 5) {
-    setError("Password must be at least 5 characters long.");
-    return;
-  }
 
     try {
       const data = await fetchSignupUser(formData);

@@ -125,7 +125,7 @@ describe("API Intergration Tests! :D", () => {
           const data = await response.json();
 
           assert.strictEqual(response.status, 400, "Expected status code 400");
-          assert.strictEqual(data.errors[0].msg, "Password must be longer, at least 5 characters");
+          assert.strictEqual(data.errors[0].msg, "Password must be at least 5 characters long.");
         });
     })
 

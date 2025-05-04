@@ -45,7 +45,7 @@ export const createUserValidator = [
     .notEmpty()
     .withMessage("Password is required")
     .isLength({min: 5})
-    .withMessage("Password must be longer, at least 5 characters"),
+    .withMessage("Password must be at least 5 characters long."),
 ];
 
 
