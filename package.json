@@ -8,7 +8,6 @@
   "scripts": {
     "start": "node server",
     "dev": "node --watch --env-file=.env server",
-    "tests": "node --test tests/api.inti.test.js",
     "test": "node --test",
     "jest": "jest"
   },
