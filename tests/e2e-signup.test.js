@@ -61,7 +61,7 @@ test('signup rejects duplicate username', async () => {
     `Expected a "User already exists!" error, got: "${text}"`
   );
 });
-
+æ
 // 
 test('creating a user and logging in', async () => {
   await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' });

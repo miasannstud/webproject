@@ -69,7 +69,7 @@ function ResultsCard({ study }) {
         Download data as JSON
       </button>
       <button data-testid="results-downloadcsv" className={styles.downloadButton} onClick={handleDownloadCSV}>
-          Download data as CSV
+        Download data as CSV
       </button>
     </div>
   );

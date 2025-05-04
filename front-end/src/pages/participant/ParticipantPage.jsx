@@ -42,29 +42,29 @@ function ParticipantPage() {
     switch (currentStep) {
       case 0:
         return (
-          <TermsStep 
-            agreeTerms={agreeTerms} 
-            onTermsChange={setAgreeTerms} 
+          <TermsStep
+            agreeTerms={agreeTerms}
+            onTermsChange={setAgreeTerms}
           />
         );
       case 1:
         return <StudyOverview study={study} />;
       case 2:
         return (
-          <DemographicsForm 
-            demographics={demographics} 
+          <DemographicsForm
+            demographics={demographics}
             onChange={setDemographics}
             onSubmit={handleDemographicsSubmit}
           />
         );
       case 3:
         return (
-        <ParticipantQuestions 
-        questions={study.questions} 
-        sessionData={sessionData} 
-        studyId={studyId}
-        onComplete={nextStep} // when questions are finished, go to thank-you step
-      />
+          <ParticipantQuestions
+            questions={study.questions}
+            sessionData={sessionData}
+            studyId={studyId}
+            onComplete={nextStep} // when questions are finished, go to thank-you step
+          />
         );
       case 4:
         return (
@@ -72,55 +72,55 @@ function ParticipantPage() {
             <h1>Thank you for your participation!</h1>
             <p>Your submission got registered successfully</p>
           </div>
-        );  
+        );
       default:
         return <div>Unknown step</div>;
     }
   }
 
-//   return (
-// <div className={styles.participantContainer}>
-// {renderStep()}
-// <div className={styles.navigationButtons}>
-//   {/* Show Back button for steps > 0 */}
-//   {currentStep === 1 && (
-//     <button onClick={prevStep}>Back</button>
-//   )}
-//   {/* For all steps except Demographics (step 2) */}
-//   {currentStep < 3 && currentStep !== 2 && (
-//     <button 
-//       onClick={nextStep} 
-//       disabled={currentStep === 0 && !agreeTerms}
-//     >
-//       Next
-//     </button>
-//   )}
-// </div>
-// </div>
-// );
-return (
-  <div className={styles.participantContainer}>
-    {renderStep()}
-    {/* Only show global navigation buttons on steps where needed */}
-    {currentStep !== 2 && currentStep !== 4 && (
-      <div className={styles.navigationButtons}>
-        {/* Show Back button only on the Overview step (i.e. step 1) */}
-        {currentStep === 1 && (
-          <button onClick={prevStep}>Back</button>
-        )}
-        {/* For steps 0 and 1, show Next button; Demographics has its own next button; Thank You does not need one */}
-        {currentStep < 3 && (
-          <button 
-            onClick={nextStep} 
-            disabled={currentStep === 0 && !agreeTerms}
-          >
-            Next
-          </button>
-        )}
-      </div>
-    )}
-  </div>
-);
+  //   return (
+  // <div className={styles.participantContainer}>
+  // {renderStep()}
+  // <div className={styles.navigationButtons}>
+  //   {/* Show Back button for steps > 0 */}
+  //   {currentStep === 1 && (
+  //     <button onClick={prevStep}>Back</button>
+  //   )}
+  //   {/* For all steps except Demographics (step 2) */}
+  //   {currentStep < 3 && currentStep !== 2 && (
+  //     <button 
+  //       onClick={nextStep} 
+  //       disabled={currentStep === 0 && !agreeTerms}
+  //     >
+  //       Next
+  //     </button>
+  //   )}
+  // </div>
+  // </div>
+  // );
+  return (
+    <div className={styles.participantContainer}>
+      {renderStep()}
+      {/* Only show global navigation buttons on steps where needed */}
+      {currentStep !== 2 && currentStep !== 4 && (
+        <div className={styles.navigationButtons}>
+          {/* Show Back button only on the Overview step (i.e. step 1) */}
+          {currentStep === 1 && (
+            <button onClick={prevStep}>Back</button>
+          )}
+          {/* For steps 0 and 1, show Next button; Demographics has its own next button; Thank You does not need one */}
+          {currentStep < 3 && (
+            <button
+              onClick={nextStep}
+              disabled={currentStep === 0 && !agreeTerms}
+            >
+              Next
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
 
 }
 

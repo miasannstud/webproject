@@ -142,10 +142,10 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
         Question {currentIndex + 1} of {questions.length}
       </h2>
       <p>{currentQuestion.questionText || 'No question text provided.'}</p>
-      
+
       {/* render the input based on question type */}
       {renderAnswerInput()}
-      
+
       <div className={styles.buttonContainer}>
         <button
           onClick={handleNext}

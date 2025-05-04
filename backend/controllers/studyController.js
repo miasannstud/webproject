@@ -38,10 +38,10 @@ const getStudyById = async (req, res) => {
 const createStudy = async (req, res) => {
   try {
     const { studyTitle, description, published, questions } = req.body;
-    /* const createdBy = req.user._id; */
+    const createdBy = req.user._id;
 
     const newStudy = new Study({
-      /* createdBy, */
+      createdBy,
       studyTitle,
       description,
       published,

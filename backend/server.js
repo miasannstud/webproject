@@ -21,8 +21,9 @@ connectDB();
 
 // json body parsing
 app.use(express.json());
-app.use(express.urlencoded({ extended: false })); 
-app.use(cors({origin: 'http://localhost:5173', credentials: true,
+app.use(express.urlencoded({ extended: false }));
+app.use(cors({
+  origin: 'http://localhost:5173', credentials: true,
 }));
 
 // Add routes
@@ -39,7 +40,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/signup", (req, res) => {
-    res.render("signup");
+  res.render("signup");
 });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

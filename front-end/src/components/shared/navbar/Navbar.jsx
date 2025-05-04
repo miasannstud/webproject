@@ -8,7 +8,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    
+
     navigate('/');
   }
 
@@ -42,13 +42,13 @@ function Navbar() {
             </NavLink>
           </li>
           <li>
-              <button 
-                data-testid="header-logout"
-                onClick={handleLogout}
-                className={styles.logoutButton}
-                >
-                Logout
-              </button>
+            <button
+              data-testid="header-logout"
+              onClick={handleLogout}
+              className={styles.logoutButton}
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </div>

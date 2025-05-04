@@ -5,7 +5,7 @@ const studySchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        /* required: true, */
+        required: true,
     },
     studyTitle: {
         type: String,
@@ -35,9 +35,9 @@ const studySchema = new mongoose.Schema({
             },
             artifact: [
                 {
-                arttId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
-                artUrl: { type: String },
-                artType: { type: String },
+                    arttId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
+                    artUrl: { type: String },
+                    artType: { type: String },
                 }
             ],
             options: [
