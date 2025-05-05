@@ -6,9 +6,11 @@ import { registerUser, loginUser } from '../controllers/researcherController.js'
 const router = express.Router();
 
 // Route for user registration
-router.post('/signup', registerUser);
+router.post('/signup', createUserValidator, handleValidationErrors, registerUser);
 
 // Route for user login
 router.post('/login', loginUser);
+
+/* router.delete('/api/researchers/:id'); */
 
 export default router; 

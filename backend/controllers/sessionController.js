@@ -30,36 +30,36 @@ export const answerQuestions = async (req, res) => {
   try {
     const { sessionId, questionId, studyId } = req.params;
     const { answers } = req.body;
-  
-      // find the session
-      const session = await Session.findById(sessionId);
-      if (!session) {
-        return res.status(404).json({ message: 'Session not found' });
-      }
-  
-      // find the study
-      const study = await Study.findById(studyId);
-      if (!study) {
+
+    // find the session
+    const session = await Session.findById(sessionId);
+    if (!session) {
+      return res.status(404).json({ message: 'Session not found' });
+    }
+
+    // find the study
+    const study = await Study.findById(studyId);
+    if (!study) {
       return res.status(404).json({ message: 'Study not found' });
-      }
-  
-      // find the question
-      const question = study.questions.id(questionId);
-      if (!question) {
+    }
+
+    // find the question
+    const question = study.questions.id(questionId);
+    if (!question) {
       return res.status(404).json({ message: 'Question not found' });
-      }
-  
-      const answerObj = {
-        questionId: questionId,
-        response: answers
-      };
-  
+    }
+
+    const answerObj = {
+      questionId: questionId,
+      response: answers
+    };
+
     session.answers.push(answerObj);
     await session.save()
-  
+
     res.status(200).json({ answers: answerObj });
   } catch (error) {
-      res.stsatus(500).json({ error: 'Failed to answer questions' });
+    res.stsatus(500).json({ error: 'Failed to answer questions' });
   }
 };
 

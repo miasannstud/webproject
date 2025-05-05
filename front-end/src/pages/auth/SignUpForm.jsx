@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchSignupUser } from "../../services/authService";
+import "./SignupForm.css";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -11,25 +14,19 @@ export default function Signup() {
   });
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleSignup = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch("http://localhost:8080/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+  event.preventDefault();
 
-      const data = await response.json();
-      if (response.ok) {
-        setSuccessMessage(<p>Signup successful! <a href="http://localhost:5173/">Please login here</a></p>);
+    try {
+      const data = await fetchSignupUser(formData);
+
+        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href="http://localhost:8186/">Please login here</a></p>);
         setError(null);
         setFormData({
           firstName: "",
@@ -39,12 +36,15 @@ export default function Signup() {
           password: "",
           institution: "NTNU",
         });
-      } else {
-        setError(data.message || "Signup failed.");
-        setSuccessMessage("");
-      }
+      
+      // redirect to login page after 2 seconds
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+
     } catch (error) {
-      setError("An error occurred. Please try again.");
+      console.error("Signup error:", error);
+      setError(error.message || "An error occurred. Please try again.");
       setSuccessMessage("");
     }
   };
@@ -115,11 +115,11 @@ export default function Signup() {
             <option value="Other">Other</option>
           </select>
 
-          <button type="submit">Signup</button>
+          <button data-testid="signup-signupButton" type="submit">Signup</button>
         </div>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+      {error && <div className="error errorMessage">{error}</div>}
+      {successMessage && <div className="successMessage">{successMessage}</div>}
     </div>
   );
 }

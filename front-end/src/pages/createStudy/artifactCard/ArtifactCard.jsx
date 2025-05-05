@@ -12,7 +12,7 @@ function ArtifactApp({ onArtifactsChange }) {
     try {
       const data = await fetchArtifacts();
       setArtifacts(data);
-      onArtifactsChange(data); 
+      onArtifactsChange(data);
     } catch (error) {
       console.error('Error fetching artifacts:', error);
       setMessage("Couldn't fetch artifacts");
@@ -53,7 +53,7 @@ function ArtifactApp({ onArtifactsChange }) {
     try {
       await deleteArtifact(artifactId);
       setMessage('Artifact was deleted');
-      fetchArtifactsList(); 
+      fetchArtifactsList();
     } catch (error) {
       console.error('Error deleting artifact:', error);
       setMessage('There was an error deleting the artifact');
@@ -77,10 +77,10 @@ function ArtifactApp({ onArtifactsChange }) {
           {artifacts.map((artifact) => (
             <li key={artifact._id}>
               <p>
-                <strong>Name:</strong> {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, '') : 'Unknown'}
+                Name: {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, '') : 'Unknown'}
               </p>
               <p>
-                <strong>Type:</strong> {artifact.mimetype || 'Unknown'}
+                Type: {artifact.mimetype || 'Unknown'}
               </p>
               {renderArtifactContent(artifact)}
               <br />

@@ -4,6 +4,7 @@ services:
   backend:
     build:
       context: .
+      dockerfile: backend/Dockerfile
     command: ["npm", "run", "dev"] # use watch script: node --watch --env-file=.env server
     volumes:
       - ./backend:/app # bind‐mount your working dir into /app
@@ -13,24 +14,16 @@ services:
       - "8080:8080"
     env_file:
       - ./backend/.env
-    # depends_on:
-    #   - mongodb
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 30s
-      retries: 3
-      start_period: 10s
-      timeout: 10s
 
   frontend:
     build:
       context: ./front-end
+      dockerfile: Dockerfile
     container_name: project-frontend
     ports:
-      - "3000:3000"
+      - "8186:8186"
     depends_on:
       - backend
-
 # only need this if using local mongo container, and we dont so..
   # mongodb:
   #   image: mongo:latest

@@ -26,7 +26,7 @@ function DashPage() {
       <h1>Hello</h1>
       <div className={styles.createStudyContainer}>
         <p className={styles.createStudyText}>Create Study</p>
-        <button className={styles.createStudyButton} onClick={handleCreateStudy}>
+        <button data-testid="create-study-button" className={styles.createStudyButton} onClick={handleCreateStudy}>
           +
         </button>
       </div>
