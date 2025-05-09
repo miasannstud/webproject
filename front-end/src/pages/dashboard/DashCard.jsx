@@ -8,8 +8,7 @@ function DashCard({ study, onStudyDeleted }) {
 
     // navigate to the edit page
     async function handleEdit() {
-        // navigate(`/edit/${_id}`);
-        navigate(`/createStudy/questions/${_id}`);
+        navigate(`/editStudy/${_id}`);
     }
 
     // navigate to the results page

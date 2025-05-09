@@ -37,19 +37,22 @@ const getStudyById = async (req, res) => {
 // POST /studies
 const createStudy = async (req, res) => {
   try {
-    const { studyTitle, description, published, questions } = req.body;
-    const createdBy = req.user._id;
+    const { studyTitle, description, published, questions, createdBy } = req.body;
+    // Use req.user._id if available, otherwise fallback to req.body.createdBy
+    const creatorId = req.user ? req.user._id : createdBy;
+
+    if (!creatorId) {
+      return res.status(400).json({ message: "Missing creator (user) id" });
+    }
 
     const newStudy = new Study({
-      createdBy,
+      createdBy: creatorId,
       studyTitle,
       description,
       published,
-      // can be an empty array
       questions,
     });
 
-    // save the new study to the database
     await newStudy.save();
     res.status(201).json(newStudy);
   } catch (error) {

@@ -1,9 +1,10 @@
 // const API_BASE_URL = 'http://localhost:8080/api';
 const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'https://group6.sustainability.it.ntnu.no/api';
 
-export async function uploadArtifact(file) {
+export async function uploadArtifact(file, studyId) {
   const formData = new FormData();
   formData.append('artifact', file);
+  formData.append('studyId', studyId);
 
   try {
     const res = await fetch(`${API_BASE_URL}/artifact/upload`, {
@@ -25,6 +26,19 @@ export async function uploadArtifact(file) {
 export async function fetchArtifacts() {
   try {
     const res = await fetch(`${API_BASE_URL}/artifact`);
+    if (!res.ok) {
+      throw new Error(`HTTP error. status: ${res.status}`);
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching artifacts:', error);
+    throw error;
+  }
+}
+
+export async function fetchArtifactsByStudy(studyId) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/artifact/study/${studyId}`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createStudy } from "../../services/studyService";
 import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 import QuestionsCard from "./questionCard/QuestionsCard";
 import styles from "./CreateStudy.module.css";
+import { updateStudy } from "../../services/studyService";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
@@ -12,7 +13,23 @@ function CreateStudy() {
   const [artifacts, setArtifacts] = useState([]);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [studyId, setStudyId] = useState(null);
 
+  useEffect(() => {
+    if (!studyId) {
+      const userId = localStorage.getItem("userId");
+      createStudy({
+        studyTitle: "Draft Study",
+        description: "Draft description",
+        questions: [],
+        createdBy: userId,
+        draft: true,
+      }).then((draft) => {
+        setStudyId(draft._id);
+      });
+    }
+  }, [studyId]);
+  
   const handleAddQuestion = (newQuestion) => {
     setQuestions([...questions, newQuestion]);
   };
@@ -21,36 +38,57 @@ function CreateStudy() {
     setQuestions(questions.filter((_, i) => i !== index));
   };
 
-  const handleSaveStudy = async () => {
-    if (!title.trim() || !description.trim()) {
-      setError("Title and description are required.");
+const handleSaveStudy = async () => {
+  if (!title.trim() || !description.trim()) {
+    setError("Title and description are required.");
+    return;
+  }
+
+  if (questions.length === 0) {
+    setError("At least one question is required.");
+    return;
+  }
+
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    setError("You must be logged in to create a study.");
+    return;
+  }
+
+  setError("");
+  try {
+    const formattedQuestions = questions.map(q => ({
+      ...q,
+      options: Array.isArray(q.options)
+        ? q.options.map(opt =>
+            typeof opt === "string" ? { text: opt } : opt
+          )
+        : [],
+    }));
+
+    const studyData = {
+      studyTitle: title,
+      description,
+      questions: formattedQuestions,
+      createdBy: userId,
+      draft: false,
+    };
+
+    const updatedStudy = await updateStudy(studyId, studyData);
+    if (!updatedStudy || !updatedStudy._id) {
+      setError("Failed to update study. No study ID returned.");
       return;
     }
-
-    if (questions.length === 0) {
-      setError("At least one question is required.");
-      return;
-    }
-
-    setError("");
-    try {
-      const studyData = {
-        studyTitle: title,
-        description,
-        questions,
-      };
-
-      await createStudy(studyData);
-      setSuccessMessage("Study created successfully!");
-      setTitle("");
-      setDescription("");
-      setQuestions([]);
-      setArtifacts([]);
-    } catch (err) {
-      console.error("Error creating study:", err);
-      setError("Failed to create study. Please try again.");
-    }
-  };
+    setSuccessMessage("Study saved successfully!");
+    setTitle("");
+    setDescription("");
+    setQuestions([]);
+    setArtifacts([]);
+  } catch (err) {
+    console.error("Error updating study:", err);
+    setError("Failed to save study. Please try again.");
+  }
+};
 
   return (
     <div className={styles.createStudyContainer}>
@@ -66,7 +104,7 @@ function CreateStudy() {
         />
       </div>
       <div className={styles.artifactContainer}>
-        <ArtifactApp onArtifactsChange={setArtifacts} />
+        <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
       </div>
       <div className={styles.questionContainer}>
         <QuestionsCard
