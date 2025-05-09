@@ -1,10 +1,12 @@
 import styles from './DashCard.module.css';
-import { deleteStudy, getStudyLink } from '../../services/studyService';
+import { deleteStudy, getStudyLink, publishStudy } from '../../services/studyService';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function DashCard({ study, onStudyDeleted }) {
     const navigate = useNavigate();
     const { _id, studyTitle, published } = study;
+    const [isPublished, setIsPublished] = useState(published);
 
     // navigate to the edit page
     async function handleEdit() {
@@ -47,15 +49,30 @@ function DashCard({ study, onStudyDeleted }) {
         }
     }
 
+    // toggle published state
+    async function handlePublish() {
+        const next = !isPublished;
+        setIsPublished(next);
+        try {
+            await publishStudy(_id, { published: next });
+        } catch (error) {
+            setIsPublished(!next);
+            console.error('Error toggling publish state:', error);
+        }
+    }
+
     return (
         <div className={styles.card}>
             <h2>{studyTitle}</h2>
-            <p>Published: {published.toString()}</p>
+            <p>Status: {isPublished ? 'Published' : 'Unpublished'}</p>
             <div className={styles.actions}>
                 <button onClick={handleEdit}>Edit</button>
                 <button data-testid="dashcard-results" onClick={handleResults}>Results</button>
                 <button data-testid="dashcard-delete" onClick={handleDelete}>Delete</button>
                 <button data-testid="dashcard-getlink" onClick={handleGetLink}>Get Link</button>
+                <button data-testid="dashcard-publish" onClick={handlePublish}>
+                    {isPublished ? 'Unpublish' : 'Publish'}
+                </button>
             </div>
         </div>
     );
