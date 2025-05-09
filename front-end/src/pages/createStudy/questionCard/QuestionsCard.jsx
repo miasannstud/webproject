@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { renderArtifactContent } from "../../../services/ArtifactService";
-import styles from "./questionsCard.module.css";
-import artifactStyles from "../artifactCard/artifactCard.module.css";
+import styles from "./QuestionsCard.module.css";
+import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 
 function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }) {
   const [questionText, setQuestionText] = useState("");
@@ -33,12 +33,12 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
 
   const handleAddQuestion = () => {
     if (!questionText.trim()) {
-      setError("Question text is required.");
+      setError("Question text is required");
       return;
     }
 
     if (questionType === "multiple-choice" && options.some((opt) => !opt.trim())) {
-      setError("All options must be filled out.");
+      setError("All options must be filled out");
       return;
     }
 
@@ -79,7 +79,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             ))}
           </ul>
         )}
-        <button onClick={() => onRemoveQuestion(index)} className={styles.removeButton}>
+        <button data-testid="create-study-removeQuestionButton" onClick={() => onRemoveQuestion(index)} className={styles.removeButton}>
           Remove
         </button>
       </div>
@@ -95,6 +95,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           <label>
             Question Text:
             <input
+              data-testid="create-study-questionText"
               type="text"
               value={questionText}
               onChange={(e) => setQuestionText(e.target.value)}
@@ -106,6 +107,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           <label>
             Question Type:
             <select
+              data-testid="create-study-selectQuestionType"
               value={questionType}
               onChange={(e) => setQuestionType(e.target.value)}
               className={styles.input}
@@ -122,17 +124,18 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             {options.map((option, index) => (
               <div key={index} className={styles.optionItem}>
                 <input
+                  data-testid="create-study-questionOption"
                   type="text"
                   value={option}
                   onChange={(e) => handleOptionChange(index, e.target.value)}
                   className={styles.input}
                 />
-                <button onClick={() => removeOption(index)} className={styles.removeButton}>
+                <button data-testid="create-study-removeOptionButton" onClick={() => removeOption(index)} className={styles.removeButton}>
                   Remove
                 </button>
               </div>
             ))}
-            <button onClick={addOption} className={styles.addOptionButton}>
+            <button data-testid="create-study-addOptionButton" onClick={addOption} className={styles.addOptionButton}>
               Add Option
             </button>
           </div>
@@ -144,17 +147,18 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
               <li key={artifact._id} className={artifactStyles.artifactItem}>
                 <label>
                   <input
+                    data-testid="create-study-selectArtifactCheckbox"
                     type="checkbox"
                     checked={selectedArtifacts.includes(artifact)}
                     onChange={() => toggleArtifactSelection(artifact)}
                   />
                   <div>
                     <p>
-                      <strong>Name:</strong>{" "}
+                      Name:{" "}
                       {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, "") : "Unknown"}
                     </p>
                     <p>
-                      <strong>Type:</strong> {artifact.mimetype || "Unknown"}
+                      Type: {artifact.mimetype || "Unknown"}
                     </p>
                     {renderArtifactContent(artifact)}
                   </div>
@@ -163,7 +167,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             ))}
           </ul>
         </div>
-        <button onClick={handleAddQuestion} className={styles.submitButton}>
+        <button data-testid="create-study-addQuestionButton" onClick={handleAddQuestion} className={styles.submitButton}>
           Add Question
         </button>
       </div>
@@ -173,7 +177,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           {questions.length > 0 ? (
             questions.map((question, index) => renderQuestionCard(question, index))
           ) : (
-            <p className={styles.noQuestionsMessage}>No questions added yet.</p>
+            <p className={styles.noQuestionsMessage}>No questions added yet</p>
           )}
         </div>
       </div>

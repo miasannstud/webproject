@@ -6,7 +6,8 @@
 import Researcher from "../../../backend/models/researcherSchema";
 
 // this is nice because if the API URL ever changes, we only have to update it in one place
-const API_BASE_URL = 'http://localhost:8080/api';
+// const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'https://group6.sustainability.it.ntnu.no/api';
 
 // STUDY ROUTES
 

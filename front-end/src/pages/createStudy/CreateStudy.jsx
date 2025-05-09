@@ -3,7 +3,7 @@ import { createStudy } from "../../services/studyService";
 import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 import QuestionsCard from "./questionCard/QuestionsCard";
-import styles from "./createStudy.module.css";
+import styles from "./CreateStudy.module.css";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");

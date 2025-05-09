@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchSignupUser } from "../../services/authService";
 import "./SignupForm.css";
 
 export default function Signup() {
@@ -21,29 +22,11 @@ export default function Signup() {
 
   const handleSignup = async (event) => {
   event.preventDefault();
-      // Frontend validation
-  if (formData.username.length > 150) {
-    setError("Username cannot exceed 150 characters.");
-    return;
-  }
-
-  if (formData.password.length < 5) {
-    setError("Password must be at least 5 characters long.");
-    return;
-  }
 
     try {
-      const response = await fetch("http://localhost:8080/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const data = await fetchSignupUser(formData);
 
-      const data = await response.json();
-      if (response.ok) {
-        setSuccessMessage('Signup successful! Redirecting to login...'); 
+        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href="http://localhost:8186/">Please login here</a></p>);
         setError(null);
         setFormData({
           firstName: "",
@@ -54,23 +37,14 @@ export default function Signup() {
           institution: "NTNU",
         });
       
-      // Redirect to login page after 2 seconds
+      // redirect to login page after 2 seconds
       setTimeout(() => {
         navigate("/");
       }, 2000);
 
-      } else {
-        // Display all validation errors
-        if (data.errors) {
-          const errorMessages = data.errors.map((err) => `${err.path}: ${err.msg}`).join("\n");
-          setError(errorMessages);
-        } else {
-          setError(data.message || "Signup failed.");
-        }
-        setSuccessMessage("");
-      }
     } catch (error) {
-      setError("An error occurred. Please try again.");
+      console.error("Signup error:", error);
+      setError(error.message || "An error occurred. Please try again.");
       setSuccessMessage("");
     }
   };
@@ -141,10 +115,11 @@ export default function Signup() {
             <option value="Other">Other</option>
           </select>
 
-          <button type="submit">Signup</button>
+          <button data-testid="signup-signupButton" type="submit">Signup</button>
         </div>
       </form>
-      {error && <p className="errorMessage">{error}</p>}
-      {successMessage && <p className="successMessage">{successMessage}</p>}    </div>
+      {error && <div className="error errorMessage">{error}</div>}
+      {successMessage && <div className="successMessage">{successMessage}</div>}
+    </div>
   );
 }

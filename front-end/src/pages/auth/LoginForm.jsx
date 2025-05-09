@@ -20,8 +20,7 @@ export default function LoginForm() {
 
       // store the token and userId
       localStorage.setItem("token", data.token);
-      localStorage.setItem("researcherId", data.id);
-      localStorage.setItem("firstName", data.firstName);
+      localStorage.setItem("userId", data.id);
 
       // redirect after login
       window.location.href = "/dashboard";
