@@ -5,12 +5,15 @@ export const uploadArtifact = async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ message: 'No artifact uploaded' });
 
+        const { studyId } = req.body;
+
         const artifactData = new Artifact({
             filename: req.file.originalName || req.file.originalname,
             mimetype: req.file.mimetype,
             path: req.file.path,
             size: req.file.size,
-            url: `http://localhost:8080/uploads/${req.file.filename}`
+            url: `http://localhost:8080/uploads/${req.file.filename}`,
+            studyId: studyId || null,
         });
 
         console.log('Uploaded artifact:', artifactData);
@@ -54,7 +57,7 @@ export const deleteArtifact = async (req, res) => {
 
 export const getAllArtifacts = async () => {
     try {
-        const artifacts = await Artifact.find(); // Fetch all artifacts from the database
+        const artifacts = await Artifact.find();
         return artifacts;
     } catch (err) {
         console.error('Error fetching artifacts:', err.message);
@@ -62,4 +65,38 @@ export const getAllArtifacts = async () => {
     }
 };
 
-export default { uploadArtifact, retrieveArtifact, deleteArtifact, getAllArtifacts };
+// Add a new controller to get artifacts by studyId
+export const getArtifactsByStudy = async (req, res) => {
+    try {
+        const { studyId } = req.params;
+        const artifacts = await Artifact.find({ studyId });
+        res.status(200).json(artifacts);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Add a new controller to update an artifact's studyId
+export const updateArtifactStudyId = async (req, res) => {
+    try {
+        const { artifactId } = req.params;
+        const { studyId } = req.body;
+        console.log('PATCH artifactId:', artifactId, 'with studyId:', studyId);
+        if (!studyId) {
+            return res.status(400).json({ message: 'Missing studyId' });
+        }
+        const artifact = await Artifact.findByIdAndUpdate(
+            artifactId,
+            { studyId },
+            { new: true }
+        );
+        if (!artifact) {
+            return res.status(404).json({ message: 'Artifact not found' });
+        }
+        res.status(200).json({ message: 'Artifact updated', artifact });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export default { uploadArtifact, retrieveArtifact, deleteArtifact, getAllArtifacts, getArtifactsByStudy, updateArtifactStudyId };

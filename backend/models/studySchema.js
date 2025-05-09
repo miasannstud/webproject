@@ -25,12 +25,10 @@ const studySchema = new mongoose.Schema({
         {
             questionText: {
                 type: String,
-                required: true,
                 max: 150,
             },
             questionType: {
                 type: String,
-                required: true,
                 enum: ['multiple-choice', 'text-box', 'slider'],
             },
             artifact: [

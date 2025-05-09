@@ -1,27 +1,32 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { fetchArtifacts, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/ArtifactService';
+import { fetchArtifactsByStudy, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/ArtifactService';
 import styles from './ArtifactCard.module.css';
 
-function ArtifactApp({ onArtifactsChange }) {
+function ArtifactApp({ onArtifactsChange, studyId, onSessionArtifactIdsChange }) {
   const [artifacts, setArtifacts] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [message, setMessage] = useState('');
+  const [sessionArtifactIds, setSessionArtifactIds] = useState([]);
   const fileInputRef = useRef(null);
 
-  const fetchArtifactsList = useCallback(async () => {
-    try {
-      const data = await fetchArtifacts();
-      setArtifacts(data);
-      onArtifactsChange(data);
-    } catch (error) {
-      console.error('Error fetching artifacts:', error);
-      setMessage("Couldn't fetch artifacts");
-    }
-  }, [onArtifactsChange]);
+const fetchArtifactsList = useCallback(async () => {
+  if (!studyId) return;
+  try {
+    const data = await fetchArtifactsByStudy(studyId);
+    setArtifacts(data);
+    onArtifactsChange(data);
+  } catch (error) {
+    console.error('Error fetching artifacts:', error);
+    setMessage("Couldn't fetch artifacts");
+  }
+}, [onArtifactsChange, studyId]);
 
   useEffect(() => {
     fetchArtifactsList();
-  }, [fetchArtifactsList]);
+    if (onSessionArtifactIdsChange) {
+      onSessionArtifactIdsChange(sessionArtifactIds);
+    }
+  }, [fetchArtifactsList, sessionArtifactIds, onSessionArtifactIdsChange]);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -35,7 +40,10 @@ function ArtifactApp({ onArtifactsChange }) {
     }
 
     try {
-      await uploadArtifact(selectedFile);
+      const res = await uploadArtifact(selectedFile, studyId);
+      if (res && res.artifact && res.artifact._id) {
+        setSessionArtifactIds(ids => [...ids, res.artifact._id]);
+      }
       setMessage('Artifact has been uploaded');
       setSelectedFile(null);
       fileInputRef.current.value = '';
@@ -53,6 +61,7 @@ function ArtifactApp({ onArtifactsChange }) {
     try {
       await deleteArtifact(artifactId);
       setMessage('Artifact was deleted');
+      setSessionArtifactIds(ids => ids.filter(id => id !== artifactId));
       fetchArtifactsList();
     } catch (error) {
       console.error('Error deleting artifact:', error);

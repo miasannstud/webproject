@@ -13,6 +13,9 @@ function DashPage() {
   const { studies, loading, error } = useFetchStudies();
   const navigate = useNavigate();
 
+  const userId = localStorage.getItem('userId');
+  const myStudies = studies.filter((study) => study.createdBy === userId);
+
   function handleCreateStudy() {
     navigate("/createStudy");
   }
@@ -31,8 +34,10 @@ function DashPage() {
         </button>
       </div>
       <div className={styles.cardsContainer}>
-        {studies && studies.length > 0 ? (
-          studies.map((study) => <DashCard key={study._id} study={study} />)
+        {myStudies.length > 0 ? (
+          myStudies.map((study) => (
+            <DashCard key={study._id} study={study}/>
+          ))
         ) : (
           <p>No studies found.</p>
         )}
