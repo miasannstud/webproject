@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import Researcher from '../models/researcherSchema.js';
 import jwt from 'jsonwebtoken';
+import Study from '../models/studySchema.js';
+import mongoose from "mongoose";
 
 export const registerUser = async (req, res) => {
     try {
@@ -37,9 +39,28 @@ export const loginUser = async (req, res) => {
         // Create JWT token
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.status(200).json({ message: "Login successful", id: user._id, token });
+        res.status(200).json({ 
+            message: "Login successful", 
+            id: user._id, 
+            firstName: user.firstName,
+            token 
+        });
+
     } catch (error) {
         console.error("Login error:", error.message); // Log the error for debugging
         res.status(500).json({ message: "Error logging in", error: error.message });
+    }
+
+};
+
+export const getStudiesByResearcherId = async (req, res) => {
+    const researcherId = req.params.researcherId;
+
+    try {
+        const studies = await Study.find({createdBy: researcherId});
+        res.status(200).json(studies);
+    } catch (error) {
+        console.error("Error fetching studies:", error);
+        res.status(500).json({ message: "Error fetching studies", error });
     }
 };

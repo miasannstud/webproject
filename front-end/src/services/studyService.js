@@ -3,6 +3,8 @@
 // It contains functions that make raw API calls (e.g., using fetch). 
 // These functions focus solely on communicating with the backend (e.g., fetchStudies(), deleteStudy(id), etc.).
 
+import Researcher from "../../../backend/models/researcherSchema";
+
 // this is nice because if the API URL ever changes, we only have to update it in one place
 const API_BASE_URL = 'http://localhost:8080/api';
 
@@ -21,6 +23,27 @@ export async function fetchStudies() {
     throw error;
   }
 }
+
+// For retrieving studies based on researcherId
+export async function fetchStudiesByUserId() {
+  // Get the passed researcherid from local storage
+  const researcherId = localStorage.getItem("researcherId");
+
+  if (!researcherId) {
+    console.error('User ID not found in local storage');
+    return null;
+  }
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/${researcherId}/studies`);
+    if (!res.ok) {
+      throw new Error(`HTTP error. status: ${res.status}`);
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching studies:', error);
+    throw error;
+  }
+};
 
 // for retrieving a specific study
 export async function getStudyById(studyId) {

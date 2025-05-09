@@ -1,5 +1,6 @@
 // import InputField from "../InputField";
 import { useState } from "react";
+import { fetchLoginUser } from "../../services/authService";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -9,66 +10,56 @@ export default function LoginForm() {
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
-  
-const handleLogin = async (event) => {
-  event.preventDefault();
-  try {
-    const response = await fetch("http://localhost:8080/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
 
-    const data = await response.json();
-    if (response.ok) {
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    try {
+      const data = await fetchLoginUser(formData);
       setSuccessMessage("Login successful!");
-      setError("");
+      setError(null);
 
-      // Store the token and userId in localStorage
+      // store the token and userId
       localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.id);
+      localStorage.setItem("researcherId", data.id);
+      localStorage.setItem("firstName", data.firstName);
 
+      // redirect after login
       window.location.href = "/dashboard";
-  } else {
-    setError(data.message || "Login failed.");
-    setSuccessMessage("");
-  }
-} catch (error) {
-  setError("An error happend. Please try again.");
-  setSuccessMessage("");
-}
-};
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An error happend. Please try again.");
+      setSuccessMessage("");
+    }
+  };
 
-return (
+  return (
     <form onSubmit={handleLogin}>
-      
-        <div className="container">
-          <label htmlFor="username"><b>Username</b></label>
-          <input 
-            type="text" 
-            placeholder="Enter Username" 
-            name="username" 
-            value={formData.username}
-            onChange={handleChange}
-            required/>
-      
-          <label htmlFor="password"><b>Password</b></label>
-          <input 
-            type="password" 
-            placeholder="Enter Password" 
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required/>
-      
-          <button type="submit">Login</button>
-        </div>
-      
-        <div className="container">
-          <p>New here? <a href="/signup">Sign Up here !</a></p>
-        </div>
-      </form> 
+
+      <div className="container">
+        <label htmlFor="username"><b>Username</b></label>
+        <input
+          type="text"
+          placeholder="Enter Username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required />
+
+        <label htmlFor="password"><b>Password</b></label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required />
+
+        <button type="submit">Login</button>
+      </div>
+
+      <div className="container">
+        <p>New here? <a data-testid="signup-link" href="/signup">Sign Up here !</a></p>
+      </div>
+    </form>
   );
 }

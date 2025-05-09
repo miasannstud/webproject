@@ -12,6 +12,7 @@ import styles from "./DashPage.module.css";
 function DashPage() {
   const { studies, loading, error } = useFetchStudies();
   const navigate = useNavigate();
+  const firstName = localStorage.getItem("firstName");
 
   function handleCreateStudy() {
     navigate("/createStudy");
@@ -23,7 +24,7 @@ function DashPage() {
   return (
     <div className={styles.dashboardContainer}>
       {/* <h1>Hello {firstname}</h1> */}
-      <h1>Hello</h1>
+      <h1>Hello, {firstName}!</h1>
       <div className={styles.createStudyContainer}>
         <p className={styles.createStudyText}>Create Study</p>
         <button className={styles.createStudyButton} onClick={handleCreateStudy}>
