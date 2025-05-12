@@ -233,7 +233,7 @@ const createQuestion = async (req, res) => {
   try {
     const { studyId } = req.params;
     console.log('Received studyId:', studyId); // Log the studyId
-    const { questionText, questionType, artifact, options } = req.body;
+    const { questionText, questionType, artifact, options, sliderRange } = req.body;
 
     const study = await Study.findById(studyId);
 
@@ -245,11 +245,24 @@ const createQuestion = async (req, res) => {
       return res.status(400).json({ message: "Invalid artifact format" });
     }
 
+    if (!questionType) {
+      return res.status(400).json({ message: "questionType is required" });
+    }
+    if (!questionText) {
+      return res.status(400).json({ message: "questionText is required" });
+    }
+
     const newQuestion = {
       questionText,
       questionType,
       artifact: artifact || [],
       options: options || [],
+      sliderRange: {
+        minLabel: sliderRange?.minLabel || "Add your own minimun parameters",
+        maxLabel: sliderRange?.maxLabel || "Add your own maximun parameters",
+        minValue: 0,
+        maxValue: 10
+      }    
     };
 
     study.questions.push(newQuestion);
@@ -284,12 +297,23 @@ const updateQuestion = async (req, res) => {
     if (req.body.questionType) {
       question.questionType = req.body.questionType;
     }
+
     // replace the entire options array if this is updated
     if (req.body.options) {
       question.options = req.body.options;
     }
     if (req.body.artifact) {
       question.artifact = req.body.artifact;
+    }
+
+    // Update slider labels if info is provided and question type is slider
+    if (req.body.sliderRange && question.questionType == "slider"){
+      // Get the slider range from the reques body
+      const {minLabel, maxLabel} = req.body.sliderRange;
+
+      // if labels are not empty then update them
+      if (minLabel !== undefined) question.sliderRange.minLabel = minLabel;
+      if (maxLabel !== undefined) question.sliderRange.maxLabel = maxLabel;
     }
 
     await study.save();

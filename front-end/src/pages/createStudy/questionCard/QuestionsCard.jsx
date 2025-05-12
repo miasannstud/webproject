@@ -6,7 +6,11 @@ import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }) {
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState("multiple-choice");
+
   const [options, setOptions] = useState([""]);
+  const [sliderMinLabel, setSliderMinLabel] = useState("");
+  const [sliderMaxLabel, setSliderMaxLabel] = useState("");
+
   const [selectedArtifacts, setSelectedArtifacts] = useState([]);
   const [error, setError] = useState("");
 
@@ -42,6 +46,11 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
       return;
     }
 
+    if (questionType === "slider" && (!sliderMinLabel.trim() || !sliderMaxLabel.trim())) {
+      setError("Both slider labels must be filled out");
+      return;
+    }
+
     setError("");
     const newQuestion = {
       questionText,
@@ -53,6 +62,12 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
         mimetype: artifact.mimetype,
         url: artifact.url,
       })),
+      ...(questionType === "slider" && {
+        sliderRange: {
+          minLabel: sliderMinLabel,
+          maxLabel: sliderMaxLabel,
+        }
+      })
     };
 
     onAddQuestion(newQuestion);
@@ -60,6 +75,11 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
     setOptions([""]);
     setSelectedArtifacts([]);
     setQuestionType("multiple-choice");
+
+    if (questionType === "slider") {
+      setSliderMinLabel("");
+      setSliderMaxLabel("");
+    }
   };
 
   const renderQuestionCard = (question, index) => {
@@ -98,6 +118,13 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
               </li>
             ))}
           </ul>
+        )}
+
+        {question.questionType === "slider" && question.sliderRange && (
+          <div className={styles.sliderLabels}>
+            <span>Min Label: {question.sliderRange.minLabel}</span>
+            <span>Max Label: {question.sliderRange.maxLabel}</span>
+          </div>
         )}
         
         <button data-testid="create-study-removeQuestionButton" onClick={() => onRemoveQuestion(index)} className={styles.removeButton}>
@@ -139,6 +166,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             </select>
           </label>
         </div>
+
         {questionType === "multiple-choice" && (
           <div className={styles.optionsContainer}>
             <h4>Options:</h4>
@@ -161,6 +189,30 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             </button>
           </div>
         )}
+
+        {questionType === "slider" && (
+          <div className={styles.sliderLabelInputs}>
+            <label>
+              Slider Minimum Label:
+              <input
+                type="text"
+                value={sliderMinLabel}
+                onChange={(e) => setSliderMinLabel(e.target.value)}
+                className={styles.input}
+              />
+            </label>
+            <label>
+              Slider Maximum Label:
+              <input
+                type="text"
+                value={sliderMaxLabel}
+                onChange={(e) => setSliderMaxLabel(e.target.value)}
+                className={styles.input}
+              />
+            </label>
+          </div>
+        )}
+
         <div className={styles.inputGroup}>
           <h4>Select Artifacts:</h4>
           <ul className={artifactStyles.artifactList}>

@@ -43,6 +43,12 @@ const studySchema = new mongoose.Schema({
                     text: { type: String },
                 }
             ],
+            sliderRange:{
+                    minLabel: { type: String, default: "Add your own minimun parameters" },
+                    maxLabel: { type: String, default: "Add your own maximun parameters"  },
+                    minValue: { type: Number, default: 0 },
+                    maxValue: { type: Number, default: 10 },
+            },
         }
     ]
 }, { timestamps: true });
