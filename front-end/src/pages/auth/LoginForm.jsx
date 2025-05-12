@@ -34,8 +34,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleLogin}>
-
-      <div className="container">
+      <div className="loginContainer">
         <label htmlFor="username"><b>Username</b></label>
         <input
           type="text"
