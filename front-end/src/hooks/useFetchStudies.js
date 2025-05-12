@@ -15,7 +15,7 @@ function useFetchStudies() {
         async function loadStudies() {
             try {
                 const data = await fetchStudiesByResearcherId();
-                setStudies(data);
+                setStudies(data.slice().reverse()); // use reverse so the newest study is at top 
             } catch (error) {
                 setError(error);
             } finally {
