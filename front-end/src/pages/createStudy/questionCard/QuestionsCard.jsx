@@ -51,21 +51,25 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
       return;
     }
 
+    const mappedArtifacts = selectedArtifacts.map(a => ({
+      artId:   a._id,
+      artUrl:  a.url,
+      artType: a.mimetype
+    }));
+
     setError("");
+    
     const newQuestion = {
       questionText,
       questionType,
       options: questionType === "multiple-choice" ? options : [],
-      artifact: selectedArtifacts.map((artifact) => ({
-        _id: artifact._id,
-        filename: artifact.filename,
-        mimetype: artifact.mimetype,
-        url: artifact.url,
-      })),
+      artifact: mappedArtifacts,
       ...(questionType === "slider" && {
         sliderRange: {
           minLabel: sliderMinLabel,
           maxLabel: sliderMaxLabel,
+          minValue: 0,
+          maxValue: 10,
         }
       })
     };
