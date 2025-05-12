@@ -1,6 +1,6 @@
 import styles from './TermsStep.module.css';
 
-function TermsStep({ agreeTerms, onTermsChange }) {
+function TermsStep({ agreeTerms, onTermsChange, onNext }) {
   return (
     <div className={styles.termsContainer}>
       <h2>Welcome to the Study</h2>
@@ -16,6 +16,7 @@ function TermsStep({ agreeTerms, onTermsChange }) {
         />
         I agree to the terms and conditions.
       </label>
+      <button disabled={!agreeTerms} onClick={onNext}>Next</button>
     </div>
   );
 }

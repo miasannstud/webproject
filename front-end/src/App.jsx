@@ -11,7 +11,7 @@ import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import DashPage from './pages/dashboard/DashPage';
 import ResultsPage from './pages/results/ResultsPage';
-import ParticipantPage from './pages/participant/ParticipantPage';
+import ParticipantFlow from './pages/participant/ParticipantFlow';
 import EditStudy from './pages/dashboard/EditStudy';
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/participant/:studyId" element={<ParticipantPage />} />
+        <Route path="/participant/:studyId/*" element={<ParticipantFlow />} />
 
         <Route path="/dashboard" element={<ProtectedRoutes><Navbar /><DashPage /></ProtectedRoutes>} />
         <Route path="/results/:studyId" element={<ProtectedRoutes> <Navbar /><ResultsPage /> </ProtectedRoutes>} />
