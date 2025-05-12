@@ -34,7 +34,7 @@ in DashboardCard.module.css, define the card’s styling */
 }
 
 .createStudyButton {
-  background-color: #26a07a;
+  background-color: #5bccd6;
   border: 1px solid #ddd;
   border-radius: 8px;
   width: 80px;
@@ -45,5 +45,5 @@ in DashboardCard.module.css, define the card’s styling */
 }
 
 .createStudyButton:hover {
-  background-color: #307e65;
+  background-color: #509aa9;
 }

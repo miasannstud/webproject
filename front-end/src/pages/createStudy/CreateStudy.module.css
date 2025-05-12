@@ -22,7 +22,7 @@
 
 .saveButton {
   padding: 12px 20px;
-  background-color: #26a07a;
+  background-color: #5bccd6;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -33,7 +33,7 @@
 }
 
 .saveButton:hover {
-  background-color: #307e65;
+  background-color: #509aa9;
 }
 
 .message {

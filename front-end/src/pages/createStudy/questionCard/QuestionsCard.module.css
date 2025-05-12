@@ -84,7 +84,7 @@
 .addOptionButton {
   margin-top: 10px;
   padding: 8px 12px;
-  background-color: #26a07a;
+  background-color: #5bccd6;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -93,13 +93,13 @@
 }
 
 .addOptionButton:hover {
-  background-color: #307e65;
+  background-color: #509aa9;
 }
 
 .submitButton {
   margin-top: 20px;
   padding: 10px 14px;
-  background-color: #26a07a;
+  background-color: #5bccd6;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -108,7 +108,7 @@
 }
 
 .submitButton:hover {
-  background-color: #307e65;
+  background-color: #509aa9;
 }
 
 .message {
@@ -121,7 +121,7 @@
 }
 
 .message.success {
-  color: #26a07a;
+  color: #5bccd6;
 }
 
 .artifactList {

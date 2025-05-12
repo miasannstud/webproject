@@ -13,7 +13,7 @@
   .navigationButtons button {
     padding: 8px 12px;
     width: 150px;
-    background-color: #26a07a;
+    background-color: #5bccd6;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -28,6 +28,6 @@
   }
   
   .navigationButtons button:hover:not(:disabled) {
-    background-color: #307e65;
+    background-color: #509aa9;
   }
   
