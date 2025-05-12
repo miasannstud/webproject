@@ -26,12 +26,12 @@ export async function fetchStudies() {
 }
 
 // For retrieving studies based on researcherId
-export async function fetchStudiesByUserId() {
+export async function fetchStudiesByResearcherId() {
   // Get the passed researcherid from local storage
   const researcherId = localStorage.getItem("researcherId");
 
   if (!researcherId) {
-    console.error('User ID not found in local storage');
+    console.error('Researcher ID not found in local storage');
     return null;
   }
   try {

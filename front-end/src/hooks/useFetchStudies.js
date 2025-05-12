@@ -4,7 +4,7 @@
 // This way, you encapsulate the data fetching logic and make your component code cleaner.
 
 import { useState, useEffect } from 'react';
-import {fetchStudiesByUserId} from '../services/studyService';
+import {fetchStudiesByResearcherId} from '../services/studyService';
 
 function useFetchStudies() {
     const [studies, setStudies] = useState([]);
@@ -14,7 +14,7 @@ function useFetchStudies() {
     useEffect(() => {
         async function loadStudies() {
             try {
-                const data = await fetchStudiesByUserId();
+                const data = await fetchStudiesByResearcherId();
                 setStudies(data);
             } catch (error) {
                 setError(error);

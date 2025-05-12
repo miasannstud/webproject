@@ -17,12 +17,12 @@ function CreateStudy() {
 
   useEffect(() => {
     if (!studyId) {
-      const userId = localStorage.getItem("userId");
+      const researcherId = localStorage.getItem("researcherId");
       createStudy({
         studyTitle: "Draft Study",
         description: "Draft description",
         questions: [],
-        createdBy: userId,
+        createdBy: researcherId,
         draft: true,
       }).then((draft) => {
         setStudyId(draft._id);
@@ -49,8 +49,8 @@ const handleSaveStudy = async () => {
     return;
   }
 
-  const userId = localStorage.getItem("userId");
-  if (!userId) {
+  const researcherId = localStorage.getItem("researcherId");
+  if (!researcherId) {
     setError("You must be logged in to create a study.");
     return;
   }
@@ -70,7 +70,7 @@ const handleSaveStudy = async () => {
       studyTitle: title,
       description,
       questions: formattedQuestions,
-      createdBy: userId,
+      createdBy: researcherId,
       draft: false,
     };
 

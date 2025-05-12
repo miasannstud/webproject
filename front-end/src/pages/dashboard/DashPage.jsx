@@ -14,8 +14,8 @@ function DashPage() {
   const navigate = useNavigate();
   const firstName = localStorage.getItem("firstName");
 
-  const userId = localStorage.getItem('userId');
-  const myStudies = studies.filter((study) => study.createdBy === userId);
+  const researcherId = localStorage.getItem('researcherId');
+  const myStudies = studies.filter((study) => study.createdBy === researcherId);
 
   function handleCreateStudy() {
     navigate("/createStudy");

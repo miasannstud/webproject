@@ -18,7 +18,7 @@ export default function LoginForm() {
       setSuccessMessage("Login successful!");
       setError(null);
 
-      // store the token and userId
+      // store the token and researchId
       localStorage.setItem("token", data.token);
       localStorage.setItem("researcherId", data.id);
       localStorage.setItem("firstName", data.firstName);
