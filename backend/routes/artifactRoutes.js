@@ -23,7 +23,11 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/study/:studyId', artifactController.getArtifactsByStudy);
+
 router.delete('/:id', artifactController.deleteArtifact);
+
+router.patch('/:artifactId/study', artifactController.updateArtifactStudyId);
 
 router.get('/:filename', async (req, res) => {
     const artifactPath = path.join(__dirname, '../uploads', req.params.filename);

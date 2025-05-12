@@ -48,9 +48,10 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
       questionType,
       options: questionType === "multiple-choice" ? options : [],
       artifact: selectedArtifacts.map((artifact) => ({
-        arttId: artifact._id,
-        artUrl: artifact.url,
-        artType: artifact.mimetype,
+        _id: artifact._id,
+        filename: artifact.filename,
+        mimetype: artifact.mimetype,
+        url: artifact.url,
       })),
     };
 
@@ -65,16 +66,26 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
     return (
       <div key={index} className={styles.questionCard}>
         <h4>{question.questionText}</h4>
-        {question.artifact.map((artifact, i) => (
-          <div key={i} className={artifactStyles.artifactItem}>
-            {renderArtifactContent(artifact)}
-          </div>
-        ))}
+        {question.artifact.map((artifactRef, i) => {
+          let artifactObj = null;
+          if (artifactRef._id) {
+            artifactObj = artifacts.find(a => a._id === artifactRef._id);
+          }
+          if (!artifactObj && artifactRef.arttId) {
+            artifactObj = artifacts.find(a => a._id === artifactRef.arttId);
+          }
+          const artifactToRender = artifactObj || artifactRef;
+          return (
+            <div key={i} className={artifactStyles.artifactItem}>
+              {renderArtifactContent(artifactToRender)}
+            </div>
+          );
+        })}
         {question.questionType === "multiple-choice" && (
           <ul className={styles.optionsList}>
             {question.options.map((option, i) => (
               <li key={i} className={styles.optionItem}>
-                {option}
+                {typeof option === "object" && option !== null ? option.text : option}
               </li>
             ))}
           </ul>
@@ -113,7 +124,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
               className={styles.input}
             >
               <option value="multiple-choice">Multiple Choice</option>
-              <option value="text">Text</option>
+              <option value="text-box">Text</option>
               <option value="slider">Slider</option>
             </select>
           </label>
