@@ -63,16 +63,24 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
   };
 
   const renderQuestionCard = (question, index) => {
+    const seen = new Set();
+    const uniqueArtifacts = question.artifact.filter(artifactRef => {
+      const id = artifactRef._id || artifactRef.artId;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+
     return (
       <div key={index} className={styles.questionCard}>
         <h4>{question.questionText}</h4>
-        {question.artifact.map((artifactRef, i) => {
+        {uniqueArtifacts.map((artifactRef, i) => {
           let artifactObj = null;
           if (artifactRef._id) {
             artifactObj = artifacts.find(a => a._id === artifactRef._id);
           }
-          if (!artifactObj && artifactRef.arttId) {
-            artifactObj = artifacts.find(a => a._id === artifactRef.arttId);
+          if (!artifactObj && artifactRef.artId) {
+            artifactObj = artifacts.find(a => a._id === artifactRef.artId);
           }
           const artifactToRender = artifactObj || artifactRef;
           return (
@@ -81,6 +89,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             </div>
           );
         })}
+
         {question.questionType === "multiple-choice" && (
           <ul className={styles.optionsList}>
             {question.options.map((option, i) => (
@@ -90,6 +99,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             ))}
           </ul>
         )}
+        
         <button data-testid="create-study-removeQuestionButton" onClick={() => onRemoveQuestion(index)} className={styles.removeButton}>
           Remove
         </button>

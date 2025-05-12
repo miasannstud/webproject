@@ -33,7 +33,7 @@ const studySchema = new mongoose.Schema({
             },
             artifact: [
                 {
-                    arttId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
+                    artId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
                     artUrl: { type: String },
                     artType: { type: String },
                 }
