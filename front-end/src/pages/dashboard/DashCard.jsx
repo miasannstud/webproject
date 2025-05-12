@@ -23,7 +23,6 @@ function DashCard({ study, onStudyDeleted }) {
         if (window.confirm(`Are you sure you want to delete "${studyTitle}"?`)) {
             try {
                 await deleteStudy(_id);
-                alert('Study deleted');
                 // call the callback to update the parent components state
                 if (onStudyDeleted) {
                     onStudyDeleted(_id);
