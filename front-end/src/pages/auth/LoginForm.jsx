@@ -20,7 +20,8 @@ export default function LoginForm() {
 
       // store the token and userId
       localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.id);
+      localStorage.setItem("researcherId", data.id);
+      localStorage.setItem("firstName", data.firstName);
 
       // redirect after login
       window.location.href = "/dashboard";
@@ -33,8 +34,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleLogin}>
-
-      <div className="container">
+      <div className="loginContainer">
         <label htmlFor="username"><b>Username</b></label>
         <input
           type="text"

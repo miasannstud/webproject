@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const studySchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Researcher',
         required: true,
     },
     studyTitle: {
