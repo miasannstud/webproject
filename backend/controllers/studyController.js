@@ -108,16 +108,15 @@ const deleteStudy = async (req, res) => {
 const publishStudy = async (req, res) => {
   try {
     const { studyId } = req.params;
-    const study = await Study.findById(studyId);
+    const { published } = req.body;
+
+    const study = await Study.findByIdAndUpdate(studyId, { published }, { new: true });
 
     if (!study) {
       return res.status(404).json({ message: "Study not found" });
     }
 
-    study.published = true;
-    await study.save();
-
-    res.status(200).json({ message: "Study is now published", study });
+    return res.status(200).json({ published: study.published });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
