@@ -14,9 +14,6 @@ function DashPage() {
   const navigate = useNavigate();
   const firstName = localStorage.getItem("firstName");
 
-  const researcherId = localStorage.getItem('researcherId');
-  const myStudies = studies.filter((study) => study.createdBy === researcherId);
-
   function handleCreateStudy() {
     navigate("/createStudy");
   }
@@ -35,13 +32,11 @@ function DashPage() {
         </button>
       </div>
       <div className={styles.cardsContainer}>
-        {myStudies.length > 0 ? (
-          myStudies.map((study) => (
-            <DashCard key={study._id} study={study}/>
-          ))
-        ) : (
-          <p>No studies found.</p>
-        )}
+          {studies.length > 0 ? (
+            studies.map((study) => <DashCard key={study._id} study={study} />)
+          ) : (
+            <p>No studies found.</p>
+          )}
       </div>
     </div>
   );
