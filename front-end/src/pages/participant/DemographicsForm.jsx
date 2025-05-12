@@ -31,7 +31,7 @@ function DemographicsForm({ demographics, onChange, onSubmit }) {
           <option value="" disabled>Select...</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
-          <option value="Prefer not to say">Prefer not to say</option>
+          <option value="Other">Prefer not to say</option>
         </select>
       </div>
       {/* Next button specific to demographics step */}

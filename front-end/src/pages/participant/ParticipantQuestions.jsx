@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./ParticipantQuestions.module.css";
 import { answerQuestions } from "../../services/sessionService";
+import { renderArtifactContent } from "../../services/ArtifactService";
 
 function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
   const { questionIndex } = useParams();
@@ -48,11 +49,15 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
           />
         );
       case "slider":
+        const { sliderRange } = currentQuestion;
         return (
           <div className={styles.sliderContainer}>
-            <div className={styles.sliderLabels}>
-              <span>1</span><span>10</span>
-            </div>
+            {sliderRange && (
+              <div className={styles.sliderLabels}>
+                <span>{sliderRange.minLabel}</span>
+                <span>{sliderRange.maxLabel}</span>
+              </div>
+            )}
             <input
               type="range"
               min="0"
@@ -114,11 +119,35 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
     }
   }
 
+  console.log("ARTIFACT ARRAY:", currentQuestion.artifact);
   return (
     <div className={styles.questionsContainer}>
       <h2>
         Question {idx + 1} of {questions.length}
       </h2>
+
+      {Array.isArray(currentQuestion.artifact) &&
+        currentQuestion.artifact.map((art, i) => {
+          const src = art.artId?.url || art.artUrl;
+          if (!src) {
+            console.warn(`Artifact[${i}] has no URL:`, art);
+            return null;
+          }
+
+          const filename =
+            art.artId?.filename ||
+            (typeof art.artUrl === "string"
+              ? art.artUrl.split("/").pop()
+              : `artifact-${i}`);
+          const mimetype = art.artId?.mimetype || art.artType;
+
+          return (
+            <div key={i} className={styles.imageContainer}>
+              {renderArtifactContent({ url: src, filename, mimetype })}
+            </div>
+          );
+      })}
+      
       <p>{currentQuestion.questionText || "No question text provided."}</p>
       {renderAnswerInput()}
       <div className={styles.buttonContainer}>
