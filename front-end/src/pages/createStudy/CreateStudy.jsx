@@ -150,7 +150,7 @@ function CreateStudy() {
           artifacts={artifacts}
         />
       </div>
-      <div>
+      <div className={styles.expireContainer}>
       <ExpireDate
         expirationDate={expirationDate}
         onChange={setExpirationDate}
