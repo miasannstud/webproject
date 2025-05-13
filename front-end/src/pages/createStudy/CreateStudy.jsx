@@ -3,12 +3,14 @@ import { createStudy } from "../../services/studyService";
 import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 import QuestionsCard from "./questionCard/QuestionsCard";
+import ExpireDate from "./expireCard/ExpireDate";
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
   const [questions, setQuestions] = useState([]);
   const [artifacts, setArtifacts] = useState([]);
   const [error, setError] = useState("");
@@ -23,12 +25,14 @@ function CreateStudy() {
         description: "Draft description",
         questions: [],
         createdBy: researcherId,
+        expirationDate,
         draft: true,
       }).then((draft) => {
         setStudyId(draft._id);
       });
     }
-  }, [studyId]);
+
+  }, [studyId, expirationDate]);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -80,13 +84,14 @@ function CreateStudy() {
           : [],
       }));
 
-      const studyData = {
-        studyTitle: title,
-        description,
-        questions: formattedQuestions,
-        createdBy: researcherId,
-        draft: false,
-      };
+    const studyData = {
+      studyTitle: title,
+      description,
+      questions: formattedQuestions,
+      expirationDate: expirationDate || null,
+      createdBy: researcherId,
+      draft: false,
+    };
 
       const updatedStudy = await updateStudy(studyId, studyData);
       if (!updatedStudy || !updatedStudy._id) {
@@ -102,7 +107,21 @@ function CreateStudy() {
       console.error("Error updating study:", err);
       setError("Failed to save study. Please try again.");
     }
+
+    setSuccessMessage("Study saved successfully!");
+    setTitle("");
+    setDescription("");
+    setExpirationDate("");
+    setQuestions([]);
+    setArtifacts([]);
+  } catch (err) {
+    console.error("Error updating study:", err);
+    setError("Failed to save study. Please try again.");
+  }
+};
+
   };
+
 
   return (
     <div className={styles.createStudyContainer}>
@@ -131,6 +150,10 @@ function CreateStudy() {
           artifacts={artifacts}
         />
       </div>
+      <ExpireDate
+        expirationDate={expirationDate}
+        onChange={setExpirationDate}
+      />
       <button className={styles.saveButton} onClick={handleSaveStudy}>
         Save Study
       </button>

@@ -5,6 +5,7 @@ import { fetchArtifactsByStudy } from "../../services/ArtifactService";
 import StudyPreview from "../createStudy/studyPreview/StudyPreview";
 import ArtifactApp from "../createStudy/artifactCard/ArtifactCard";
 import QuestionsCard from "../createStudy/questionCard/QuestionsCard";
+import ExpireDate from "../createStudy/expireCard/ExpireDate";
 import styles from "../createStudy/CreateStudy.module.css";
 
 function EditStudy() {
@@ -12,6 +13,7 @@ function EditStudy() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
   const [questions, setQuestions] = useState([]);
   const [artifacts, setArtifacts] = useState([]);
   const [error, setError] = useState("");
@@ -28,6 +30,11 @@ function EditStudy() {
         setDescription(study.description || "");
         setQuestions(study.questions || []);
         setArtifacts(studyArtifacts || []);
+        setExpirationDate(
+          study.expirationDate
+            ? study.expirationDate.split("T")[0]
+            : ""
+        );
       } catch (err) {
         setError("Failed to load study or artifacts. Error: " + err.message);
       }
@@ -54,6 +61,7 @@ function EditStudy() {
         studyTitle: title,
         description,
         questions: formattedQuestions,
+        expirationDate: expirationDate || null,
       };
       await updateStudy(studyId, studyData);
       setSuccessMessage("Study updated successfully!");
@@ -90,6 +98,10 @@ function EditStudy() {
           artifacts={artifacts}
         />
       </div>
+      <ExpireDate
+        expirationDate={expirationDate}
+        onChange={setExpirationDate}
+      />
       <button className={styles.saveButton} onClick={handleUpdateStudy}>
         Save Changes
       </button>
