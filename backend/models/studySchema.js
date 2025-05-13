@@ -20,17 +20,14 @@ const studySchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    // questions
+    demographics: {
+        type: [String],
+        default: [],
+    },
     questions: [
         {
-            questionText: {
-                type: String,
-                max: 150,
-            },
-            questionType: {
-                type: String,
-                enum: ['multiple-choice', 'text-box', 'slider'],
-            },
+            questionText: { type: String, max: 150 },
+            questionType: { type: String, enum: ['multiple-choice', 'text-box', 'slider'] },
             artifact: [
                 {
                     artId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
@@ -39,15 +36,13 @@ const studySchema = new mongoose.Schema({
                 }
             ],
             options: [
-                {
-                    text: { type: String },
-                }
+                { text: { type: String } }
             ],
-            sliderRange:{
-                    minLabel: { type: String, default: "Add your own minimun parameters" },
-                    maxLabel: { type: String, default: "Add your own maximun parameters"  },
-                    minValue: { type: Number, default: 0 },
-                    maxValue: { type: Number, default: 10 },
+            sliderRange: {
+                minLabel: { type: String, default: "Add your own minimun parameters" },
+                maxLabel: { type: String, default: "Add your own maximun parameters" },
+                minValue: { type: Number, default: 0 },
+                maxValue: { type: Number, default: 10 },
             },
         }
     ]

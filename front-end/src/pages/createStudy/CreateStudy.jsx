@@ -5,6 +5,7 @@ import ArtifactApp from "./artifactCard/ArtifactCard";
 import QuestionsCard from "./questionCard/QuestionsCard";
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
+import DemographicsCard from "./demographicsCard/DemographicsCard";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
@@ -14,6 +15,7 @@ function CreateStudy() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [studyId, setStudyId] = useState(null);
+  const [demographics, setDemographics] = useState([]);
 
   useEffect(() => {
     if (!studyId) {
@@ -84,6 +86,7 @@ function CreateStudy() {
         studyTitle: title,
         description,
         questions: formattedQuestions,
+        demographics,
         createdBy: researcherId,
         draft: false,
       };
@@ -118,7 +121,10 @@ function CreateStudy() {
         />
       </div>
       <div className={styles.demographicsContainer}>
-        
+        <DemographicsCard
+        demographics={demographics}
+        setDemographics={setDemographics}
+        />
       </div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />

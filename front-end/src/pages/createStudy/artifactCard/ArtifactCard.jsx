@@ -79,7 +79,13 @@ function ArtifactApp({ onArtifactsChange, studyId, onSessionArtifactIdsChange })
             Choose File
           </label>
           <input id="fileInput" type="file" multiple onChange={handleFileChange} ref={fileInputRef} />
-          {selectedFiles && <p className={styles.fileName}>{selectedFiles.name}</p>}
+          {selectedFiles.length > 0 && (
+            <ul className={styles.fileName}>
+              {selectedFiles.map((file, idx) => (
+                <li key={idx}>{file.name}</li>
+              ))}
+            </ul>
+          )}
           <button type="submit">Upload</button>
         </form>
         <ul className={styles.artifactList}>

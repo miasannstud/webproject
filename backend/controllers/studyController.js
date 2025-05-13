@@ -37,8 +37,7 @@ const getStudyById = async (req, res) => {
 // POST /studies
 const createStudy = async (req, res) => {
   try {
-    const { studyTitle, description, published, questions, createdBy } = req.body;
-    // Use req.user._id if available, otherwise fallback to req.body.createdBy
+    const { studyTitle, description, published, questions, createdBy, demographics } = req.body;
     const creatorId = req.user ? req.user._id : createdBy;
 
     if (!creatorId) {
@@ -51,6 +50,7 @@ const createStudy = async (req, res) => {
       description,
       published,
       questions,
+      demographics,
     });
 
     await newStudy.save();
