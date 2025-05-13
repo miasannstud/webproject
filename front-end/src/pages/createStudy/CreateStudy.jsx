@@ -3,12 +3,14 @@ import { createStudy } from "../../services/studyService";
 import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 import QuestionsCard from "./questionCard/QuestionsCard";
+import ExpireDate from "./expireCard/ExpireDate"; //...
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [expirationDate, setExpirationDate] = useState(""); //...
   const [questions, setQuestions] = useState([]);
   const [artifacts, setArtifacts] = useState([]);
   const [error, setError] = useState("");
@@ -23,12 +25,13 @@ function CreateStudy() {
         description: "Draft description",
         questions: [],
         createdBy: researcherId,
+        expirationDate, //...
         draft: true,
       }).then((draft) => {
         setStudyId(draft._id);
       });
     }
-  }, [studyId]);
+  }, [studyId, expirationDate]);
   
   const handleAddQuestion = (newQuestion) => {
     setQuestions([...questions, newQuestion]);
@@ -70,6 +73,7 @@ const handleSaveStudy = async () => {
       studyTitle: title,
       description,
       questions: formattedQuestions,
+      expirationDate: expirationDate || null, //...
       createdBy: researcherId,
       draft: false,
     };
@@ -82,6 +86,7 @@ const handleSaveStudy = async () => {
     setSuccessMessage("Study saved successfully!");
     setTitle("");
     setDescription("");
+    setExpirationDate(""); //...
     setQuestions([]);
     setArtifacts([]);
   } catch (err) {
@@ -114,6 +119,10 @@ const handleSaveStudy = async () => {
           artifacts={artifacts}
         />
       </div>
+      <ExpireDate
+        expirationDate={expirationDate}
+        onChange={setExpirationDate}
+      />
       <button className={styles.saveButton} onClick={handleSaveStudy}>
         Save Study
       </button>

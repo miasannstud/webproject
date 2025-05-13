@@ -46,7 +46,7 @@ export async function fetchStudiesByResearcherId() {
   }
 };
 
-// for retrieving a specific study
+// for retrieving a specific study, for researcher
 export async function getStudyById(studyId) {
   try {
     const res = await fetch(`${API_BASE_URL}/studies/${studyId}`);
@@ -56,6 +56,20 @@ export async function getStudyById(studyId) {
     return await res.json();
   } catch (error) {
     console.error('Error fetching study by id:', error);
+    throw error;
+  }
+}
+
+// for retrieving a specific study, for participant
+export async function getParticipantStudy(studyId) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/studies/participant/${studyId}`);
+    if (!res.ok) {
+      throw new Error(`HTTP error. status: ${res.status}`);
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching study:', error);
     throw error;
   }
 }
@@ -83,12 +97,18 @@ export async function createStudy(studyData) {
 // for updating a study
 export async function updateStudy(studyId, studyData) {
   try {
+    const { expirationDate, ...updateData } = studyData;
+    const payload = {
+      updateData,
+      expirationDate,
+    };
+
     const res = await fetch(`${API_BASE_URL}/studies/${studyId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(studyData)
+      body: JSON.stringify(payload)
     });
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);

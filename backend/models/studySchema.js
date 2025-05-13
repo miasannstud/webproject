@@ -20,6 +20,9 @@ const studySchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    expirationDate: {
+        type: Date,
+    },
     // questions
     questions: [
         {
