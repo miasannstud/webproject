@@ -31,13 +31,15 @@ function CreateStudy() {
         setStudyId(draft._id);
       });
     }
-
   }, [studyId, expirationDate]);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (
-        (title.trim() || description.trim() || questions.length > 0 || artifacts.length > 0) &&
+        (title.trim() ||
+          description.trim() ||
+          questions.length > 0 ||
+          artifacts.length > 0) &&
         !successMessage
       ) {
         e.preventDefault();
@@ -75,59 +77,51 @@ function CreateStudy() {
 
     setError("");
     try {
-      const formattedQuestions = questions.map(q => ({
+      const formattedQuestions = questions.map((q) => ({
         ...q,
         options: Array.isArray(q.options)
-          ? q.options.map(opt =>
-            typeof opt === "string" ? { text: opt } : opt
-          )
+          ? q.options.map((opt) =>
+              typeof opt === "string" ? { text: opt } : opt
+            )
           : [],
       }));
 
-    const studyData = {
-      studyTitle: title,
-      description,
-      questions: formattedQuestions,
-      expirationDate: expirationDate || null,
-      createdBy: researcherId,
-      draft: false,
-    };
+      const studyData = {
+        studyTitle: title,
+        description,
+        questions: formattedQuestions,
+        expirationDate: expirationDate || null,
+        createdBy: researcherId,
+        draft: false,
+      };
 
       const updatedStudy = await updateStudy(studyId, studyData);
       if (!updatedStudy || !updatedStudy._id) {
         setError("Failed to update study. No study ID returned.");
         return;
       }
+
       setSuccessMessage("Study saved successfully!");
       setTitle("");
       setDescription("");
+      setExpirationDate("");
       setQuestions([]);
       setArtifacts([]);
     } catch (err) {
       console.error("Error updating study:", err);
       setError("Failed to save study. Please try again.");
     }
-
-    setSuccessMessage("Study saved successfully!");
-    setTitle("");
-    setDescription("");
-    setExpirationDate("");
-    setQuestions([]);
-    setArtifacts([]);
-  } catch (err) {
-    console.error("Error updating study:", err);
-    setError("Failed to save study. Please try again.");
-  }
-};
-
   };
-
 
   return (
     <div className={styles.createStudyContainer}>
       <h1 className={styles.createStudyText}>Create Study</h1>
       {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
-      {successMessage && <p className={`${styles.message} ${styles.success}`}>{successMessage}</p>}
+      {successMessage && (
+        <p className={`${styles.message} ${styles.success}`}>
+          {successMessage}
+        </p>
+      )}
       <div className={styles.studyPreviewContainer}>
         <StudyPreview
           title={title}
@@ -136,9 +130,7 @@ function CreateStudy() {
           onDescriptionChange={setDescription}
         />
       </div>
-      <div className={styles.demographicsContainer}>
-        
-      </div>
+      <div className={styles.demographicsContainer}></div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
       </div>
