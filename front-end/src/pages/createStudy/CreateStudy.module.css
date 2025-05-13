@@ -16,7 +16,8 @@
 
 .studyPreviewContainer,
 .artifactContainer,
-.questionContainer {
+.questionContainer,
+.demographicsContainer {
   margin-bottom: 40px;
 }
 

@@ -7,6 +7,7 @@ import ExpireDate from "./expireCard/ExpireDate";
 import ConsentCard from "./consentCard/ConsentCard";
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
+import DemographicsCard from "./demographicsCard/DemographicsCard";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
@@ -17,6 +18,7 @@ function CreateStudy() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [studyId, setStudyId] = useState(null);
+  const [demographics, setDemographics] = useState([]);
   const [consent, setConsent] = useState({ title: "", subtitle: "", text: "", });
 
   useEffect(() => {
@@ -97,6 +99,7 @@ function CreateStudy() {
         studyTitle: title,
         description,
         questions: formattedQuestions,
+        demographics,
         expirationDate: expirationDate || null,
         createdBy: researcherId,
         draft: false,
@@ -148,7 +151,12 @@ function CreateStudy() {
           onTextChange={handleConsentText}
         />
       </div>
-      <div className={styles.demographicsContainer}></div>
+      <div className={styles.demographicsContainer}>
+        <DemographicsCard
+        demographics={demographics}
+        setDemographics={setDemographics}
+        />
+      </div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
       </div>
@@ -160,10 +168,12 @@ function CreateStudy() {
           artifacts={artifacts}
         />
       </div>
+      <div className={styles.expireContainer}>
       <ExpireDate
         expirationDate={expirationDate}
         onChange={setExpirationDate}
       />
+      </div>
       <button className={styles.saveButton} onClick={handleSaveStudy}>
         Save Study
       </button>

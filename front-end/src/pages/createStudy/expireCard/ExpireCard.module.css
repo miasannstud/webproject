@@ -1,0 +1,22 @@
+.expireContainer {
+    margin: 40px auto;
+    text-align: center;
+    width: 80%;
+}
+
+.expireContainer input {
+    max-width: 100px;
+}
+
+.expireCard {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;    
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}

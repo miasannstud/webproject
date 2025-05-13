@@ -162,8 +162,8 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
               {renderArtifactContent({ url: src, filename, mimetype })}
             </div>
           );
-      })}
-      
+        })}
+
       <p>{currentQuestion.questionText || "No question text provided."}</p>
       {renderAnswerInput()}
       <div className={styles.buttonContainer}>
