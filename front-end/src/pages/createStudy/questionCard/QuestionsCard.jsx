@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { renderArtifactContent } from "../../../services/ArtifactService";
+
 import styles from "./QuestionsCard.module.css";
 import artifactStyles from "../artifactCard/ArtifactCard.module.css";
+
+import ReorderButton from "../../../components/shared/reorderButton/ReorderButton.jsx";
 
 function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }) {
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState("multiple-choice");
 
   const [options, setOptions] = useState([""]);
+
   const [sliderMinLabel, setSliderMinLabel] = useState("");
   const [sliderMaxLabel, setSliderMaxLabel] = useState("");
 
@@ -34,6 +38,18 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
       setSelectedArtifacts([...selectedArtifacts, artifact]);
     }
   };
+
+  const ChangeSelectedArtifactOrder = (index, direction) =>{
+    const newOrder = [...selectedArtifacts];
+
+  if (direction === "left" && index > 0) {
+    [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
+  }
+  if (direction === "right" && index < newOrder.length - 1) {
+    [newOrder[index + 1], newOrder[index]] = [newOrder[index], newOrder[index + 1]];
+  }
+    setSelectedArtifacts(newOrder);
+  }
 
   const handleAddQuestion = () => {
     if (!questionText.trim()) {
@@ -244,6 +260,33 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
             ))}
           </ul>
         </div>
+
+        <div className={styles.inputGroup}>
+          <h4>Selected Artifacts Order:</h4>
+          <ul className={artifactStyles.artifactList}>
+            {selectedArtifacts.map((artifact, i) => (
+              <li key={artifact._id} className={artifactStyles.artifactItem}>
+                  <div>
+                    <p>
+                      Name:{" "}
+                      {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, "") : "Unknown"}
+                    </p>
+                    <p>
+                      Type: {artifact.mimetype || "Unknown"}
+                    </p>
+                    {renderArtifactContent(artifact)}
+                  </div>
+                <ReorderButton
+                  onMoveLeft={() => ChangeSelectedArtifactOrder(i, "left")}
+                  onMoveRight={() => ChangeSelectedArtifactOrder(i, "right")}
+                  disableLeft={i === 0}
+                  disableRight={i === selectedArtifacts.length - 1}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <button data-testid="create-study-addQuestionButton" onClick={handleAddQuestion} className={styles.submitButton}>
           Add Question
         </button>
