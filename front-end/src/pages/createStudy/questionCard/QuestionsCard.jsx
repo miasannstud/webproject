@@ -15,6 +15,9 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
   const [sliderMinLabel, setSliderMinLabel] = useState("");
   const [sliderMaxLabel, setSliderMaxLabel] = useState("");
 
+  const [rankedMinLabel, setRankedMinLabel] = useState("");
+  const [rankedMaxLabel, setRankedMaxLabel] = useState("");
+
   const [selectedArtifacts, setSelectedArtifacts] = useState([]);
   const [error, setError] = useState("");
 
@@ -67,6 +70,11 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
       return;
     }
 
+    if (questionType === "ranked" && (!rankedMinLabel.trim() || !rankedMaxLabel.trim())) {
+      setError("Both ranked labels must be filled out");
+      return;
+    }
+
     const mappedArtifacts = selectedArtifacts.map(a => ({
       artId:   a._id,
       artUrl:  a.url,
@@ -87,6 +95,12 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           minValue: 0,
           maxValue: 10,
         }
+      }),
+      ...(questionType === "ranked" && {
+        rankedLabels: {
+          minLabel: rankedMinLabel,
+          maxLabel: rankedMaxLabel,
+        }
       })
     };
 
@@ -99,6 +113,11 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
     if (questionType === "slider") {
       setSliderMinLabel("");
       setSliderMaxLabel("");
+    }
+
+    if (questionType === "ranked") {
+      setRankedMinLabel("");
+      setRankedMaxLabel("");
     }
   };
 
@@ -142,8 +161,15 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
 
         {question.questionType === "slider" && question.sliderRange && (
           <div className={styles.sliderLabels}>
-            <span>Min Label: {question.sliderRange.minLabel}</span>
-            <span>Max Label: {question.sliderRange.maxLabel}</span>
+            <span>Minimun Label: {question.sliderRange.minLabel}</span>
+            <span>Maximun Label: {question.sliderRange.maxLabel}</span>
+          </div>
+        )}
+
+        {question.questionType === "ranked" && question.rankedLabel && (
+          <div className={styles.rankedLabels}>
+            <span>Minimun Label: {question.rankedLabel.minLabel}</span>
+            <span>Maximun Label: {question.rankedLabel.maxLabel}</span>
           </div>
         )}
         
@@ -183,6 +209,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
               <option value="multiple-choice">Multiple Choice</option>
               <option value="text-box">Text</option>
               <option value="slider">Slider</option>
+              <option value="ranked">Ranked</option>
             </select>
           </label>
         </div>
@@ -227,6 +254,29 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
                 type="text"
                 value={sliderMaxLabel}
                 onChange={(e) => setSliderMaxLabel(e.target.value)}
+                className={styles.input}
+              />
+            </label>
+          </div>
+        )}
+
+        {questionType === "ranked" && (
+          <div className={styles.RankedLabelInputs}>
+            <label>
+              Ranked Minimum Label:
+              <input
+                type="text"
+                value={rankedMinLabel}
+                onChange={(e) => setRankedMinLabel(e.target.value)}
+                className={styles.input}
+              />
+            </label>
+            <label>
+              Ranked Maximum Label:
+              <input
+                type="text"
+                value={rankedMaxLabel}
+                onChange={(e) => setRankedMaxLabel(e.target.value)}
                 className={styles.input}
               />
             </label>

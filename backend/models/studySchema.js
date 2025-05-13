@@ -29,7 +29,7 @@ const studySchema = new mongoose.Schema({
             },
             questionType: {
                 type: String,
-                enum: ['multiple-choice', 'text-box', 'slider'],
+                enum: ['multiple-choice', 'text-box', 'slider', 'ranked'],
             },
             artifact: [
                 {
@@ -44,11 +44,16 @@ const studySchema = new mongoose.Schema({
                 }
             ],
             sliderRange:{
-                    minLabel: { type: String, default: "Add your own minimun parameters" },
-                    maxLabel: { type: String, default: "Add your own maximun parameters"  },
-                    minValue: { type: Number, default: 0 },
-                    maxValue: { type: Number, default: 10 },
+                minLabel: { type: String, default: "Add your own minimun parameters" },
+                maxLabel: { type: String, default: "Add your own maximun parameters"  },
+                minValue: { type: Number, default: 0 },
+                maxValue: { type: Number, default: 10 },
             },
+
+            rankedLabels:{
+                minLabel: { type: String, default: "Add your own minimun parameters" },
+                maxLabel: { type: String, default: "Add your own maximun parameters"  },
+            }
         }
     ]
 }, { timestamps: true });

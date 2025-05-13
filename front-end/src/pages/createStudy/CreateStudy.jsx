@@ -38,6 +38,8 @@ function CreateStudy() {
     setQuestions(questions.filter((_, i) => i !== index));
   };
 
+  // const ChangeAddedQuestion =
+
 const handleSaveStudy = async () => {
   if (!title.trim() || !description.trim()) {
     setError("Title and description are required.");
