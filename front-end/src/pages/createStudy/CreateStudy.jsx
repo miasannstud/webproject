@@ -3,6 +3,7 @@ import { createStudy } from "../../services/studyService";
 import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 import QuestionsCard from "./questionCard/QuestionsCard";
+import ExpireDate from "./expireCard/ExpireDate";
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
 import DemographicsCard from "./demographicsCard/DemographicsCard";
@@ -10,6 +11,7 @@ import DemographicsCard from "./demographicsCard/DemographicsCard";
 function CreateStudy() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
   const [questions, setQuestions] = useState([]);
   const [artifacts, setArtifacts] = useState([]);
   const [error, setError] = useState("");
@@ -25,17 +27,21 @@ function CreateStudy() {
         description: "Draft description",
         questions: [],
         createdBy: researcherId,
+        expirationDate,
         draft: true,
       }).then((draft) => {
         setStudyId(draft._id);
       });
     }
-  }, [studyId]);
+  }, [studyId, expirationDate]);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (
-        (title.trim() || description.trim() || questions.length > 0 || artifacts.length > 0) &&
+        (title.trim() ||
+          description.trim() ||
+          questions.length > 0 ||
+          artifacts.length > 0) &&
         !successMessage
       ) {
         e.preventDefault();
@@ -73,12 +79,12 @@ function CreateStudy() {
 
     setError("");
     try {
-      const formattedQuestions = questions.map(q => ({
+      const formattedQuestions = questions.map((q) => ({
         ...q,
         options: Array.isArray(q.options)
-          ? q.options.map(opt =>
-            typeof opt === "string" ? { text: opt } : opt
-          )
+          ? q.options.map((opt) =>
+              typeof opt === "string" ? { text: opt } : opt
+            )
           : [],
       }));
 
@@ -87,6 +93,7 @@ function CreateStudy() {
         description,
         questions: formattedQuestions,
         demographics,
+        expirationDate: expirationDate || null,
         createdBy: researcherId,
         draft: false,
       };
@@ -96,9 +103,11 @@ function CreateStudy() {
         setError("Failed to update study. No study ID returned.");
         return;
       }
+
       setSuccessMessage("Study saved successfully!");
       setTitle("");
       setDescription("");
+      setExpirationDate("");
       setQuestions([]);
       setArtifacts([]);
     } catch (err) {
@@ -111,7 +120,11 @@ function CreateStudy() {
     <div className={styles.createStudyContainer}>
       <h1 className={styles.createStudyText}>Create Study</h1>
       {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
-      {successMessage && <p className={`${styles.message} ${styles.success}`}>{successMessage}</p>}
+      {successMessage && (
+        <p className={`${styles.message} ${styles.success}`}>
+          {successMessage}
+        </p>
+      )}
       <div className={styles.studyPreviewContainer}>
         <StudyPreview
           title={title}
@@ -126,6 +139,7 @@ function CreateStudy() {
         setDemographics={setDemographics}
         />
       </div>
+      <div className={styles.demographicsContainer}></div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
       </div>
@@ -137,6 +151,10 @@ function CreateStudy() {
           artifacts={artifacts}
         />
       </div>
+      <ExpireDate
+        expirationDate={expirationDate}
+        onChange={setExpirationDate}
+      />
       <button className={styles.saveButton} onClick={handleSaveStudy}>
         Save Study
       </button>

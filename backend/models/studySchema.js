@@ -24,6 +24,10 @@ const studySchema = new mongoose.Schema({
         type: [String],
         default: [],
     },
+    expirationDate: {
+        type: Date,
+    },
+    // questions
     questions: [
         {
             questionText: { type: String, max: 150 },
