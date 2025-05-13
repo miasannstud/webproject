@@ -38,7 +38,7 @@ const studySchema = new mongoose.Schema({
                 {
                     artId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
                     artUrl: { type: String },
-                    artType: { type: String },
+                    mimetype: { type: String },
                 }
             ],
             options: [

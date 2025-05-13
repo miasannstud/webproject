@@ -139,7 +139,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             (typeof art.artUrl === "string"
               ? art.artUrl.split("/").pop()
               : `artifact-${i}`);
-          const mimetype = art.artId?.mimetype || art.artType;
+          const mimetype = art.artId?.mimetype;
 
           return (
             <div key={i} className={styles.imageContainer}>

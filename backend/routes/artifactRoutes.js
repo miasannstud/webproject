@@ -11,7 +11,17 @@ const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
-router.post('/upload', uploadMiddleware, artifactController.uploadArtifact);
+router.post('/upload', (req, res) => {
+  uploadMiddleware(req, res, function (err) {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: 'File is too large. Max size is 10MB.' });
+      }
+      return res.status(400).json({ error: err.message });
+    }
+    artifactController.uploadArtifacts(req, res);
+  });
+});
 
 router.get('/', async (req, res) => {
     try {

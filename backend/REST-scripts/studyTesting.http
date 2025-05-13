@@ -19,7 +19,7 @@ Content-Type: application/json
       "questionType": "slider",
       "artifact": [{
         "arturl": "uploads/1744025459548-dolphin.png",
-        "arttype": "image"
+        "mimetype": "image"
       }],
       "options": []
     },

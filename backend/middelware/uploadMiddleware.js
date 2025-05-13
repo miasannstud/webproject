@@ -6,16 +6,28 @@ const uploadDir = path.join(process.cwd(), 'uploads');
 
 fs.mkdirSync(uploadDir, { recursive: true });
 
+function sanitizeFilename(filename) {
+  return filename.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    const uniqueName = Date.now() + '-' + file.originalname;
+    const sanitized = sanitizeFilename(file.originalname);
+    const extension = path.extname(sanitized);
+    const base = path.basename(sanitized, extension);
+    if (base.length > 60) {
+      base = base.substring(0, 60);
+    }
+    const uniqueName = Date.now() + '-' + sanitized;
     cb(null, uniqueName);
   }
 });
 
-const upload = multer({ storage });
+export const upload = multer({ storage,
+  limits: { fileSize: 40 * 1024 * 1024 }
+ }).array('artifact', 10);
 
-export default upload.single('artifact'); 
+export default upload; 

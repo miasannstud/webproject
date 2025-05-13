@@ -1,24 +1,29 @@
 import Artifact from '../models/artifactSchema.js';
 import fs from 'fs';
 
-export const uploadArtifact = async (req, res) => {
+export const uploadArtifacts = async (req, res) => {
     try {
-        if (!req.file) return res.status(400).json({ message: 'No artifact uploaded' });
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ message: 'No artifact uploaded' });
+        }
 
         const { studyId } = req.body;
 
-        const artifactData = new Artifact({
-            filename: req.file.originalName || req.file.originalname,
-            mimetype: req.file.mimetype,
-            path: req.file.path,
-            size: req.file.size,
-            url: `http://localhost:8080/uploads/${req.file.filename}`,
-            studyId: studyId || null,
-        });
+        const savedArtifacts = [];
+        for (const file of req.files) {
+            const artifactData = new Artifact({
+                filename: file.originalname,
+                mimetype: file.mimetype,
+                path: file.path,
+                size: file.size,
+                url: `http://localhost:8080/uploads/${file.filename}`,
+                studyId: studyId || null,
+            });
+            await artifactData.save();
+            savedArtifacts.push(artifactData);
+        }
 
-        console.log('Uploaded artifact:', artifactData);
-        await artifactData.save();
-        res.status(201).json({ message: 'Artifact uploaded successfully', artifact: artifactData });
+        res.status(201).json({ message: 'Artifacts uploaded successfully', artifacts: savedArtifacts });
     } catch (err) {
         console.error('Error uploading artifact:', err.message);
         res.status(500).json({ error: err.message });
@@ -99,4 +104,4 @@ export const updateArtifactStudyId = async (req, res) => {
     }
 };
 
-export default { uploadArtifact, retrieveArtifact, deleteArtifact, getAllArtifacts, getArtifactsByStudy, updateArtifactStudyId };
+export default { uploadArtifacts, retrieveArtifact, deleteArtifact, getAllArtifacts, getArtifactsByStudy, updateArtifactStudyId };
