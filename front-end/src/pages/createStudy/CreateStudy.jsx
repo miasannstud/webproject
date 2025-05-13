@@ -139,7 +139,6 @@ function CreateStudy() {
         setDemographics={setDemographics}
         />
       </div>
-      <div className={styles.demographicsContainer}></div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
       </div>
@@ -151,10 +150,12 @@ function CreateStudy() {
           artifacts={artifacts}
         />
       </div>
+      <div>
       <ExpireDate
         expirationDate={expirationDate}
         onChange={setExpirationDate}
       />
+      </div>
       <button className={styles.saveButton} onClick={handleSaveStudy}>
         Save Study
       </button>
