@@ -1,4 +1,4 @@
-import styles from './TermsStep.module.css';
+import styles from './ConsentForm.module.css';
 
 function TermsStep({ agreeTerms, onTermsChange, onNext }) {
   return (
@@ -14,7 +14,7 @@ function TermsStep({ agreeTerms, onTermsChange, onNext }) {
           checked={agreeTerms}
           onChange={(e) => onTermsChange(e.target.checked)}
         />
-        I agree to the terms and conditions.
+        I agree
       </label>
       <button disabled={!agreeTerms} onClick={onNext}>Next</button>
     </div>

@@ -23,6 +23,11 @@ const studySchema = new mongoose.Schema({
     expirationDate: {
         type: Date,
     },
+    consent: {
+        title: { type: String, required: true, max: 100, },
+        subtitle: { type: String, max: 150, },
+        text: { type: String, required: true, },
+    },
     // questions
     questions: [
         {

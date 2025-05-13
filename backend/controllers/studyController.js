@@ -58,7 +58,7 @@ export const getParticipantStudy = async (req, res) => {
 // POST /studies
 const createStudy = async (req, res) => {
   try {
-    const { studyTitle, description, published, questions, createdBy, expirationDate } = req.body;
+    const { studyTitle, description, published, questions, createdBy, expirationDate, consent } = req.body;
     // Use req.user._id if available, otherwise fallback to req.body.createdBy
     const creatorId = req.user ? req.user._id : createdBy;
 
@@ -71,6 +71,7 @@ const createStudy = async (req, res) => {
       studyTitle,
       description,
       published,
+      consent,
       questions,
       expirationDate: expirationDate
         ? new Date(expirationDate)

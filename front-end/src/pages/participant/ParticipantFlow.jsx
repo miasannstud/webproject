@@ -4,7 +4,7 @@ import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import useParticipantStudy from '../../hooks/useParticipantStudy';
 import { createSession } from '../../services/sessionService';
 
-import TermsStep from './TermsStep';
+import TermsStep from './ConsentForm';
 import DemographicsForm from './DemographicsForm';
 import StudyOverview from './StudyOverview';
 import ParticipantQuestions from './ParticipantQuestions';
