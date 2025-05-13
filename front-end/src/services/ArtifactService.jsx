@@ -1,9 +1,11 @@
 // const API_BASE_URL = 'http://localhost:8080/api';
 const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'https://group6.sustainability.it.ntnu.no/api';
 
-export async function uploadArtifact(file, studyId) {
+export async function uploadArtifacts(files, studyId) {
   const formData = new FormData();
-  formData.append('artifact', file);
+  for (const file of files) {
+    formData.append('artifact', file);
+  }
   formData.append('studyId', studyId);
 
   try {
@@ -67,33 +69,29 @@ export async function deleteArtifact(artifactId) {
 }
 
 export function renderArtifactContent(artifact) {
-  if (!artifact.mimetype) {
+  const mimetype = artifact.mimetype;
+  if (!mimetype) {
     return <p>Unknown artifact type</p>;
   }
 
-  if (artifact.mimetype.startsWith('image/')) {
-    return <img src={artifact.url} alt={artifact.filename} style={{ maxWidth: '100px', maxHeight: '100px' }} />;
-  } else if (artifact.mimetype === 'text/plain') {
-    return <iframe src={artifact.url} title={artifact.filename} style={{ width: '100px', height: '100px' }} />;
-  } else if (artifact.mimetype.startsWith('audio/')) {
+  if (mimetype.startsWith('image/')) {
+    return <img src={artifact.url || artifact.artUrl} alt={artifact.filename} style={{ maxWidth: '100px', maxHeight: '100px' }} />;
+  } else if (mimetype === 'text/plain') {
+    return <iframe src={artifact.url || artifact.artUrl} title={artifact.filename} style={{ width: '100px', height: '100px' }} />;
+  } else if (mimetype.startsWith('audio/')) {
     return (
       <audio controls>
-        <source src={artifact.url} type={artifact.mimetype} />
+        <source src={artifact.url || artifact.artUrl} type={mimetype} />
         Your browser does not support the audio element.
       </audio>
     );
-  } else if (artifact.mimetype.startsWith('video/')) {
+  } else if (mimetype.startsWith('video/')) {
     return (
       <video controls width="100px" height="100px">
-        <source src={artifact.url} type={artifact.mimetype} />
+        <source src={artifact.url || artifact.artUrl} type={mimetype} />
         Your browser does not support the video tag.
       </video>
     );
-  } else {
-    return (
-      <a href={artifact.url} download={artifact.filename}>
-        Download {artifact.filename}
-      </a>
-    );
   }
+  return <p>Unknown artifact type</p>;
 }

@@ -29,7 +29,21 @@ function CreateStudy() {
       });
     }
   }, [studyId]);
-  
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (
+        (title.trim() || description.trim() || questions.length > 0 || artifacts.length > 0) &&
+        !successMessage
+      ) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [title, description, questions, artifacts, successMessage]);
+
   const handleAddQuestion = (newQuestion) => {
     setQuestions([...questions, newQuestion]);
   };
@@ -38,57 +52,57 @@ function CreateStudy() {
     setQuestions(questions.filter((_, i) => i !== index));
   };
 
-const handleSaveStudy = async () => {
-  if (!title.trim() || !description.trim()) {
-    setError("Title and description are required.");
-    return;
-  }
-
-  if (questions.length === 0) {
-    setError("At least one question is required.");
-    return;
-  }
-
-  const researcherId = localStorage.getItem("researcherId");
-  if (!researcherId) {
-    setError("You must be logged in to create a study.");
-    return;
-  }
-
-  setError("");
-  try {
-    const formattedQuestions = questions.map(q => ({
-      ...q,
-      options: Array.isArray(q.options)
-        ? q.options.map(opt =>
-            typeof opt === "string" ? { text: opt } : opt
-          )
-        : [],
-    }));
-
-    const studyData = {
-      studyTitle: title,
-      description,
-      questions: formattedQuestions,
-      createdBy: researcherId,
-      draft: false,
-    };
-
-    const updatedStudy = await updateStudy(studyId, studyData);
-    if (!updatedStudy || !updatedStudy._id) {
-      setError("Failed to update study. No study ID returned.");
+  const handleSaveStudy = async () => {
+    if (!title.trim() || !description.trim()) {
+      setError("Title and description are required.");
       return;
     }
-    setSuccessMessage("Study saved successfully!");
-    setTitle("");
-    setDescription("");
-    setQuestions([]);
-    setArtifacts([]);
-  } catch (err) {
-    console.error("Error updating study:", err);
-    setError("Failed to save study. Please try again.");
-  }
-};
+
+    if (questions.length === 0) {
+      setError("At least one question is required.");
+      return;
+    }
+
+    const researcherId = localStorage.getItem("researcherId");
+    if (!researcherId) {
+      setError("You must be logged in to create a study.");
+      return;
+    }
+
+    setError("");
+    try {
+      const formattedQuestions = questions.map(q => ({
+        ...q,
+        options: Array.isArray(q.options)
+          ? q.options.map(opt =>
+            typeof opt === "string" ? { text: opt } : opt
+          )
+          : [],
+      }));
+
+      const studyData = {
+        studyTitle: title,
+        description,
+        questions: formattedQuestions,
+        createdBy: researcherId,
+        draft: false,
+      };
+
+      const updatedStudy = await updateStudy(studyId, studyData);
+      if (!updatedStudy || !updatedStudy._id) {
+        setError("Failed to update study. No study ID returned.");
+        return;
+      }
+      setSuccessMessage("Study saved successfully!");
+      setTitle("");
+      setDescription("");
+      setQuestions([]);
+      setArtifacts([]);
+    } catch (err) {
+      console.error("Error updating study:", err);
+      setError("Failed to save study. Please try again.");
+    }
+  };
 
   return (
     <div className={styles.createStudyContainer}>
@@ -102,6 +116,9 @@ const handleSaveStudy = async () => {
           onTitleChange={setTitle}
           onDescriptionChange={setDescription}
         />
+      </div>
+      <div className={styles.demographicsContainer}>
+        
       </div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />

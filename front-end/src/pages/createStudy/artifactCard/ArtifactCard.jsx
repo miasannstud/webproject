@@ -1,25 +1,25 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { fetchArtifactsByStudy, uploadArtifact, deleteArtifact, renderArtifactContent } from '../../../services/ArtifactService';
+import { fetchArtifactsByStudy, uploadArtifacts, deleteArtifact, renderArtifactContent } from '../../../services/ArtifactService';
 import styles from './ArtifactCard.module.css';
 
 function ArtifactApp({ onArtifactsChange, studyId, onSessionArtifactIdsChange }) {
   const [artifacts, setArtifacts] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [message, setMessage] = useState('');
   const [sessionArtifactIds, setSessionArtifactIds] = useState([]);
   const fileInputRef = useRef(null);
 
-const fetchArtifactsList = useCallback(async () => {
-  if (!studyId) return;
-  try {
-    const data = await fetchArtifactsByStudy(studyId);
-    setArtifacts(data);
-    onArtifactsChange(data);
-  } catch (error) {
-    console.error('Error fetching artifacts:', error);
-    setMessage("Couldn't fetch artifacts");
-  }
-}, [onArtifactsChange, studyId]);
+  const fetchArtifactsList = useCallback(async () => {
+    if (!studyId) return;
+    try {
+      const data = await fetchArtifactsByStudy(studyId);
+      setArtifacts(data);
+      onArtifactsChange(data);
+    } catch (error) {
+      console.error('Error fetching artifacts:', error);
+      setMessage("Couldn't fetch artifacts");
+    }
+  }, [onArtifactsChange, studyId]);
 
   useEffect(() => {
     fetchArtifactsList();
@@ -29,28 +29,28 @@ const fetchArtifactsList = useCallback(async () => {
   }, [fetchArtifactsList, sessionArtifactIds, onSessionArtifactIdsChange]);
 
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+    setSelectedFiles(Array.from(e.target.files));
   };
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!selectedFile) {
-      setMessage('You must select a file to upload');
+    if (!selectedFiles || selectedFiles.length === 0) {
+      setMessage('You must select at least one file to upload');
       return;
     }
 
     try {
-      const res = await uploadArtifact(selectedFile, studyId);
+      const res = await uploadArtifacts(selectedFiles, studyId);
       if (res && res.artifact && res.artifact._id) {
         setSessionArtifactIds(ids => [...ids, res.artifact._id]);
       }
-      setMessage('Artifact has been uploaded');
-      setSelectedFile(null);
+      setMessage('Artifact(s) were uploaded');
+      setSelectedFiles([]);
       fileInputRef.current.value = '';
       fetchArtifactsList();
     } catch (error) {
-      console.error('Error uploading artifact:', error);
-      setMessage('There was an error uploading the artifact');
+      console.error('Error uploading artifact(s):', error);
+      setMessage('There was an error uploading the artifact(s)');
     }
   };
 
@@ -78,8 +78,8 @@ const fetchArtifactsList = useCallback(async () => {
           <label className={styles.customFileInput} htmlFor="fileInput">
             Choose File
           </label>
-          <input id="fileInput" type="file" onChange={handleFileChange} ref={fileInputRef} />
-          {selectedFile && <p className={styles.fileName}>{selectedFile.name}</p>}
+          <input id="fileInput" type="file" multiple onChange={handleFileChange} ref={fileInputRef} />
+          {selectedFiles && <p className={styles.fileName}>{selectedFiles.name}</p>}
           <button type="submit">Upload</button>
         </form>
         <ul className={styles.artifactList}>
