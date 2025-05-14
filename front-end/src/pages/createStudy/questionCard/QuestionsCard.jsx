@@ -4,8 +4,6 @@ import { renderArtifactContent } from "../../../services/ArtifactService";
 import styles from "./QuestionsCard.module.css";
 import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 
-import ReorderButton from "../../../components/shared/reorderButton/ReorderButton";
-
 function QuestionsCard({
   onAddQuestion,
   onRemoveQuestion,
@@ -58,24 +56,6 @@ function QuestionsCard({
     } else {
       setSelectedArtifacts([...selectedArtifacts, artifact]);
     }
-  };
-
-  const ChangeSelectedArtifactOrder = (index, direction) => {
-    const newOrder = [...selectedArtifacts];
-
-    if (direction === "left" && index > 0) {
-      [newOrder[index - 1], newOrder[index]] = [
-        newOrder[index],
-        newOrder[index - 1],
-      ];
-    }
-    if (direction === "right" && index < newOrder.length - 1) {
-      [newOrder[index + 1], newOrder[index]] = [
-        newOrder[index],
-        newOrder[index + 1],
-      ];
-    }
-    setSelectedArtifacts(newOrder);
   };
 
   const handleAddQuestion = () => {
@@ -367,32 +347,6 @@ function QuestionsCard({
                     {renderArtifactContent(artifact)}
                   </div>
                 </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={styles.inputGroup}>
-          <h4>Selected Artifacts Order:</h4>
-          <ul className={artifactStyles.artifactList}>
-            {selectedArtifacts.map((artifact, i) => (
-              <li key={artifact._id} className={artifactStyles.artifactItem}>
-                <div>
-                  <p>
-                    Name:{" "}
-                    {artifact.filename
-                      ? artifact.filename.replace(/\.[^/.]+$/, "")
-                      : "Unknown"}
-                  </p>
-                  <p>Type: {artifact.mimetype || "Unknown"}</p>
-                  {renderArtifactContent(artifact)}
-                </div>
-                <ReorderButton
-                  onMoveLeft={() => ChangeSelectedArtifactOrder(i, "left")}
-                  onMoveRight={() => ChangeSelectedArtifactOrder(i, "right")}
-                  disableLeft={i === 0}
-                  disableRight={i === selectedArtifacts.length - 1}
-                />
               </li>
             ))}
           </ul>
