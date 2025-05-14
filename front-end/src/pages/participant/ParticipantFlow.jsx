@@ -40,8 +40,19 @@ function ParticipantFlow() {
     }
   };
 
-  const handleOverviewNext = () => {
-    navigate(`/participant/${studyId}/questions/0`);
+  const handleOverviewNext = async () => {
+    if (sessionData && sessionData._id) {
+      navigate(`/participant/${studyId}/questions/0`);
+      return;
+    }
+    try {
+      const session = await createSession(studyId, {});
+      setSessionData(session);
+      navigate(`/participant/${studyId}/questions/0`);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to start session, please try again.');
+    }
   };
 
   const handleQuestionsComplete = () => {

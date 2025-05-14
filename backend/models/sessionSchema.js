@@ -9,10 +9,8 @@ const sessionSchema = new mongoose.Schema({
     required: true,
   },
   demographics: {
-    age: { type: Number, required: true },
-    gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
-    education: { type: String, enum: ["High school", "Bachelor's", "Master's", "PhD", "Other"], required: true },
-    country: { type: String, required: true },
+    type: Object,
+    default: {}
   },
   answers: [
     {
