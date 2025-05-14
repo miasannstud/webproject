@@ -30,7 +30,7 @@ function CreateStudy() {
         questions: [],
         createdBy: researcherId,
         expirationDate,
-        consent: { title: "", author: "", subtitle: "", text: "" },
+        consent: { title: "Draft Title", author: "", subtitle: "", text: "Draft Text" },
         draft: true,
       }).then((draft) => {
         setStudyId(draft._id);
@@ -55,10 +55,10 @@ function CreateStudy() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [title, description, questions, artifacts, successMessage]);
 
-  const handleConsentTitle   = (val) => setConsent(c => ({ ...c, title: val }));
+  const handleConsentTitle = (val) => setConsent(c => ({ ...c, title: val }));
   const handleConsentAuthor = (val) => setConsent(c => ({ ...c, author: val }));
   const handleConsentSubtitle = (val) => setConsent(c => ({ ...c, subtitle: val }));
-  const handleConsentText    = (val) => setConsent(c => ({ ...c, text: val }));
+  const handleConsentText = (val) => setConsent(c => ({ ...c, text: val }));
 
   const handleAddQuestion = (newQuestion) => {
     setQuestions([...questions, newQuestion]);
@@ -91,8 +91,8 @@ function CreateStudy() {
         ...q,
         options: Array.isArray(q.options)
           ? q.options.map((opt) =>
-              typeof opt === "string" ? { text: opt } : opt
-            )
+            typeof opt === "string" ? { text: opt } : opt
+          )
           : [],
       }));
 
@@ -150,8 +150,8 @@ function CreateStudy() {
       </div>
       <div className={styles.demographicsContainer}>
         <DemographicsCard
-        demographics={demographics}
-        setDemographics={setDemographics}
+          demographics={demographics}
+          setDemographics={setDemographics}
         />
       </div>
       <div className={styles.artifactContainer}>
@@ -166,10 +166,10 @@ function CreateStudy() {
         />
       </div>
       <div className={styles.expireContainer}>
-      <ExpireDate
-        expirationDate={expirationDate}
-        onChange={setExpirationDate}
-      />
+        <ExpireDate
+          expirationDate={expirationDate}
+          onChange={setExpirationDate}
+        />
       </div>
       {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
       {successMessage && (
