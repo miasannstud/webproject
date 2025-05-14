@@ -16,57 +16,44 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
   const navigate = useNavigate();
   const rawIdx = parseInt(questionIndex, 10);
 
-  const orderedQuestions = useMemo(() => {
-    const n = questions.length;
-    const square = generateLatinSquare(n);
-    const latinRow = pickLatinIndex(sessionData._id, n);
-    const order = square[latinRow];
-    return order.map(i => questions[i]);
-  }, [questions, sessionData._id]);
-
+  // questions in original order
+  const orderedQuestions = questions;
   const idx = rawIdx;
-
   const currentQuestion = orderedQuestions[idx];
   const questionId = currentQuestion._id || currentQuestion.id;
 
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
-// Use artifact order for ranked question
-  const [artifactOrder, setArtifactOrder] = useState(
-    currentQuestion.questionType === "ranked" &&
-      Array.isArray(currentQuestion.artifact)
-      ? [...currentQuestion.artifact]
-      : []
-  );
+  // latin-square order for artifacts
+  const initialArtifacts = useMemo(() => {
+    const arts = Array.isArray(currentQuestion.artifact) ? currentQuestion.artifact : [];
+    const n = arts.length;
+    if (n <= 1) return arts;
 
-  // Reset artifact order when question changes
+    const square = generateLatinSquare(n);
+    const row = pickLatinIndex(sessionData._id, n);
+    return square[row].map(i => arts[i]);
+  }, [currentQuestion.artifact, sessionData._id]);
+
+  // allow participant to reorder artifacts (for ranked questions)
+  const [artifactOrder, setArtifactOrder] = useState(initialArtifacts);
+
+  // reset artifact order when question changes
   useEffect(() => {
-    if (
-      currentQuestion.questionType === "ranked" &&
-      Array.isArray(currentQuestion.artifact)
-    ) {
-      setArtifactOrder([...currentQuestion.artifact]);
-    }
-  }, [currentQuestion]);
+    setArtifactOrder(initialArtifacts);
+  }, [initialArtifacts]);
 
   const changeArtifactOrder = (index, direction) => {
     const newOrder = [...artifactOrder];
     if (direction === "left" && index > 0) {
-      [newOrder[index - 1], newOrder[index]] = [
-        newOrder[index],
-        newOrder[index - 1],
-      ];
+      [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
     }
     if (direction === "right" && index < newOrder.length - 1) {
-      [newOrder[index + 1], newOrder[index]] = [
-        newOrder[index],
-        newOrder[index + 1],
-      ];
+      [newOrder[index + 1], newOrder[index]] = [newOrder[index], newOrder[index + 1]];
     }
     setArtifactOrder(newOrder);
   };
-
 
   if (!orderedQuestions || orderedQuestions.length === 0) {
     return <div>No questions available.</div>;
@@ -84,7 +71,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
                   name="mc"
                   value={opt.text}
                   checked={answer === opt.text}
-                  onChange={(e) => setAnswer(e.target.value)}
+                  onChange={e => setAnswer(e.target.value)}
                 />
                 {opt.text}
               </label>
@@ -98,7 +85,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             className={styles.answerInput}
             value={answer}
             placeholder="Your answer..."
-            onChange={(e) => setAnswer(e.target.value)}
+            onChange={e => setAnswer(e.target.value)}
           />
         );
       case "slider":
@@ -116,7 +103,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
               min="0"
               max="10"
               value={answer === "" ? 0 : answer}
-              onChange={(e) => setAnswer(e.target.value)}
+              onChange={e => setAnswer(e.target.value)}
               className={styles.sliderInput}
             />
             <div className={styles.sliderValue}>
@@ -124,35 +111,16 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             </div>
           </div>
         );
-      default:
-        return (
-          <input
-            type="text"
-            className={styles.answerInput}
-            value={answer}
-            placeholder="Your answer..."
-            onChange={(e) => setAnswer(e.target.value)}
-          />
-        );
       case "ranked":
         const { rankedLabels } = currentQuestion;
         return (
           <div className={styles.rankedContainer}>
             <div className={styles.rankedRow}>
               {artifactOrder.map((artifact, i) => (
-                <div
-                  key={artifact.artId || artifact._id}
-                  className={styles.artifactItem}
-                >
-                  {/* Show label above image for first and last */}
-                  {i === 0 && rankedLabels && (
-                    <div className={styles.rankedLabelTop}>
-                      {rankedLabels.minLabel}
-                    </div>
-                  )}
-                  {i === artifactOrder.length - 1 && rankedLabels && (
-                    <div className={styles.rankedLabelTop}>
-                      {rankedLabels.maxLabel}
+                <div key={artifact.artId || artifact._id} className={styles.artifactItem}>
+                  {rankedLabels && rankedLabels[i] && (
+                    <div className={styles.rankedLabels}>
+                      {rankedLabels[i]}
                     </div>
                   )}
                   {renderArtifactContent({
@@ -160,13 +128,10 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
                     filename:
                       artifact.artId?.filename ||
                       artifact.filename ||
-                      (typeof artifact.artUrl === "string"
-                        ? artifact.artUrl.split("/").pop()
+                      (typeof artifact.artUrl === "string" 
+                        ? artifact.artUrl.split("/").pop() 
                         : undefined),
-                    mimetype:
-                      artifact.artId?.mimetype ||
-                      artifact.artType ||
-                      artifact.mimetype,
+                    mimetype: artifact.artId?.mimetype || artifact.artType || artifact.mimetype,
                   })}
                   <ReorderButton
                     onMoveLeft={() => changeArtifactOrder(i, "left")}
@@ -179,6 +144,16 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             </div>
           </div>
         );
+      default:
+        return (
+          <input
+            type="text"
+            className={styles.answerInput}
+            value={answer}
+            placeholder="Your answer..."
+            onChange={e => setAnswer(e.target.value)}
+          />
+        );
     }
   }
 
@@ -188,17 +163,24 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
       return;
     }
 
-    let answerToSend = answer;
+    let answerToSend;
 
     if (currentQuestion.questionType === "ranked") {
-      answerToSend = artifactOrder.map(a => a.artId || a._id);
-      if (!answerToSend || answerToSend.length === 0) {
+      answerToSend = artifactOrder.map((a, i) =>({
+        id: a.artId || a._id,
+        filename: a.filename || (a.artUrl ? a.artUrl.split("/").pop() : undefined),
+        label: currentQuestion.rankedLabels?.[i] || `${i+1}`
+      }));
+      if (!answerToSend.length) {
         alert("Please rank the artifacts.");
         return;
       }
-    } else if (answer.trim() === "") {
-      alert("Please provide an answer.");
-      return;
+    } else {
+      if (answer.trim() === "") {
+        alert("Please provide an answer.");
+        return;
+      }
+      answerToSend = answer;
     }
 
     setLoading(true);
@@ -208,10 +190,8 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
       setAnswer("");
 
       if (idx < orderedQuestions.length - 1) {
-        // go to next question
         navigate(`../questions/${idx + 1}`);
       } else {
-        // all done
         onComplete();
       }
     } catch (err) {
@@ -221,10 +201,6 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
     }
   }
 
-  useEffect(() => {
-    console.log("ARTIFACT ORDER UPDATED:", artifactOrder);
-  }, [artifactOrder]);
-  
   return (
     <div className={styles.questionsContainer}>
       <h2>
@@ -233,18 +209,13 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
 
       {currentQuestion.questionType !== "ranked" &&
         Array.isArray(currentQuestion.artifact) &&
-        currentQuestion.artifact.map((art, i) => {
+        initialArtifacts.map((art, i) => {
           const src = art.artId?.url || art.artUrl;
-          if (!src) {
-            console.warn(`Artifact[${i}] has no URL:`, art);
-            return null;
-          }
+          if (!src) return null;
 
           const filename =
             art.artId?.filename ||
-            (typeof art.artUrl === "string"
-              ? art.artUrl.split("/").pop()
-              : `artifact-${i}`);
+            (typeof art.artUrl === "string" ? art.artUrl.split("/").pop() : `artifact-${i}`);
           const mimetype = art.artId?.mimetype || art.mimetype;
 
           return (

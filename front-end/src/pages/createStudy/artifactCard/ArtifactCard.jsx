@@ -98,7 +98,7 @@ function ArtifactApp({ onArtifactsChange, studyId, onSessionArtifactIdsChange })
                 Type: {artifact.mimetype || 'Unknown'}
               </p>
               {renderArtifactContent(artifact)}
-              <br />
+              
               <button className={styles.removeButton} onClick={() => handleDelete(artifact._id)}>Delete</button>
             </li>
           ))}
