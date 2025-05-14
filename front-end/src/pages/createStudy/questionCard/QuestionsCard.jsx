@@ -4,8 +4,6 @@ import { renderArtifactContent } from "../../../services/ArtifactService";
 import styles from "./QuestionsCard.module.css";
 import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 
-import ReorderButton from "../../../components/shared/reorderButton/ReorderButton";
-
 function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }) {
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState("multiple-choice");
@@ -41,18 +39,6 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
       setSelectedArtifacts([...selectedArtifacts, artifact]);
     }
   };
-
-  const ChangeSelectedArtifactOrder = (index, direction) =>{
-    const newOrder = [...selectedArtifacts];
-
-  if (direction === "left" && index > 0) {
-    [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
-  }
-  if (direction === "right" && index < newOrder.length - 1) {
-    [newOrder[index + 1], newOrder[index]] = [newOrder[index], newOrder[index + 1]];
-  }
-    setSelectedArtifacts(newOrder);
-  }
 
   const handleAddQuestion = () => {
     if (!questionText.trim()) {
@@ -327,12 +313,6 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
                     </p>
                     {renderArtifactContent(artifact)}
                   </div>
-                <ReorderButton
-                  onMoveLeft={() => ChangeSelectedArtifactOrder(i, "left")}
-                  onMoveRight={() => ChangeSelectedArtifactOrder(i, "right")}
-                  disableLeft={i === 0}
-                  disableRight={i === selectedArtifacts.length - 1}
-                />
               </li>
             ))}
           </ul>
