@@ -27,6 +27,11 @@ const studySchema = new mongoose.Schema({
     expirationDate: {
         type: Date,
     },
+    consent: {
+        title: { type: String, max: 100, required: function() { return this.published; } },
+        subtitle: { type: String, max: 150, },
+        text: { type: String, required: function() { return this.published; } },
+    },
     // questions
     questions: [
         {
