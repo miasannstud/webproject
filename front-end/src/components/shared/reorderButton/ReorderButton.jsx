@@ -2,17 +2,17 @@ import styles from './ReorderButton.module.css';
 
 function ReorderButton({ onMoveLeft, onMoveRight, disableLeft, disableRight }) {
   return (
-    <div className="reorderButtonCont">
+    <div className={styles.reorderButtonCont}>
       <button
-        className="leftButton"
+        className={styles.leftButton}
         onClick={onMoveLeft}
         disabled={disableLeft}
       >
         &larr;  {/* This shows a left arrow emoji */}
       </button>
-      
+
       <button
-        className="rightButton"
+        className={styles.rightButton}
         onClick={onMoveRight}
         disabled={disableRight}
       >

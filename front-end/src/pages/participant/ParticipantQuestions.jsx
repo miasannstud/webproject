@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styles from "./ParticipantQuestions.module.css";
 import { answerQuestions } from "../../services/sessionService";
 import { renderArtifactContent } from "../../services/ArtifactService";
+import ReorderButton from "../../components/shared/reorderButton/ReorderButton";
+import styles from "./ParticipantQuestions.module.css";
 
 function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
   const { questionIndex } = useParams();
@@ -14,6 +15,41 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
 
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Use artifact order for ranked question
+  const [artifactOrder, setArtifactOrder] = useState(
+    currentQuestion.questionType === "ranked" &&
+      Array.isArray(currentQuestion.artifact)
+      ? [...currentQuestion.artifact]
+      : []
+  );
+
+  // Reset artifact order when question changes
+  useEffect(() => {
+    if (
+      currentQuestion.questionType === "ranked" &&
+      Array.isArray(currentQuestion.artifact)
+    ) {
+      setArtifactOrder([...currentQuestion.artifact]);
+    }
+  }, [currentQuestion]);
+
+  const changeArtifactOrder = (index, direction) => {
+    const newOrder = [...artifactOrder];
+    if (direction === "left" && index > 0) {
+      [newOrder[index - 1], newOrder[index]] = [
+        newOrder[index],
+        newOrder[index - 1],
+      ];
+    }
+    if (direction === "right" && index < newOrder.length - 1) {
+      [newOrder[index + 1], newOrder[index]] = [
+        newOrder[index],
+        newOrder[index + 1],
+      ];
+    }
+    setArtifactOrder(newOrder);
+  };
 
   if (!questions || questions.length === 0) {
     return <div>No questions available.</div>;
@@ -31,7 +67,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
                   name="mc"
                   value={opt.text}
                   checked={answer === opt.text}
-                  onChange={e => setAnswer(e.target.value)}
+                  onChange={(e) => setAnswer(e.target.value)}
                 />
                 {opt.text}
               </label>
@@ -45,7 +81,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             className={styles.answerInput}
             value={answer}
             placeholder="Your answer..."
-            onChange={e => setAnswer(e.target.value)}
+            onChange={(e) => setAnswer(e.target.value)}
           />
         );
       case "slider":
@@ -63,7 +99,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
               min="0"
               max="10"
               value={answer === "" ? 0 : answer}
-              onChange={e => setAnswer(e.target.value)}
+              onChange={(e) => setAnswer(e.target.value)}
               className={styles.sliderInput}
             />
             <div className={styles.sliderValue}>
@@ -78,8 +114,53 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             className={styles.answerInput}
             value={answer}
             placeholder="Your answer..."
-            onChange={e => setAnswer(e.target.value)}
+            onChange={(e) => setAnswer(e.target.value)}
           />
+        );
+      case "ranked":
+        const { rankedLabels } = currentQuestion;
+        return (
+          <div className={styles.rankedContainer}>
+            <div className={styles.rankedRow}>
+              {artifactOrder.map((artifact, i) => (
+                <div
+                  key={artifact.artId || artifact._id}
+                  className={styles.artifactItem}
+                >
+                  {/* Show label above image for first and last */}
+                  {i === 0 && rankedLabels && (
+                    <div className={styles.rankedLabelTop}>
+                      {rankedLabels.minLabel}
+                    </div>
+                  )}
+                  {i === artifactOrder.length - 1 && rankedLabels && (
+                    <div className={styles.rankedLabelTop}>
+                      {rankedLabels.maxLabel}
+                    </div>
+                  )}
+                  {renderArtifactContent({
+                    url: artifact.artId?.url || artifact.artUrl,
+                    filename:
+                      artifact.artId?.filename ||
+                      artifact.filename ||
+                      (typeof artifact.artUrl === "string"
+                        ? artifact.artUrl.split("/").pop()
+                        : undefined),
+                    mimetype:
+                      artifact.artId?.mimetype ||
+                      artifact.artType ||
+                      artifact.mimetype,
+                  })}
+                  <ReorderButton
+                    onMoveLeft={() => changeArtifactOrder(i, "left")}
+                    onMoveRight={() => changeArtifactOrder(i, "right")}
+                    disableLeft={i === 0}
+                    disableRight={i === artifactOrder.length - 1}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         );
     }
   }
@@ -89,19 +170,23 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
       alert("Error: missing question ID.");
       return;
     }
-    if (answer.trim() === "") {
+
+    let answerToSend = answer;
+
+    if (currentQuestion.questionType === "ranked") {
+      answerToSend = artifactOrder.map(a => a.artId || a._id);
+      if (!answerToSend || answerToSend.length === 0) {
+        alert("Please rank the artifacts.");
+        return;
+      }
+    } else if (answer.trim() === "") {
       alert("Please provide an answer.");
       return;
     }
 
     setLoading(true);
     try {
-      await answerQuestions(
-        studyId,
-        sessionData._id,
-        questionId,
-        answer
-      );
+      await answerQuestions(studyId, sessionData._id, questionId, answerToSend);
       setLoading(false);
       setAnswer("");
 
@@ -119,14 +204,18 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
     }
   }
 
-  console.log("ARTIFACT ARRAY:", currentQuestion.artifact);
+  useEffect(() => {
+    console.log("ARTIFACT ORDER UPDATED:", artifactOrder);
+  }, [artifactOrder]);
+  
   return (
     <div className={styles.questionsContainer}>
       <h2>
         Question {idx + 1} of {questions.length}
       </h2>
 
-      {Array.isArray(currentQuestion.artifact) &&
+      {currentQuestion.questionType !== "ranked" &&
+        Array.isArray(currentQuestion.artifact) &&
         currentQuestion.artifact.map((art, i) => {
           const src = art.artId?.url || art.artUrl;
           if (!src) {
@@ -146,15 +235,15 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
               {renderArtifactContent({ url: src, filename, mimetype })}
             </div>
           );
-      })}
-      
+        })}
+
       <p>{currentQuestion.questionText || "No question text provided."}</p>
       {renderAnswerInput()}
       <div className={styles.buttonContainer}>
         <button
           onClick={handleNext}
           className={styles.nextButton}
-          disabled={loading || answer.trim() === ""}
+          disabled={loading || (currentQuestion.questionType !== "ranked" && answer.trim() === "")}
         >
           {idx === questions.length - 1 ? "Submit" : "Next"}
         </button>

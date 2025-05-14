@@ -4,7 +4,7 @@ import { renderArtifactContent } from "../../../services/ArtifactService";
 import styles from "./QuestionsCard.module.css";
 import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 
-import ReorderButton from "../../../components/shared/reorderButton/ReorderButton.jsx";
+import ReorderButton from "../../../components/shared/reorderButton/ReorderButton";
 
 function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }) {
   const [questionText, setQuestionText] = useState("");
@@ -152,7 +152,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
         {question.questionType === "multiple-choice" && (
           <ul className={styles.optionsList}>
             {question.options.map((option, i) => (
-              <li key={i} className={styles.optionItem}>
+              <li key={i} className={styles.optionsItem}>
                 {typeof option === "object" && option !== null ? option.text : option}
               </li>
             ))}
@@ -160,17 +160,17 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
         )}
 
         {question.questionType === "slider" && question.sliderRange && (
-          <div className={styles.sliderLabels}>
-            <span>Minimun Label: {question.sliderRange.minLabel}</span>
-            <span>Maximun Label: {question.sliderRange.maxLabel}</span>
-          </div>
+          <ul className={styles.labelsList}>
+            <li className={styles.labelItem}>Minimun Label: {question.sliderRange.minLabel}</li>
+            <li className={styles.labelItem}>Maximun Label: {question.sliderRange.maxLabel}</li>
+          </ul>
         )}
 
         {question.questionType === "ranked" && question.rankedLabel && (
-          <div className={styles.rankedLabels}>
-            <span>Minimun Label: {question.rankedLabel.minLabel}</span>
-            <span>Maximun Label: {question.rankedLabel.maxLabel}</span>
-          </div>
+          <ul className={styles.labelsList}>
+            <li className={styles.labelItem}>Minimun Label: {question.rankedLabel.minLabel}</li>
+            <li className={styles.labelItem}>Maximun Label: {question.rankedLabel.maxLabel}</li>
+          </ul>
         )}
         
         <button data-testid="create-study-removeQuestionButton" onClick={() => onRemoveQuestion(index)} className={styles.removeButton}>
@@ -218,7 +218,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           <div className={styles.optionsContainer}>
             <h4>Options:</h4>
             {options.map((option, index) => (
-              <div key={index} className={styles.optionItem}>
+              <div key={index} className={styles.optionsItem}>
                 <input
                   data-testid="create-study-questionOption"
                   type="text"
@@ -238,49 +238,50 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
         )}
 
         {questionType === "slider" && (
-          <div className={styles.sliderLabelInputs}>
-            <label>
-              Slider Minimum Label:
-              <input
-                type="text"
-                value={sliderMinLabel}
-                onChange={(e) => setSliderMinLabel(e.target.value)}
-                className={styles.input}
-              />
-            </label>
-            <label>
-              Slider Maximum Label:
-              <input
-                type="text"
-                value={sliderMaxLabel}
-                onChange={(e) => setSliderMaxLabel(e.target.value)}
-                className={styles.input}
-              />
-            </label>
-          </div>
+            <ul className={styles.optionsList}>
+              <li className={styles.optionsItem}>
+                <h4>Slider Minimum Label:</h4>
+                <input
+                  type="text"
+                  value={sliderMinLabel}
+                  onChange={(e) => setSliderMinLabel(e.target.value)}
+                  className={styles.input}
+                />
+              </li>
+              <li className={styles.optionsItem}>
+                <h4>Slider Maximum Label:</h4>
+                <input
+                  type="text"
+                  value={sliderMaxLabel}
+                  onChange={(e) => setSliderMaxLabel(e.target.value)}
+                  className={styles.input}
+                />
+              </li>
+            </ul>
         )}
 
         {questionType === "ranked" && (
-          <div className={styles.RankedLabelInputs}>
-            <label>
-              Ranked Minimum Label:
+          <ul className={styles.optionsList}>
+            <li className={styles.optionsItem}>
+              <h4>Ranked Minimum Label:</h4>
               <input
                 type="text"
                 value={rankedMinLabel}
                 onChange={(e) => setRankedMinLabel(e.target.value)}
                 className={styles.input}
               />
-            </label>
-            <label>
-              Ranked Maximum Label:
+            </li>
+
+            <li className={styles.optionsItem}>
+              <h4>Ranked Maximum Label:</h4>
               <input
                 type="text"
                 value={rankedMaxLabel}
                 onChange={(e) => setRankedMaxLabel(e.target.value)}
                 className={styles.input}
               />
-            </label>
-          </div>
+            </li>
+          </ul>
         )}
 
         <div className={styles.inputGroup}>

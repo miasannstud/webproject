@@ -93,7 +93,7 @@ const fetchArtifactsList = useCallback(async () => {
               </p>
               {renderArtifactContent(artifact)}
               <br />
-              <button onClick={() => handleDelete(artifact._id)}>Delete</button>
+              <button className={styles.removeButton} onClick={() => handleDelete(artifact._id)}>Delete</button>
             </li>
           ))}
         </ul>
