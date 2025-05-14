@@ -191,7 +191,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
     let answerToSend = answer;
 
     if (currentQuestion.questionType === "ranked") {
-      answerToSend = artifactOrder.map(a => a.artId || a._id);
+      answerToSend = JSON.stringify(artifactOrder.map(a => a.artId || a._id));
       if (!answerToSend || answerToSend.length === 0) {
         alert("Please rank the artifacts.");
         return;
