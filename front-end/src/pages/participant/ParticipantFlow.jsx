@@ -56,6 +56,7 @@ function ParticipantFlow() {
               onConsentChange={setConsent}
               onNext={handleConsentNext}
               consentTitle={study.consent.title}
+              consentAuthor={study.consent.author}
               consentSubtitle={study.consent.subtitle}
               consentText={study.consent.text}
             />

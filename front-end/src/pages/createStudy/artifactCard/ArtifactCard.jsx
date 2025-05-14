@@ -99,7 +99,7 @@ function ArtifactApp({ onArtifactsChange, studyId, onSessionArtifactIdsChange })
               </p>
               {renderArtifactContent(artifact)}
               <br />
-              <button onClick={() => handleDelete(artifact._id)}>Delete</button>
+              <button className={styles.removeButton} onClick={() => handleDelete(artifact._id)}>Delete</button>
             </li>
           ))}
         </ul>

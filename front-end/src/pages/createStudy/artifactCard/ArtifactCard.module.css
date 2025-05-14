@@ -46,7 +46,7 @@
   background-color: #509aa9;
 }
 
-.uploadForm button {
+.uploadForm button, .artifactButton {
   padding: 10px 14px ;
   background-color: #5bccd6;
   color: #fff;
@@ -100,4 +100,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 150px;
+}
+
+.removeButton {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.removeButton:hover {
+  background-color: #cc0000;
 }

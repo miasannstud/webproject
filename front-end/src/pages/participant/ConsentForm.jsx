@@ -5,12 +5,14 @@ function ConsentForm({
   onConsentChange,
   onNext,
   consentTitle,
+  consentAuthor,
   consentSubtitle,
   consentText,
 }) {
   return (
     <div className={styles.consentContainer}>
       <h2>{consentTitle}</h2>
+      {consentAuthor && <p className={styles.author}>Study created by: {consentAuthor}</p>}
       {consentSubtitle && <h4 className={styles.subtitle}>{consentSubtitle}</h4>}
       <p className={styles.body}>{consentText}</p>
 
