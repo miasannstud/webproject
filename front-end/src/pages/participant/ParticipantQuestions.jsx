@@ -118,18 +118,19 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             <div className={styles.rankedRow}>
               {artifactOrder.map((artifact, i) => (
                 <div key={artifact.artId || artifact._id} className={styles.artifactItem}>
-                  {i === 0 && rankedLabels && (
-                    <div className={styles.rankedLabelTop}>{rankedLabels.minLabel}</div>
-                  )}
-                  {i === artifactOrder.length - 1 && rankedLabels && (
-                    <div className={styles.rankedLabelTop}>{rankedLabels.maxLabel}</div>
+                  {rankedLabels && rankedLabels[i] && (
+                    <div className={styles.rankedLabels}>
+                      {rankedLabels[i]}
+                    </div>
                   )}
                   {renderArtifactContent({
                     url: artifact.artId?.url || artifact.artUrl,
                     filename:
                       artifact.artId?.filename ||
                       artifact.filename ||
-                      (typeof artifact.artUrl === "string" ? artifact.artUrl.split("/").pop() : undefined),
+                      (typeof artifact.artUrl === "string" 
+                        ? artifact.artUrl.split("/").pop() 
+                        : undefined),
                     mimetype: artifact.artId?.mimetype || artifact.artType || artifact.mimetype,
                   })}
                   <ReorderButton
@@ -165,7 +166,11 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
     let answerToSend;
 
     if (currentQuestion.questionType === "ranked") {
-      answerToSend = artifactOrder.map(a => a.artId || a._id);
+      answerToSend = artifactOrder.map((a, i) =>({
+        id: a.artId || a._id,
+        filename: a.filename || (a.artUrl ? a.artUrl.split("/").pop() : undefined),
+        label: currentQuestion.rankedLabels?.[i] || `${i+1}`
+      }));
       if (!answerToSend.length) {
         alert("Please rank the artifacts.");
         return;

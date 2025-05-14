@@ -129,7 +129,7 @@ describe("API Intergration Tests! :D", () => {
         });
     })
 
-    describe("Create a user with a password that has the minimun length required off 5 chara, POST", () => {
+    describe("Create a user with a password that has the minimum length required off 5 chara, POST", () => {
       describe("Given that user does not exist in the database", () => {
         it("It should succeed and return 201", async () => {
           const response = await fetch(`${backendUrl}/api/users/signup`, {
