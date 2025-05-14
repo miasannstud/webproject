@@ -17,7 +17,7 @@ const sessionSchema = new mongoose.Schema({
   answers: [
     {
       questionId: mongoose.Schema.Types.ObjectId,
-      response: String,
+      response: mongoose.Schema.Types.Mixed,
     },
   ],
   createdAt: { type: Date, default: Date.now },

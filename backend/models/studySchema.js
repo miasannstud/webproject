@@ -62,8 +62,8 @@ const studySchema = new mongoose.Schema({
             },
 
             rankedLabels:{
-                minLabel: { type: String, default: "Add your own minimun parameters" },
-                maxLabel: { type: String, default: "Add your own maximun parameters"  },
+                type: [String], 
+                default: "Add your own parameters",
             }
         }
     ]
