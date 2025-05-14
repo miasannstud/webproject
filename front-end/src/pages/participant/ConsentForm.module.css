@@ -1,4 +1,4 @@
-.termsContainer {
+.consentContainer {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -7,12 +7,12 @@
     margin-bottom: 20px;
   }
   
-  .termsContainer h2 {
+  .consentContainer h2 {
     font-size: 1.8rem;
     margin-bottom: 10px;
   }
   
-  .termsContainer p {
+  .consentContainer p {
     font-size: 1rem;
     margin-bottom: 20px;
     color: #555;

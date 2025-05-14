@@ -4,6 +4,7 @@ import StudyPreview from "./studyPreview/StudyPreview";
 import ArtifactApp from "./artifactCard/ArtifactCard";
 import QuestionsCard from "./questionCard/QuestionsCard";
 import ExpireDate from "./expireCard/ExpireDate";
+import ConsentCard from "./consentCard/ConsentCard";
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
 import DemographicsCard from "./demographicsCard/DemographicsCard";
@@ -18,6 +19,7 @@ function CreateStudy() {
   const [successMessage, setSuccessMessage] = useState("");
   const [studyId, setStudyId] = useState(null);
   const [demographics, setDemographics] = useState([]);
+  const [consent, setConsent] = useState({ title: "", subtitle: "", text: "", });
 
   useEffect(() => {
     if (!studyId) {
@@ -28,6 +30,7 @@ function CreateStudy() {
         questions: [],
         createdBy: researcherId,
         expirationDate,
+        consent: { title: "", subtitle: "", text: "" },
         draft: true,
       }).then((draft) => {
         setStudyId(draft._id);
@@ -51,6 +54,10 @@ function CreateStudy() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [title, description, questions, artifacts, successMessage]);
+
+  const handleConsentTitle   = (val) => setConsent(c => ({ ...c, title: val }));
+  const handleConsentSubtitle = (val) => setConsent(c => ({ ...c, subtitle: val }));
+  const handleConsentText    = (val) => setConsent(c => ({ ...c, text: val }));
 
   const handleAddQuestion = (newQuestion) => {
     setQuestions([...questions, newQuestion]);
@@ -96,6 +103,7 @@ function CreateStudy() {
         expirationDate: expirationDate || null,
         createdBy: researcherId,
         draft: false,
+        consent,
       };
 
       const updatedStudy = await updateStudy(studyId, studyData);
@@ -131,6 +139,16 @@ function CreateStudy() {
           description={description}
           onTitleChange={setTitle}
           onDescriptionChange={setDescription}
+        />
+      </div>
+      <div className={styles.consentContainer}>
+        <ConsentCard
+          consentTitle={consent.title}
+          consentSubtitle={consent.subtitle}
+          consentText={consent.text}
+          onTitleChange={handleConsentTitle}
+          onSubtitleChange={handleConsentSubtitle}
+          onTextChange={handleConsentText}
         />
       </div>
       <div className={styles.demographicsContainer}>

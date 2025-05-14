@@ -65,7 +65,7 @@ function ResultsCard({ study }) {
       <p className={styles.info}>
         <strong>Expiration Date:</strong> {" "}
           {expirationDate
-            ? new Date(expirationDate).toLocaleDateString("en-GB")
+            ? new Date(expirationDate).toLocaleDateString()
             : "—"
           }
       </p>
