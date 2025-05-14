@@ -333,8 +333,8 @@ const createQuestion = async (req, res) => {
       artifact: artifact || [],
       options: options || [],
       sliderRange: {
-        minLabel: sliderRange?.minLabel || "Add your own minimun parameters",
-        maxLabel: sliderRange?.maxLabel || "Add your own maximun parameters",
+        minLabel: sliderRange?.minLabel || "Add your own minimum parameters",
+        maxLabel: sliderRange?.maxLabel || "Add your own maximum parameters",
         minValue: 0,
         maxValue: 10
       },

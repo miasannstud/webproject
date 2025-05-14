@@ -171,10 +171,10 @@ function QuestionsCard({
         {question.questionType === "slider" && question.sliderRange && (
           <ul className={styles.labelsList}>
             <li className={styles.labelItem}>
-              Minimun Label: {question.sliderRange.minLabel}
+              minimum Label: {question.sliderRange.minLabel}
             </li>
             <li className={styles.labelItem}>
-              Maximun Label: {question.sliderRange.maxLabel}
+              maximum Label: {question.sliderRange.maxLabel}
             </li>
           </ul>
         )}
