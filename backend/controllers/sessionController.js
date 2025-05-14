@@ -3,26 +3,33 @@ import Study from '../models/studySchema.js';
 
 export const createSession = async (req, res) => {
   try {
-    // extract the studyId from the route parameters and data from the request body
     const { studyId } = req.params;
-    const { demographics } = req.body;
+    let { demographics } = req.body;
 
-    // some validation
-    if (!studyId) {
-      return res.status(400).json({ error: 'Study ID is required' });
-    }
-    if (!demographics) {
-      return res.status(400).json({ error: 'Demographics are required' });
+    if (demographics && typeof demographics === "object") {
+      demographics = Object.fromEntries(
+        Object.entries(demographics).filter(([_, v]) => v !== "" && v !== undefined && v !== null)
+      );
+    } else {
+      demographics = {};
     }
 
-    // create a new session with all required details
-    const session = new Session({ studyId, demographics });
+    const study = await Study.findById(studyId);
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
+    }
+
+    const session = new Session({
+      studyId,
+      demographics,
+      answers: [],
+    });
 
     await session.save();
     res.status(201).json(session);
   } catch (error) {
     console.error("Error creating session:", error);
-    res.status(500).json({ error: 'Failed to create session' });
+    res.status(500).json({ error: "Failed to create session" });
   }
 };
 
