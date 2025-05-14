@@ -22,7 +22,11 @@ function ParticipantFlow() {
 
   const handleConsentNext = () => {
     if (!consent) return;
-    navigate(`/participant/${studyId}/demographics`);
+    if (study.demographics && study.demographics.length > 0) {
+      navigate(`/participant/${studyId}/demographics`);
+    } else {
+      navigate(`/participant/${studyId}/info`);
+    }
   };
 
   const handleDemographicsSubmit = async () => {
@@ -51,16 +55,16 @@ function ParticipantFlow() {
     <div>
       <Routes>
         <Route index element={
-            <ConsentForm
-              agreeConsent={consent}
-              onConsentChange={setConsent}
-              onNext={handleConsentNext}
-              consentTitle={study.consent.title}
-              consentAuthor={study.consent.author}
-              consentSubtitle={study.consent.subtitle}
-              consentText={study.consent.text}
-            />
-          }
+          <ConsentForm
+            agreeConsent={consent}
+            onConsentChange={setConsent}
+            onNext={handleConsentNext}
+            consentTitle={study.consent.title}
+            consentAuthor={study.consent.author}
+            consentSubtitle={study.consent.subtitle}
+            consentText={study.consent.text}
+          />
+        }
         />
 
         <Route path="demographics" element={

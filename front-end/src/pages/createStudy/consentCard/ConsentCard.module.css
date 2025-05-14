@@ -1,0 +1,15 @@
+.consentContainer {
+  margin: 40px auto;
+  text-align: center;
+  width: 80%;
+}
+
+.consentCard {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
