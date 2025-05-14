@@ -1,3 +1,5 @@
+import styles from './ConsentCard.module.css';
+
 
 function ConsentCard({
   consentTitle,
@@ -10,8 +12,8 @@ function ConsentCard({
   onTextChange,
 }) {
   return (
-    <div>
-
+    <div className={styles.consentContainer}>
+      <div className={styles.consentCard}>
       <div>
         <label htmlFor="consent-title">Consent Title</label>
         <input
@@ -56,6 +58,7 @@ function ConsentCard({
           onChange={(e) => onTextChange(e.target.value)}
           placeholder="Full consent information goes here..."
         />
+      </div>
       </div>
     </div>
   );
