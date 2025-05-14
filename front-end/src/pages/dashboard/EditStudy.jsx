@@ -18,7 +18,7 @@ function EditStudy() {
   const [expirationDate, setExpirationDate] = useState("");
   const [questions, setQuestions] = useState([]);
   const [artifacts, setArtifacts] = useState([]);
-  const [consent, setConsent] = useState({ title: "", subtitle: "", text: "", });
+  const [consent, setConsent] = useState({ title: "", author: "", subtitle: "", text: "", });
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [demographics, setDemographics] = useState([]);
@@ -42,6 +42,7 @@ function EditStudy() {
         setDemographics(study.demographics || []);
         setConsent({
           title: study.consent?.title || "",
+          author: study.consent?.author || "",
           subtitle: study.consent?.subtitle || "",
           text: study.consent?.text || "",
         });
@@ -53,6 +54,7 @@ function EditStudy() {
   }, [studyId]);
 
   const handleConsentTitle    = (val) => setConsent(c => ({ ...c, title: val }));
+  const handleConsentAuthor   = (val) => setConsent(c => ({ ...c, author: val }));
   const handleConsentSubtitle = (val) => setConsent(c => ({ ...c, subtitle: val }));
   const handleConsentText     = (val) => setConsent(c => ({ ...c, text: val }));
 
@@ -106,9 +108,11 @@ function EditStudy() {
       <div className={styles.consentContainer}>
         <ConsentCard
           consentTitle={consent.title}
+          consentAuthor={consent.author}
           consentSubtitle={consent.subtitle}
           consentText={consent.text}
           onTitleChange={handleConsentTitle}
+          onAuthorChange={handleConsentAuthor}
           onSubtitleChange={handleConsentSubtitle}
           onTextChange={handleConsentText}
         />

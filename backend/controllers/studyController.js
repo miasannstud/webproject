@@ -352,6 +352,16 @@ const updateQuestion = async (req, res) => {
       if (maxLabel !== undefined) question.sliderRange.maxLabel = maxLabel;
     }
 
+    // Update ranked range if info is provided and question type is slider
+    if  (req.body.rankedLabels && question.questionType == "ranked"){
+      // Get the ranked range from the reques body
+      const {minLabel, maxLabel} = req.body.rankedLabels;
+
+      // if labels are not empty then update them
+      if (minLabel !== undefined) question.rankedLabels.minLabel = minLabel;
+      if (maxLabel !== undefined) question.rankedLabels.maxLabel = maxLabel;
+    }
+
     await study.save();
     res.status(200).json({ message: "Question got updated", question });
   } catch (error) {

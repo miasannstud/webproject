@@ -28,15 +28,22 @@ const studySchema = new mongoose.Schema({
         type: Date,
     },
     consent: {
-        title: { type: String, max: 100, required: function() { return this.published; } },
+        title: { type: String, max: 100, required: true, },
+        author: { type: String, max: 100, },
         subtitle: { type: String, max: 150, },
-        text: { type: String, required: function() { return this.published; } },
+        text: { type: String, required: true, },
     },
     // questions
     questions: [
         {
-            questionText: { type: String, max: 150 },
-            questionType: { type: String, enum: ['multiple-choice', 'text-box', 'slider'] },
+            questionText: {
+                type: String,
+                max: 150,
+            },
+            questionType: {
+                type: String,
+                enum: ['multiple-choice', 'text-box', 'slider', 'ranked'],
+            },
             artifact: [
                 {
                     artId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
@@ -47,12 +54,17 @@ const studySchema = new mongoose.Schema({
             options: [
                 { text: { type: String } }
             ],
-            sliderRange: {
+            sliderRange:{
                 minLabel: { type: String, default: "Add your own minimun parameters" },
-                maxLabel: { type: String, default: "Add your own maximun parameters" },
+                maxLabel: { type: String, default: "Add your own maximun parameters"  },
                 minValue: { type: Number, default: 0 },
                 maxValue: { type: Number, default: 10 },
             },
+
+            rankedLabels:{
+                minLabel: { type: String, default: "Add your own minimun parameters" },
+                maxLabel: { type: String, default: "Add your own maximun parameters"  },
+            }
         }
     ]
 }, { timestamps: true });
