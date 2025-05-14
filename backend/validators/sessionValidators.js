@@ -1,4 +1,4 @@
-import { param, body, validationResult } from 'express-validator';
+/* import { param, body, validationResult } from 'express-validator';
 
 const handleValidation = (req, res, next) => {
     const errors = validationResult(req);
@@ -12,16 +12,19 @@ export const validateCreateSession = [
     param('studyId')
       .notEmpty().withMessage('Study ID is required')
       .isMongoId().withMessage('Invalid Study ID'),
-    body('demographics')
-      .notEmpty().withMessage('Demographics are required')
-      .exists().withMessage('Demographics are required'),
     body('demographics.age')
-      .notEmpty().withMessage('Age is required')
+      .optional()
       .isInt().withMessage('Age must be an integer')
       .isInt({ min: 0, max: 116 }).withMessage('Age must be between 0 and 116'),
     body('demographics.gender')
-      .notEmpty().withMessage('Gender is required')
+      .optional()
       .isIn(['Male', 'Female', 'Other']).withMessage('Gender must be Male, Female, or Other'),
+    body('demographics.education')
+      .optional()
+      .isString().withMessage('Education must be a string'),
+    body('demographics.country')
+      .optional()
+      .isString().withMessage('Country must be a string'),
 
     handleValidation
   ];
@@ -38,4 +41,4 @@ export const validateCreateSession = [
       .isString().withMessage('Answers must be a string'),
 
     handleValidation
-  ];
+  ]; */
