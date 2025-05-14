@@ -24,15 +24,3 @@ services:
       - "8186:8186"
     depends_on:
       - backend
-# only need this if using local mongo container, and we dont so..
-  # mongodb:
-  #   image: mongo:latest
-  #   container_name: project-mongodb
-  #   ports:
-  #     - "27017:27017"
-  #   healthcheck:
-  #     test: ["CMD", "mongodb", "--eval", "db.runCommand('ping')"]
-  #     interval: 30s
-  #     retries: 3
-  #     start_period: 10s
-  #     timeout: 10s
