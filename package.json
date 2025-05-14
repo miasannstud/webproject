@@ -13,7 +13,10 @@
   },
   "jest": {
     "testTimeout": 60000,
-    "testMatch": ["**/?(*.)+(e2e).[jt]s?(x)", "**/?(*.)+(e2e).[m]j?(s)"],
+    "testMatch": [
+      "**/?(*.)+(e2e).[jt]s?(x)",
+      "**/?(*.)+(e2e).[m]j?(s)"
+    ],
     "testEnvironment": "node"
   },
   "repository": {
@@ -31,6 +34,7 @@
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "country-list": "^2.3.0",
     "devmon": "^0.0.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",

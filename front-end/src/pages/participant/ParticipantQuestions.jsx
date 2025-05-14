@@ -1,22 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { answerQuestions } from "../../services/sessionService";
 import { renderArtifactContent } from "../../services/ArtifactService";
 import ReorderButton from "../../components/shared/reorderButton/ReorderButton";
 import styles from "./ParticipantQuestions.module.css";
+import { generateLatinSquare } from "../../utils/latinSquare";
+import { pickLatinIndex } from "../../utils/pickLatinIndex";
 
 function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
+  if (!sessionData || !sessionData._id) {
+    return <div>Loading session…</div>;
+  }
+
   const { questionIndex } = useParams();
   const navigate = useNavigate();
-  const idx = parseInt(questionIndex, 10);
+  const rawIdx = parseInt(questionIndex, 10);
 
-  const currentQuestion = questions[idx];
+  const orderedQuestions = useMemo(() => {
+    const n = questions.length;
+    const square = generateLatinSquare(n);
+    const latinRow = pickLatinIndex(sessionData._id, n);
+    const order = square[latinRow];
+    return order.map(i => questions[i]);
+  }, [questions, sessionData._id]);
+
+  const idx = rawIdx;
+
+  const currentQuestion = orderedQuestions[idx];
   const questionId = currentQuestion._id || currentQuestion.id;
 
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Use artifact order for ranked question
+// Use artifact order for ranked question
   const [artifactOrder, setArtifactOrder] = useState(
     currentQuestion.questionType === "ranked" &&
       Array.isArray(currentQuestion.artifact)
@@ -51,7 +67,8 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
     setArtifactOrder(newOrder);
   };
 
-  if (!questions || questions.length === 0) {
+
+  if (!orderedQuestions || orderedQuestions.length === 0) {
     return <div>No questions available.</div>;
   }
 
@@ -190,7 +207,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
       setLoading(false);
       setAnswer("");
 
-      if (idx < questions.length - 1) {
+      if (idx < orderedQuestions.length - 1) {
         // go to next question
         navigate(`../questions/${idx + 1}`);
       } else {
@@ -211,7 +228,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
   return (
     <div className={styles.questionsContainer}>
       <h2>
-        Question {idx + 1} of {questions.length}
+        Question {idx + 1} of {orderedQuestions.length}
       </h2>
 
       {currentQuestion.questionType !== "ranked" &&
@@ -228,7 +245,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             (typeof art.artUrl === "string"
               ? art.artUrl.split("/").pop()
               : `artifact-${i}`);
-          const mimetype = art.artId?.mimetype || art.artType;
+          const mimetype = art.artId?.mimetype || art.mimetype;
 
           return (
             <div key={i} className={styles.imageContainer}>
@@ -245,7 +262,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
           className={styles.nextButton}
           disabled={loading || (currentQuestion.questionType !== "ranked" && answer.trim() === "")}
         >
-          {idx === questions.length - 1 ? "Submit" : "Next"}
+          {idx === orderedQuestions.length - 1 ? "Submit" : "Next"}
         </button>
       </div>
     </div>

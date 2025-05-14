@@ -14,7 +14,7 @@ const getStudies = async (req, res) => {
   }
 };
 
-// retrieve one study
+// retrieve one study, for researcher
 // GET /studies/:studyId
 const getStudyById = async (req, res) => {
   try {
@@ -33,11 +33,32 @@ const getStudyById = async (req, res) => {
   }
 };
 
+// retrieve one study, for participants
+// GET /studies/participant/:studyId
+export const getParticipantStudy = async (req, res) => {
+  try {
+    const { studyId } = req.params;
+    const study = await Study.findById(studyId);
+    if (!study) {
+      return res.status(404).json({ message: "Study not found" });
+    }
+    if (!study.published) {
+      return res.status(400).json({ message: "Study is not published" });
+    }
+    if (study.expirationDate && Date.now() > new Date(study.expirationDate).getTime()) {
+      return res.status(410).json({ message: "Study has expired" });
+    }
+    return res.json(study);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 // create study
 // POST /studies
 const createStudy = async (req, res) => {
   try {
-    const { studyTitle, description, published, questions, createdBy } = req.body;
+    const { studyTitle, description, published, questions, createdBy, expirationDate, consent } = req.body;
     // Use req.user._id if available, otherwise fallback to req.body.createdBy
     const creatorId = req.user ? req.user._id : createdBy;
 
@@ -50,7 +71,11 @@ const createStudy = async (req, res) => {
       studyTitle,
       description,
       published,
+      consent,
       questions,
+      expirationDate: expirationDate
+        ? new Date(expirationDate)
+        : undefined,
     });
 
     await newStudy.save();
@@ -66,7 +91,13 @@ const updateStudy = async (req, res) => {
   try {
     const { studyId } = req.params;
     // get the updated data from the request body
-    const updateData = req.body;
+    const { updateData, expirationDate } = req.body;
+
+    if (expirationDate !== undefined) {
+      updateData.expirationDate = expirationDate
+        ? new Date(expirationDate)
+        : null;
+    }
 
     const updatedStudy = await Study.findByIdAndUpdate(
       studyId,
@@ -133,9 +164,14 @@ const getStudyLink = async (req, res) => {
       return res.status(404).json({ message: "Study not found" });
     }
 
-    // make sure the study is published before making a link
+    // cant get link if study is unpublished
     if (!study.published) {
       return res.status(400).json({ message: "Study is not published yet" });
+    }
+    
+    // cant get link if study is expired
+    if (study.expirationDate && Date.now() > study.expirationDate.getTime()) {
+      return res.status(410).json({ message: "Study has expired" });
     }
 
     // build the url using the requests protocol and host
@@ -359,6 +395,7 @@ const deleteQuestion = async (req, res) => {
 export const studyController = {
   getStudies,
   getStudyById,
+  getParticipantStudy,
   createStudy,
   updateStudy,
   deleteStudy,

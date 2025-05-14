@@ -6,7 +6,7 @@ import { downloadStudyDataJSON, downloadStudyDataCSV } from "../../services/stud
 import useFetchSessionCount from "../../hooks/useFetchSessionCount";
 
 function ResultsCard({ study }) {
-  const { _id, studyTitle, questions, createdAt, updatedAt } = study;
+  const { _id, studyTitle, questions, createdAt, expirationDate } = study;
   const { sessionCount, loading, error } = useFetchSessionCount(_id);
 
   async function handleDownloadJSON() {
@@ -63,7 +63,11 @@ function ResultsCard({ study }) {
       </p>
       {error && <p className={styles.error}>Error fetching session count</p>}
       <p className={styles.info}>
-        <strong>Expiration Date:</strong> {new Date(updatedAt).toLocaleString()}
+        <strong>Expiration Date:</strong> {" "}
+          {expirationDate
+            ? new Date(expirationDate).toLocaleDateString()
+            : "—"
+          }
       </p>
       <button data-testid="results-downloadjson" className={styles.downloadButton} onClick={handleDownloadJSON}>
         Download data as JSON

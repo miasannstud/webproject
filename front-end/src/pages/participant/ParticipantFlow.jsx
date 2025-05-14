@@ -4,7 +4,7 @@ import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import useParticipantStudy from '../../hooks/useParticipantStudy';
 import { createSession } from '../../services/sessionService';
 
-import TermsStep from './TermsStep';
+import ConsentForm from './ConsentForm';
 import DemographicsForm from './DemographicsForm';
 import StudyOverview from './StudyOverview';
 import ParticipantQuestions from './ParticipantQuestions';
@@ -16,12 +16,12 @@ function ParticipantFlow() {
 
   const { study, loading, error } = useParticipantStudy(studyId);
 
-  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [consent, setConsent] = useState(false);
   const [demographics, setDemographics] = useState({ age: '', gender: '' });
   const [sessionData, setSessionData] = useState(null);
 
-  const handleTermsNext = () => {
-    if (!agreeTerms) return;
+  const handleConsentNext = () => {
+    if (!consent) return;
     navigate(`/participant/${studyId}/demographics`);
   };
 
@@ -45,45 +45,49 @@ function ParticipantFlow() {
   };
 
   if (loading) return <div>Loading…</div>;
-  if (error)   return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
       <Routes>
         <Route index element={
-            <TermsStep
-              agreeTerms={agreeTerms}
-              onTermsChange={setAgreeTerms}
-              onNext={handleTermsNext}
+            <ConsentForm
+              agreeConsent={consent}
+              onConsentChange={setConsent}
+              onNext={handleConsentNext}
+              consentTitle={study.consent.title}
+              consentSubtitle={study.consent.subtitle}
+              consentText={study.consent.text}
             />
           }
         />
 
         <Route path="demographics" element={
-            <DemographicsForm
-              demographics={demographics}
-              onChange={setDemographics}
-              onSubmit={handleDemographicsSubmit}
-            />
-          }
+          <DemographicsForm
+            demographicsList={study.demographics || []}
+            demographics={demographics}
+            onChange={setDemographics}
+            onSubmit={handleDemographicsSubmit}
+          />
+        }
         />
 
         <Route path="info" element={
-            <StudyOverview
-              study={study}
-              onNext={handleOverviewNext}
-            />
-          }
+          <StudyOverview
+            study={study}
+            onNext={handleOverviewNext}
+          />
+        }
         />
 
         <Route path="questions/:questionIndex" element={
-            <ParticipantQuestions
-              questions={study.questions}
-              sessionData={sessionData}
-              studyId={studyId}
-              onComplete={handleQuestionsComplete}
-            />
-          }
+          <ParticipantQuestions
+            questions={study.questions}
+            sessionData={sessionData}
+            studyId={studyId}
+            onComplete={handleQuestionsComplete}
+          />
+        }
         />
 
         <Route path="thanks" element={<ThankYou />} />

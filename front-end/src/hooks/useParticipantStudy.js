@@ -1,6 +1,6 @@
 // src/hooks/participant/useParticipantStudy.js
 import { useState, useEffect } from 'react';
-import { getStudyById } from '../services/studyService';
+import { getParticipantStudy } from '../services/studyService';
 
 function useParticipantStudy(studyId) {
   const [study, setStudy] = useState(null);
@@ -11,7 +11,7 @@ function useParticipantStudy(studyId) {
     if (!studyId) return;
     async function fetchStudy() {
       try {
-        const data = await getStudyById(studyId);
+        const data = await getParticipantStudy(studyId);
         setStudy(data);
       } catch (err) {
         setError(err);

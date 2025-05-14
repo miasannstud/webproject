@@ -6,6 +6,7 @@ const studyRoutes = express.Router();
 // overview of all the routes. Their functionality is created in studyController.js
 studyRoutes.get('/', studyController.getStudies);
 studyRoutes.get('/:studyId', studyController.getStudyById);
+studyRoutes.get('/participant/:studyId', studyController.getParticipantStudy);
 studyRoutes.post('/', studyController.createStudy);
 studyRoutes.patch('/:studyId', studyController.updateStudy);
 studyRoutes.delete('/:studyId', studyController.deleteStudy);

@@ -20,6 +20,18 @@ const studySchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    demographics: {
+        type: [String],
+        default: [],
+    },
+    expirationDate: {
+        type: Date,
+    },
+    consent: {
+        title: { type: String, max: 100, required: function() { return this.published; } },
+        subtitle: { type: String, max: 150, },
+        text: { type: String, required: function() { return this.published; } },
+    },
     // questions
     questions: [
         {
@@ -35,13 +47,11 @@ const studySchema = new mongoose.Schema({
                 {
                     artId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artifact' },
                     artUrl: { type: String },
-                    artType: { type: String },
+                    mimetype: { type: String },
                 }
             ],
             options: [
-                {
-                    text: { type: String },
-                }
+                { text: { type: String } }
             ],
             sliderRange:{
                 minLabel: { type: String, default: "Add your own minimun parameters" },

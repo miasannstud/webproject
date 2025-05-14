@@ -78,7 +78,7 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
     const mappedArtifacts = selectedArtifacts.map(a => ({
       artId:   a._id,
       artUrl:  a.url,
-      artType: a.mimetype
+      mimetype: a.mimetype
     }));
 
     setError("");
