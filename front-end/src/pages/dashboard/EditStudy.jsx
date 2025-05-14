@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getStudyById, updateStudy } from "../../services/studyService";
 import { fetchArtifactsByStudy } from "../../services/ArtifactService";
 import StudyPreview from "../createStudy/studyPreview/StudyPreview";
+import DemographicsCard from "../createStudy/demographicsCard/DemographicsCard";
 import ArtifactApp from "../createStudy/artifactCard/ArtifactCard";
 import QuestionsCard from "../createStudy/questionCard/QuestionsCard";
 import ExpireDate from "../createStudy/expireCard/ExpireDate";
@@ -20,6 +21,7 @@ function EditStudy() {
   const [consent, setConsent] = useState({ title: "", subtitle: "", text: "", });
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [demographics, setDemographics] = useState([]);
 
   useEffect(() => {
     async function fetchStudyAndArtifacts() {
@@ -37,6 +39,7 @@ function EditStudy() {
             ? study.expirationDate.split("T")[0]
             : ""
         );
+        setDemographics(study.demographics || []);
         setConsent({
           title: study.consent?.title || "",
           subtitle: study.consent?.subtitle || "",
@@ -64,14 +67,15 @@ function EditStudy() {
         ...q,
         options: Array.isArray(q.options)
           ? q.options.map(opt =>
-              typeof opt === "string" ? { text: opt } : opt
-            )
+            typeof opt === "string" ? { text: opt } : opt
+          )
           : [],
       }));
       const studyData = {
         studyTitle: title,
         description,
         questions: formattedQuestions,
+        demographics,
         expirationDate: expirationDate || null,
         consent,
       };
@@ -108,6 +112,11 @@ function EditStudy() {
           onSubtitleChange={handleConsentSubtitle}
           onTextChange={handleConsentText}
         />
+      </div>
+      <div className={styles.demographicsContainer}>
+        <DemographicsCard
+          demographics={demographics}
+          setDemographics={setDemographics}/>
       </div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
