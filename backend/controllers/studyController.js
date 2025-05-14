@@ -73,6 +73,9 @@ const createStudy = async (req, res) => {
       published,
       consent,
       questions,
+      expirationDate: expirationDate
+        ? new Date(expirationDate)
+        : undefined,
     });
 
     await newStudy.save();
