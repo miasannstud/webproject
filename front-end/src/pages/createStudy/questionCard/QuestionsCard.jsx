@@ -298,26 +298,6 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           </ul>
         </div>
 
-        <div className={styles.inputGroup}>
-          <h4>Selected Artifacts Order:</h4>
-          <ul className={artifactStyles.artifactList}>
-            {selectedArtifacts.map((artifact, i) => (
-              <li key={artifact._id} className={artifactStyles.artifactItem}>
-                  <div>
-                    <p>
-                      Name:{" "}
-                      {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, "") : "Unknown"}
-                    </p>
-                    <p>
-                      Type: {artifact.mimetype || "Unknown"}
-                    </p>
-                    {renderArtifactContent(artifact)}
-                  </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
         <button data-testid="create-study-addQuestionButton" onClick={handleAddQuestion} className={styles.submitButton}>
           Add Question
         </button>

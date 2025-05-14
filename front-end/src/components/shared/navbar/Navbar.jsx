@@ -17,7 +17,7 @@ function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.navLeft}>
         <NavLink to="/dashboard" className={styles.brand}>
-          CompareCraft
+          Grade A+
         </NavLink>
       </div>
       <div className={styles.navRight}>
