@@ -45,45 +45,46 @@ function ParticipantFlow() {
   };
 
   if (loading) return <div>Loading…</div>;
-  if (error)   return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
       <Routes>
         <Route index element={
-            <TermsStep
-              agreeTerms={agreeTerms}
-              onTermsChange={setAgreeTerms}
-              onNext={handleTermsNext}
-            />
-          }
+          <TermsStep
+            agreeTerms={agreeTerms}
+            onTermsChange={setAgreeTerms}
+            onNext={handleTermsNext}
+          />
+        }
         />
 
         <Route path="demographics" element={
-            <DemographicsForm
-              demographics={demographics}
-              onChange={setDemographics}
-              onSubmit={handleDemographicsSubmit}
-            />
-          }
+          <DemographicsForm
+            demographicsList={study.demographics || []}
+            demographics={demographics}
+            onChange={setDemographics}
+            onSubmit={handleDemographicsSubmit}
+          />
+        }
         />
 
         <Route path="info" element={
-            <StudyOverview
-              study={study}
-              onNext={handleOverviewNext}
-            />
-          }
+          <StudyOverview
+            study={study}
+            onNext={handleOverviewNext}
+          />
+        }
         />
 
         <Route path="questions/:questionIndex" element={
-            <ParticipantQuestions
-              questions={study.questions}
-              sessionData={sessionData}
-              studyId={studyId}
-              onComplete={handleQuestionsComplete}
-            />
-          }
+          <ParticipantQuestions
+            questions={study.questions}
+            sessionData={sessionData}
+            studyId={studyId}
+            onComplete={handleQuestionsComplete}
+          />
+        }
         />
 
         <Route path="thanks" element={<ThankYou />} />
