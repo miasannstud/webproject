@@ -168,7 +168,7 @@ const getStudyLink = async (req, res) => {
     if (!study.published) {
       return res.status(400).json({ message: "Study is not published yet" });
     }
-    
+
     // cant get link if study is expired
     if (study.expirationDate && Date.now() > study.expirationDate.getTime()) {
       return res.status(410).json({ message: "Study has expired" });
@@ -213,26 +213,65 @@ const downloadStudyDataJSON = async (req, res) => {
 
 // helper function that converts an array of session objects into scv format
 // it is only used once and only here so we have it in the controller instead of making a separate file for it
+function escapeCSV(value) {
+  if (value == null) return "";
+  const str = String(value);
+  if (str.includes('"')) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  if (str.includes(",") || str.includes("\n")) {
+    return `"${str}"`;
+  }
+  return str;
+}
+
 function convertSessionsToCSV(sessions) {
   if (!sessions || sessions.length === 0) {
     return "";
   }
-  // the fields we want to export
-  const headers = ["_id", "studyId", "demographics", "answers", "createdAt"];
-  const csvRows = [];
-  csvRows.push(headers.join(","));
 
-  sessions.forEach((session) => {
-    // for arrays like demographics and answers, convert them to JSON string
+  const demographicKeys = new Set();
+  sessions.forEach(session => {
+    if (session.demographics && typeof session.demographics === "object") {
+      Object.keys(session.demographics).forEach(key => demographicKeys.add(key));
+    }
+  });
+
+  let maxAnswers = 0;
+  sessions.forEach(session => {
+    if (Array.isArray(session.answers)) {
+      maxAnswers = Math.max(maxAnswers, session.answers.length);
+    }
+  });
+
+  const headers = [
+    "_id",
+    "studyId",
+    ...Array.from(demographicKeys),
+    ...Array.from({ length: maxAnswers }, (_, i) => `answer_${i + 1}`),
+    "createdAt"
+  ];
+  const csvRows = [];
+  csvRows.push(headers.join(";"));
+
+  sessions.forEach(session => {
     const row = [
-      session._id,
-      session.studyId,
-      JSON.stringify(session.demographics), // age and gender
-      JSON.stringify(session.answers), // entire answers array
-      session.createdAt,
+      escapeCSV(session._id),
+      escapeCSV(session.studyId),
+      ...Array.from(demographicKeys).map(key => escapeCSV(session.demographics?.[key])),
+      ...(Array.isArray(session.answers)
+        ? session.answers.map(ans =>
+          escapeCSV(ans && typeof ans === "object" && "response" in ans ? ans.response : ans)
+        )
+        : []),
+      escapeCSV(session.createdAt)
     ];
-    // join row fields with commas
-    csvRows.push(row.join(","));
+
+    while (row.length < headers.length) {
+      row.splice(headers.length - 1, 0, "");
+    }
+
+    csvRows.push(row.join(";"));
   });
 
   return csvRows.join("\n");
@@ -298,7 +337,7 @@ const createQuestion = async (req, res) => {
         maxLabel: sliderRange?.maxLabel || "Add your own maximun parameters",
         minValue: 0,
         maxValue: 10
-      }    
+      }
     };
 
     study.questions.push(newQuestion);
@@ -343,9 +382,9 @@ const updateQuestion = async (req, res) => {
     }
 
     // Update slider labels if info is provided and question type is slider
-    if (req.body.sliderRange && question.questionType == "slider"){
+    if (req.body.sliderRange && question.questionType == "slider") {
       // Get the slider range from the reques body
-      const {minLabel, maxLabel} = req.body.sliderRange;
+      const { minLabel, maxLabel } = req.body.sliderRange;
 
       // if labels are not empty then update them
       if (minLabel !== undefined) question.sliderRange.minLabel = minLabel;
@@ -353,9 +392,9 @@ const updateQuestion = async (req, res) => {
     }
 
     // Update ranked range if info is provided and question type is slider
-    if  (req.body.rankedLabels && question.questionType == "ranked"){
+    if (req.body.rankedLabels && question.questionType == "ranked") {
       // Get the ranked range from the reques body
-      const {minLabel, maxLabel} = req.body.rankedLabels;
+      const { minLabel, maxLabel } = req.body.rankedLabels;
 
       // if labels are not empty then update them
       if (minLabel !== undefined) question.rankedLabels.minLabel = minLabel;
