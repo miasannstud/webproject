@@ -1,9 +1,11 @@
 
 function ConsentCard({
   consentTitle,
+  consentAuthor,
   consentSubtitle,
   consentText,
   onTitleChange,
+  onAuthorChange,
   onSubtitleChange,
   onTextChange,
 }) {
@@ -11,10 +13,11 @@ function ConsentCard({
     <div>
 
       <div>
-        <label htmlFor="consent-title">Title</label>
+        <label htmlFor="consent-title">Consent Title</label>
         <input
           id="consent-title"
           type="text"
+          required
           value={consentTitle}
           onChange={(e) => onTitleChange(e.target.value)}
           placeholder="Welcome to the Study"
@@ -22,7 +25,18 @@ function ConsentCard({
       </div>
 
       <div>
-        <label htmlFor="consent-subtitle">Subtitle</label>
+        <label htmlFor="consent-author">Author</label>
+        <input
+          id="consent-author"
+          type="text"
+          value={consentAuthor}
+          onChange={(e) => onAuthorChange(e.target.value)}
+          placeholder="Add your name"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="consent-subtitle">Consent Subtitle</label>
         <input
           id="consent-subtitle"
           type="text"
@@ -33,9 +47,10 @@ function ConsentCard({
       </div>
 
       <div>
-        <label htmlFor="consent-text">Description</label>
+        <label htmlFor="consent-text">Consent Description</label>
         <textarea
           id="consent-text"
+          required
           rows={6}
           value={consentText}
           onChange={(e) => onTextChange(e.target.value)}

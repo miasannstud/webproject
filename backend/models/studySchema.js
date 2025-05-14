@@ -28,9 +28,10 @@ const studySchema = new mongoose.Schema({
         type: Date,
     },
     consent: {
-        title: { type: String, max: 100, required: function() { return this.published; } },
+        title: { type: String, max: 100, required: true, },
+        author: { type: String, max: 100, },
         subtitle: { type: String, max: 150, },
-        text: { type: String, required: function() { return this.published; } },
+        text: { type: String, required: true, },
     },
     // questions
     questions: [
