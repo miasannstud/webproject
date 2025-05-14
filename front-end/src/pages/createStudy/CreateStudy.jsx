@@ -127,12 +127,6 @@ function CreateStudy() {
   return (
     <div className={styles.createStudyContainer}>
       <h1 className={styles.createStudyText}>Create Study</h1>
-      {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
-      {successMessage && (
-        <p className={`${styles.message} ${styles.success}`}>
-          {successMessage}
-        </p>
-      )}
       <div className={styles.studyPreviewContainer}>
         <StudyPreview
           title={title}
@@ -174,6 +168,12 @@ function CreateStudy() {
         onChange={setExpirationDate}
       />
       </div>
+      {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
+      {successMessage && (
+        <p className={`${styles.message} ${styles.success}`}>
+          {successMessage}
+        </p>
+      )}
       <button className={styles.saveButton} onClick={handleSaveStudy}>
         Save Study
       </button>
