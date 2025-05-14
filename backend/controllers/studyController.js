@@ -308,7 +308,7 @@ const createQuestion = async (req, res) => {
   try {
     const { studyId } = req.params;
     console.log('Received studyId:', studyId); // Log the studyId
-    const { questionText, questionType, artifact, options, sliderRange } = req.body;
+    const { questionText, questionType, artifact, options, sliderRange, rankedLabels } = req.body;
 
     const study = await Study.findById(studyId);
 
@@ -337,7 +337,8 @@ const createQuestion = async (req, res) => {
         maxLabel: sliderRange?.maxLabel || "Add your own maximun parameters",
         minValue: 0,
         maxValue: 10
-      }
+      },
+      rankedLabels: rankedLabels || [],
     };
 
     study.questions.push(newQuestion);
@@ -391,14 +392,8 @@ const updateQuestion = async (req, res) => {
       if (maxLabel !== undefined) question.sliderRange.maxLabel = maxLabel;
     }
 
-    // Update ranked range if info is provided and question type is slider
     if (req.body.rankedLabels && question.questionType == "ranked") {
-      // Get the ranked range from the reques body
-      const { minLabel, maxLabel } = req.body.rankedLabels;
-
-      // if labels are not empty then update them
-      if (minLabel !== undefined) question.rankedLabels.minLabel = minLabel;
-      if (maxLabel !== undefined) question.rankedLabels.maxLabel = maxLabel;
+      question.rankedLabels = req.body.rankedLabels;
     }
 
     await study.save();

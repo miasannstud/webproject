@@ -6,7 +6,12 @@ import artifactStyles from "../artifactCard/ArtifactCard.module.css";
 
 import ReorderButton from "../../../components/shared/reorderButton/ReorderButton";
 
-function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }) {
+function QuestionsCard({
+  onAddQuestion,
+  onRemoveQuestion,
+  questions,
+  artifacts,
+}) {
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState("multiple-choice");
 
@@ -15,12 +20,12 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
   const [sliderMinLabel, setSliderMinLabel] = useState("");
   const [sliderMaxLabel, setSliderMaxLabel] = useState("");
 
-  const [rankedMinLabel, setRankedMinLabel] = useState("");
-  const [rankedMaxLabel, setRankedMaxLabel] = useState("");
+  const [rankedLabels, setRankedLabels] = useState([""]);
 
   const [selectedArtifacts, setSelectedArtifacts] = useState([]);
   const [error, setError] = useState("");
 
+  // Options for multiple choice
   const handleOptionChange = (index, value) => {
     const updatedOptions = [...options];
     updatedOptions[index] = value;
@@ -34,6 +39,19 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
     setOptions(updatedOptions);
   };
 
+  // Labels for ranked
+  const handleRankedLabelChange = (index, value) => {
+    const updatedLabels = [...rankedLabels];
+    updatedLabels[index] = value;
+    setRankedLabels(updatedLabels);
+  };
+
+  const addRankedLabel = () => setRankedLabels([...rankedLabels, ""]);
+
+  const removeRankedLabel = (index) => {
+    setRankedLabels(rankedLabels.filter((_, i) => i !== index));
+  };
+
   const toggleArtifactSelection = (artifact) => {
     if (selectedArtifacts.includes(artifact)) {
       setSelectedArtifacts(selectedArtifacts.filter((a) => a !== artifact));
@@ -42,17 +60,23 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
     }
   };
 
-  const ChangeSelectedArtifactOrder = (index, direction) =>{
+  const ChangeSelectedArtifactOrder = (index, direction) => {
     const newOrder = [...selectedArtifacts];
 
-  if (direction === "left" && index > 0) {
-    [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
-  }
-  if (direction === "right" && index < newOrder.length - 1) {
-    [newOrder[index + 1], newOrder[index]] = [newOrder[index], newOrder[index + 1]];
-  }
+    if (direction === "left" && index > 0) {
+      [newOrder[index - 1], newOrder[index]] = [
+        newOrder[index],
+        newOrder[index - 1],
+      ];
+    }
+    if (direction === "right" && index < newOrder.length - 1) {
+      [newOrder[index + 1], newOrder[index]] = [
+        newOrder[index],
+        newOrder[index + 1],
+      ];
+    }
     setSelectedArtifacts(newOrder);
-  }
+  };
 
   const handleAddQuestion = () => {
     if (!questionText.trim()) {
@@ -60,33 +84,44 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
       return;
     }
 
-    if (questionType === "multiple-choice" && options.some((opt) => !opt.trim())) {
+    if (
+      questionType === "multiple-choice" &&
+      options.some((opt) => !opt.trim())
+    ) {
       setError("All options must be filled out");
       return;
     }
 
-    if (questionType === "slider" && (!sliderMinLabel.trim() || !sliderMaxLabel.trim())) {
+    if (
+      questionType === "slider" &&
+      (!sliderMinLabel.trim() || !sliderMaxLabel.trim())
+    ) {
       setError("Both slider labels must be filled out");
       return;
     }
 
-    if (questionType === "ranked" && (!rankedMinLabel.trim() || !rankedMaxLabel.trim())) {
-      setError("Both ranked labels must be filled out");
+    if (
+      questionType === "ranked" &&
+      rankedLabels.some(label => !label.trim())
+    ) {
+      setError("Ranked labels must be filled out");
       return;
     }
 
-    const mappedArtifacts = selectedArtifacts.map(a => ({
-      artId:   a._id,
-      artUrl:  a.url,
-      mimetype: a.mimetype
+    const mappedArtifacts = selectedArtifacts.map((a) => ({
+      artId: a._id,
+      filename: a.filename,
+      artUrl: a.url,
+      mimetype: a.mimetype,
     }));
 
     setError("");
-    
+
     const newQuestion = {
       questionText,
       questionType,
       options: questionType === "multiple-choice" ? options : [],
+      rankedLabels: questionType ===  "ranked" ? rankedLabels: [], 
       artifact: mappedArtifacts,
       ...(questionType === "slider" && {
         sliderRange: {
@@ -94,16 +129,9 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           maxLabel: sliderMaxLabel,
           minValue: 0,
           maxValue: 10,
-        }
+        },
       }),
-      ...(questionType === "ranked" && {
-        rankedLabels: {
-          minLabel: rankedMinLabel,
-          maxLabel: rankedMaxLabel,
-        }
-      })
     };
-
     onAddQuestion(newQuestion);
     setQuestionText("");
     setOptions([""]);
@@ -116,14 +144,13 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
     }
 
     if (questionType === "ranked") {
-      setRankedMinLabel("");
-      setRankedMaxLabel("");
+      setRankedLabels([""]);
     }
   };
 
   const renderQuestionCard = (question, index) => {
     const seen = new Set();
-    const uniqueArtifacts = question.artifact.filter(artifactRef => {
+    const uniqueArtifacts = question.artifact.filter((artifactRef) => {
       const id = artifactRef._id || artifactRef.artId;
       if (seen.has(id)) return false;
       seen.add(id);
@@ -136,10 +163,10 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
         {uniqueArtifacts.map((artifactRef, i) => {
           let artifactObj = null;
           if (artifactRef._id) {
-            artifactObj = artifacts.find(a => a._id === artifactRef._id);
+            artifactObj = artifacts.find((a) => a._id === artifactRef._id);
           }
           if (!artifactObj && artifactRef.artId) {
-            artifactObj = artifacts.find(a => a._id === artifactRef.artId);
+            artifactObj = artifacts.find((a) => a._id === artifactRef.artId);
           }
           const artifactToRender = artifactObj || artifactRef;
           return (
@@ -153,7 +180,9 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           <ul className={styles.optionsList}>
             {question.options.map((option, i) => (
               <li key={i} className={styles.optionsItem}>
-                {typeof option === "object" && option !== null ? option.text : option}
+                {typeof option === "object" && option !== null
+                  ? option.text
+                  : option}
               </li>
             ))}
           </ul>
@@ -161,19 +190,30 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
 
         {question.questionType === "slider" && question.sliderRange && (
           <ul className={styles.labelsList}>
-            <li className={styles.labelItem}>Minimun Label: {question.sliderRange.minLabel}</li>
-            <li className={styles.labelItem}>Maximun Label: {question.sliderRange.maxLabel}</li>
+            <li className={styles.labelItem}>
+              Minimun Label: {question.sliderRange.minLabel}
+            </li>
+            <li className={styles.labelItem}>
+              Maximun Label: {question.sliderRange.maxLabel}
+            </li>
           </ul>
         )}
 
-        {question.questionType === "ranked" && question.rankedLabel && (
+        {question.questionType === "ranked" && question.rankedLabels && (
           <ul className={styles.labelsList}>
-            <li className={styles.labelItem}>Minimun Label: {question.rankedLabel.minLabel}</li>
-            <li className={styles.labelItem}>Maximun Label: {question.rankedLabel.maxLabel}</li>
+            {question.rankedLabels.map((label, i) => (
+              <li key={i} className={styles.labelItem}>
+                Label: {label}
+              </li>
+            ))}
           </ul>
         )}
-        
-        <button data-testid="create-study-removeQuestionButton" onClick={() => onRemoveQuestion(index)} className={styles.removeButton}>
+
+        <button
+          data-testid="create-study-removeQuestionButton"
+          onClick={() => onRemoveQuestion(index)}
+          className={styles.removeButton}
+        >
           Remove
         </button>
       </div>
@@ -183,7 +223,9 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
+        {error && (
+          <p className={`${styles.message} ${styles.error}`}>{error}</p>
+        )}
         <h2>Add Questions</h2>
         <div className={styles.inputGroup}>
           <label>
@@ -226,62 +268,80 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
                   onChange={(e) => handleOptionChange(index, e.target.value)}
                   className={styles.input}
                 />
-                <button data-testid="create-study-removeOptionButton" onClick={() => removeOption(index)} className={styles.removeButton}>
+                <button
+                  data-testid="create-study-removeOptionButton"
+                  onClick={() => removeOption(index)}
+                  className={styles.removeButton}
+                >
                   Remove
                 </button>
               </div>
             ))}
-            <button data-testid="create-study-addOptionButton" onClick={addOption} className={styles.addOptionButton}>
+            <button
+              data-testid="create-study-addOptionButton"
+              onClick={addOption}
+              className={styles.addOptionButton}
+            >
               Add Option
             </button>
           </div>
         )}
 
         {questionType === "slider" && (
-            <ul className={styles.optionsList}>
-              <li className={styles.optionsItem}>
-                <h4>Slider Minimum Label:</h4>
-                <input
-                  type="text"
-                  value={sliderMinLabel}
-                  onChange={(e) => setSliderMinLabel(e.target.value)}
-                  className={styles.input}
-                />
-              </li>
-              <li className={styles.optionsItem}>
-                <h4>Slider Maximum Label:</h4>
-                <input
-                  type="text"
-                  value={sliderMaxLabel}
-                  onChange={(e) => setSliderMaxLabel(e.target.value)}
-                  className={styles.input}
-                />
-              </li>
-            </ul>
-        )}
-
-        {questionType === "ranked" && (
           <ul className={styles.optionsList}>
             <li className={styles.optionsItem}>
-              <h4>Ranked Minimum Label:</h4>
+              <h4>Slider Minimum Label:</h4>
               <input
                 type="text"
-                value={rankedMinLabel}
-                onChange={(e) => setRankedMinLabel(e.target.value)}
+                value={sliderMinLabel}
+                onChange={(e) => setSliderMinLabel(e.target.value)}
                 className={styles.input}
               />
             </li>
-
             <li className={styles.optionsItem}>
-              <h4>Ranked Maximum Label:</h4>
+              <h4>Slider Maximum Label:</h4>
               <input
                 type="text"
-                value={rankedMaxLabel}
-                onChange={(e) => setRankedMaxLabel(e.target.value)}
+                value={sliderMaxLabel}
+                onChange={(e) => setSliderMaxLabel(e.target.value)}
                 className={styles.input}
               />
             </li>
           </ul>
+        )}
+
+        {questionType === "ranked" && (
+          <div className={styles.optionsContainer}>
+            <ul className={styles.optionsList}>
+              <li className={styles.optionsItem}>
+                <h4>Ranked Label:</h4>
+                {rankedLabels.map((rankedLabel, index) => (
+                <div key={index} className={styles.optionsItem}>
+                  <input
+                    type="text"
+                    value={rankedLabel}
+                    onChange={e => handleRankedLabelChange(index, e.target.value)}
+                    className={styles.input}
+                  />
+                  <button
+                    data-testid="create-study-removeRankedLabelButton"
+                    onClick={() => removeRankedLabel(index)}
+                    className={styles.removeButton}
+                  >
+                    Remove
+                  </button>
+                </div>
+                ))}
+                <button                   
+                  data-testid="create-study-addRankedLabelButton"
+                  onClick={addRankedLabel}
+                  className={styles.addOptionButton}
+                >
+                  Add Label
+                </button>
+              </li>
+            </ul>
+          </div>
         )}
 
         <div className={styles.inputGroup}>
@@ -299,11 +359,11 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
                   <div>
                     <p>
                       Name:{" "}
-                      {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, "") : "Unknown"}
+                      {artifact.filename
+                        ? artifact.filename.replace(/\.[^/.]+$/, "")
+                        : "Unknown"}
                     </p>
-                    <p>
-                      Type: {artifact.mimetype || "Unknown"}
-                    </p>
+                    <p>Type: {artifact.mimetype || "Unknown"}</p>
                     {renderArtifactContent(artifact)}
                   </div>
                 </label>
@@ -317,16 +377,16 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           <ul className={artifactStyles.artifactList}>
             {selectedArtifacts.map((artifact, i) => (
               <li key={artifact._id} className={artifactStyles.artifactItem}>
-                  <div>
-                    <p>
-                      Name:{" "}
-                      {artifact.filename ? artifact.filename.replace(/\.[^/.]+$/, "") : "Unknown"}
-                    </p>
-                    <p>
-                      Type: {artifact.mimetype || "Unknown"}
-                    </p>
-                    {renderArtifactContent(artifact)}
-                  </div>
+                <div>
+                  <p>
+                    Name:{" "}
+                    {artifact.filename
+                      ? artifact.filename.replace(/\.[^/.]+$/, "")
+                      : "Unknown"}
+                  </p>
+                  <p>Type: {artifact.mimetype || "Unknown"}</p>
+                  {renderArtifactContent(artifact)}
+                </div>
                 <ReorderButton
                   onMoveLeft={() => ChangeSelectedArtifactOrder(i, "left")}
                   onMoveRight={() => ChangeSelectedArtifactOrder(i, "right")}
@@ -338,7 +398,11 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
           </ul>
         </div>
 
-        <button data-testid="create-study-addQuestionButton" onClick={handleAddQuestion} className={styles.submitButton}>
+        <button
+          data-testid="create-study-addQuestionButton"
+          onClick={handleAddQuestion}
+          className={styles.submitButton}
+        >
           Add Question
         </button>
       </div>
@@ -346,7 +410,9 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
         <h3>Added Questions</h3>
         <div className={styles.questionsContainer}>
           {questions.length > 0 ? (
-            questions.map((question, index) => renderQuestionCard(question, index))
+            questions.map((question, index) =>
+              renderQuestionCard(question, index)
+            )
           ) : (
             <p className={styles.noQuestionsMessage}>No questions added yet</p>
           )}
@@ -357,4 +423,3 @@ function QuestionsCard({ onAddQuestion, onRemoveQuestion, questions, artifacts }
 }
 
 export default QuestionsCard;
-
