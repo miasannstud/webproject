@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getStudyById, updateStudy } from "../../services/studyService";
 import { fetchArtifactsByStudy } from "../../services/ArtifactService";
 import StudyPreview from "../createStudy/studyPreview/StudyPreview";
+import DemographicsCard from "../createStudy/demographicsCard/DemographicsCard";
 import ArtifactApp from "../createStudy/artifactCard/ArtifactCard";
 import QuestionsCard from "../createStudy/questionCard/QuestionsCard";
 import ExpireDate from "../createStudy/expireCard/ExpireDate";
@@ -18,6 +19,7 @@ function EditStudy() {
   const [artifacts, setArtifacts] = useState([]);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [demographics, setDemographics] = useState([]);
 
   useEffect(() => {
     async function fetchStudyAndArtifacts() {
@@ -35,6 +37,7 @@ function EditStudy() {
             ? study.expirationDate.split("T")[0]
             : ""
         );
+        setDemographics(study.demographics || []);
       } catch (err) {
         setError("Failed to load study or artifacts. Error: " + err.message);
       }
@@ -53,14 +56,15 @@ function EditStudy() {
         ...q,
         options: Array.isArray(q.options)
           ? q.options.map(opt =>
-              typeof opt === "string" ? { text: opt } : opt
-            )
+            typeof opt === "string" ? { text: opt } : opt
+          )
           : [],
       }));
       const studyData = {
         studyTitle: title,
         description,
         questions: formattedQuestions,
+        demographics,
         expirationDate: expirationDate || null,
       };
       await updateStudy(studyId, studyData);
@@ -85,6 +89,12 @@ function EditStudy() {
           description={description}
           onTitleChange={setTitle}
           onDescriptionChange={setDescription}
+        />
+      </div>
+      <div className={styles.demographicsContainer}>
+        <DemographicsCard
+          demographics={demographics}
+          setDemographics={setDemographics}
         />
       </div>
       <div className={styles.artifactContainer}>
