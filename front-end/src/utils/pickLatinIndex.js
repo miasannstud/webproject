@@ -1,4 +1,7 @@
-export function pickLatinIndex(id, n) {
-  const sum = id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return sum % n;
+export function pickLatinIndex(key, n) {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) % n;
+  }
+  return hash;
 }
