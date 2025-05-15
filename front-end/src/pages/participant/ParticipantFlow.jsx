@@ -31,7 +31,10 @@ function ParticipantFlow() {
 
   const handleDemographicsSubmit = async () => {
     try {
-      const session = await createSession(studyId, demographics);
+      const filteredDemographics = Object.fromEntries(
+        Object.entries(demographics).filter(([, v]) => v !== "" && v !== undefined && v !== null)
+      );
+      const session = await createSession(studyId, filteredDemographics);
       setSessionData(session);
       navigate(`/participant/${studyId}/info`);
     } catch (err) {

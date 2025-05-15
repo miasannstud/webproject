@@ -260,10 +260,17 @@ function convertSessionsToCSV(sessions) {
       escapeCSV(session.studyId),
       ...Array.from(demographicKeys).map(key => escapeCSV(session.demographics?.[key])),
       ...(Array.isArray(session.answers)
-        ? session.answers.map(ans =>
-          escapeCSV(ans && typeof ans === "object" && "response" in ans ? ans.response : ans)
-        )
-        : []),
+        ? session.answers.map(ans => {
+            if (ans && typeof ans === "object" && "response" in ans) {
+        // If response is an array of objects as they will be for the ranked question, stringify it
+        if (Array.isArray(ans.response) && typeof ans.response[0] === "object") {
+          return escapeCSV(JSON.stringify(ans.response));
+        }
+        return escapeCSV(ans.response); 
+        }
+        return escapeCSV(ans);        
+       })
+    : []),
       escapeCSV(session.createdAt)
     ];
 

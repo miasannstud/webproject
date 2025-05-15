@@ -20,7 +20,7 @@
     "url": "https://github.com/miasannstud/webproject/issues"
   },
   "homepage": "https://github.com/miasannstud/webproject#readme",
-  "dependencies": {
+"dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
