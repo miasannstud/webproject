@@ -4,10 +4,7 @@
 // These functions focus solely on communicating with the backend (e.g., fetchStudies(), deleteStudy(id), etc.).
 
 // this is nice because if the API URL ever changes, we only have to update it in one place
-import dotenv from 'dotenv';
-dotenv.config();
-
-const API_BASE_URL = process.env.API_BASE_URL;
+import { API_BASE_URL } from '../config';
 
 // STUDY ROUTES
 

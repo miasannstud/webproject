@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-const API_BASE_URL = process.env.API_BASE_URL;
+import { API_BASE_URL } from '../config';
 
 export async function uploadArtifacts(files, studyId) {
   const formData = new FormData();
