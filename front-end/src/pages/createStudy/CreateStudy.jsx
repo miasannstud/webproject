@@ -7,7 +7,7 @@ import ExpireDate from "./expireCard/ExpireDate";
 import ConsentCard from "./consentCard/ConsentCard";
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
-import DemographicsCard from "./demographicsCard/DemographicsCard";
+// import DemographicsCard from "./demographicsCard/DemographicsCard";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
@@ -148,12 +148,12 @@ function CreateStudy() {
           onTextChange={handleConsentText}
         />
       </div>
-      <div className={styles.demographicsContainer}>
+      {/* <div className={styles.demographicsContainer}>
         <DemographicsCard
           demographics={demographics}
           setDemographics={setDemographics}
         />
-      </div>
+      </div> */}
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
       </div>
