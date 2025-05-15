@@ -1,5 +1,5 @@
 # Image Artifact
-POST http://localhost:8080/api/artifact/upload
+POST http://localhost:8286/api/artifact/upload
 Content-Type: multipart/form-data; boundary=----Boundary
 
 ------Boundary
@@ -10,7 +10,7 @@ Content-Type: image/png
 ------Boundary--
 
 ### Text Artifact
-POST http://localhost:8080/api/artifact/upload
+POST http://localhost:8286/api/artifact/upload
 Content-Type: multipart/form-data; boundary=----Boundary
 
 ------Boundary
@@ -21,7 +21,7 @@ Content-Type: text/plain
 ------Boundary--
 
 ### Video Artifact
-POST http://localhost:8080/api/artifact/upload
+POST http://localhost:8286/api/artifact/upload
 Content-Type: multipart/form-data; boundary=----Boundary
 
 ------Boundary
@@ -33,7 +33,7 @@ Content-Type: video/mp4
 
 
 ### Music Artifact
-POST http://localhost:8080/api/artifact/upload
+POST http://localhost:8286/api/artifact/upload
 Content-Type: multipart/form-data; boundary=----Boundary
 
 ------Boundary

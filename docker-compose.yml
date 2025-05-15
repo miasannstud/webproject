@@ -1,17 +1,15 @@
-# version: '3.8'
-
 services:
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: backend
+      dockerfile: Dockerfile
     command: ["npm", "run", "dev"] # use watch script: node --watch --env-file=.env server
-    volumes:
-      - ./backend:/app # bind‐mount your working dir into /app
-      - /app/node_modules # prevent overwriting container’s node_modules
+    #volumes:
+      #- ./backend:/app # bind‐mount your working dir into /app
+      #- /app/node_modules # prevent overwriting container’s node_modules
     container_name: project-backend
     ports:
-      - "8080:8080"
+      - 8286:8286
     env_file:
       - ./backend/.env
 
@@ -20,19 +18,8 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
     container_name: project-frontend
+    # command: sh -c "cd front-end && npm install @rollup/rollup-linux-x64-gnu"
     ports:
-      - "8186:8186"
+      - 8186:8186
     depends_on:
       - backend
-# only need this if using local mongo container, and we dont so..
-  # mongodb:
-  #   image: mongo:latest
-  #   container_name: project-mongodb
-  #   ports:
-  #     - "27017:27017"
-  #   healthcheck:
-  #     test: ["CMD", "mongodb", "--eval", "db.runCommand('ping')"]
-  #     interval: 30s
-  #     retries: 3
-  #     start_period: 10s
-  #     timeout: 10s

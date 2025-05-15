@@ -1,6 +1,11 @@
 import { test, describe, before, after } from 'node:test';
 import puppeteer from 'puppeteer';
 
+const FRONTEND_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8186/"
+    : "https://group6.sustainability.it.ntnu.no/";
+
 describe('Download JSON from results', () => {
   let browser;
   let page;
@@ -15,7 +20,7 @@ describe('Download JSON from results', () => {
   });
 
   test('Logs in to retrieve a study link, and the results for the study', async (t) => {
-    await page.goto('http://localhost:8186/', { waitUntil: 'domcontentloaded' });
+    await page.goto(`${FRONTEND_BASE_URL}`, { waitUntil: 'domcontentloaded' });
 
     await page.type('input[name="username"]', 'admin');
     await page.type('input[name="password"]', 'admin');
