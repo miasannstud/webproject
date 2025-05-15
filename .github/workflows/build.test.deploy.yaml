@@ -35,7 +35,9 @@ jobs:
           rm -rf front-end/node_modules front-end/package-lock.json
       - name: Install Dependencies
         run: |
-          cd front-end && npm ci
+          cd front-end
+          npm install
+          npm ci
 
       # Build and push backend image
       - name: Build and push backend image
