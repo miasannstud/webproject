@@ -65,13 +65,13 @@ function DashCard({ study, onStudyDeleted }) {
             <h2>{studyTitle}</h2>
             <p>Status: {isPublished ? 'Published' : 'Unpublished'}</p>
             <div className={styles.actions}>
-                <button onClick={handleEdit}>Edit</button>
-                <button data-testid="dashcard-results" onClick={handleResults}>Results</button>
-                <button data-testid="dashcard-delete" onClick={handleDelete}>Delete</button>
-                <button data-testid="dashcard-getlink" onClick={handleGetLink}>Get Link</button>
-                <button data-testid="dashcard-publish" onClick={handlePublish}>
+                <button className={styles.editButton} onClick={handleEdit}>Edit</button>
+                <button className={styles.resultsButton} data-testid="dashcard-results" onClick={handleResults}>Results</button>
+                <button className={`${styles.publishButton} ${isPublished ? styles.published : styles.unpublished}`} data-testid="dashcard-publish" onClick={handlePublish}>
                     {isPublished ? 'Unpublish' : 'Publish'}
                 </button>
+                <button className={styles.getLinkButton} data-testid="dashcard-getlink" onClick={handleGetLink}>Get Link</button>
+                <button className={styles.deleteButton} data-testid="dashcard-delete" onClick={handleDelete}>Delete</button>
             </div>
         </div>
     );

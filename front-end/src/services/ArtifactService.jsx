@@ -92,11 +92,6 @@ export function renderArtifactContent(artifact) {
         Your browser does not support the video tag.
       </video>
     );
-  } else {
-    return (
-      <a href={url} download={filename} target="_blank" rel="noopener noreferrer">
-        Download {filename} ({mimetype})
-      </a>
-    );
   }
+  return <p>Unknown artifact type</p>;
 }
