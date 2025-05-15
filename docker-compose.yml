@@ -1,25 +1,45 @@
+# services:
+#   backend:
+#     build:
+#       context: backend
+#       dockerfile: Dockerfile
+#     command: ["npm", "run", "dev"] # use watch script: node --watch --env-file=.env server
+#     #volumes:
+#       #- ./backend:/app # bind‐mount your working dir into /app
+#       #- /app/node_modules # prevent overwriting container’s node_modules
+#     container_name: project-backend
+#     ports:
+#       - 8286:8286
+#     env_file:
+#       - ./backend/.env
+
+#   frontend:
+#     build:
+#       context: ./front-end
+#       dockerfile: Dockerfile
+#     container_name: project-frontend
+#     # command: sh -c "cd front-end && npm install @rollup/rollup-linux-x64-gnu"
+#     ports:
+#       - 8186:8186
+#     depends_on:
+#       - backend
+
 services:
   backend:
-    build:
-      context: backend
-      dockerfile: Dockerfile
-    command: ["npm", "run", "dev"] # use watch script: node --watch --env-file=.env server
-    #volumes:
-      #- ./backend:/app # bind‐mount your working dir into /app
-      #- /app/node_modules # prevent overwriting container’s node_modules
-    container_name: project-backend
+    image: viljaah/webproject-backend:latest
     ports:
-      - 8286:8286
+      - "8286:8286"
+    restart: always 
     env_file:
-      - ./backend/.env
+      - ./.env
 
   frontend:
-    build:
-      context: ./front-end
-      dockerfile: Dockerfile
-    container_name: project-frontend
-    # command: sh -c "cd front-end && npm install @rollup/rollup-linux-x64-gnu"
+    image: viljaah/webproject-front-end:latest
     ports:
-      - 8186:8186
+      - "8186:8186"
+    env_file:
+      - ./.env
+    command: sh -c "npm install @rollup/rollup-linux-x64-gnu && npm run build && npx serve -s dist -l 8186"   
+    restart: always
     depends_on:
       - backend

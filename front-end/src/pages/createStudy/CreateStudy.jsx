@@ -7,7 +7,7 @@ import ExpireDate from "./expireCard/ExpireDate";
 import ConsentCard from "./consentCard/ConsentCard";
 import styles from "./CreateStudy.module.css";
 import { updateStudy } from "../../services/studyService";
-import DemographicsCard from "./createStudy/demographicsCard/DemographicsCard";
+import DemographicsCard from "./demographicsCard/DemographicsCard";
 
 function CreateStudy() {
   const [title, setTitle] = useState("");
