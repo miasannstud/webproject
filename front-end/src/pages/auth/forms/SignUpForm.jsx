@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchSignupUser } from "../../services/authService";
-import "./SignupForm.css";
+import { fetchSignupUser } from "../../../services/authService";
+import styles from "./Forms.module.css";
 
-export default function Signup() {
+export default function SignupForm() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -50,11 +50,11 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-      <form onSubmit={handleSignup}>
-        <div className="container">
-          <label htmlFor="firstName"><b>First Name</b></label>
+    <div className={styles.authFormCont}>
+      <h1>Signup</h1>
+      <form onSubmit={handleSignup} className={styles.authForm}>
+        <div className={styles.authItem}>
+          <label className={styles.authLabel} htmlFor="firstName"><b>First Name</b></label>
           <input
             type="text"
             placeholder="Enter First Name"
@@ -63,8 +63,10 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
+        </div>
 
-          <label htmlFor="lastName"><b>Last Name</b></label>
+        <div className={styles.authItem}>
+          <label className={styles.authLabel} htmlFor="lastName"><b>Last Name</b></label>
           <input
             type="text"
             placeholder="Enter Last Name"
@@ -73,8 +75,10 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
+        </div>
 
-          <label htmlFor="username"><b>Username</b></label>
+        <div className={styles.authItem}>
+          <label className={styles.authLabel} htmlFor="username"><b>Username</b></label>
           <input
             type="text"
             placeholder="Enter Username"
@@ -83,8 +87,10 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
+        </div>
 
-          <label htmlFor="email"><b>Email</b></label>
+        <div className={styles.authItem}>
+          <label className={styles.authLabel} htmlFor="email"><b>Email</b></label>
           <input
             type="email"
             placeholder="Enter Email"
@@ -93,8 +99,10 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-
-          <label htmlFor="password"><b>Password</b></label>
+        </div>
+        
+        <div className={styles.authItem}>
+          <label className={styles.authLabel} htmlFor="password"><b>Password</b></label>
           <input
             type="password"
             placeholder="Enter Password"
@@ -103,8 +111,10 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
+        </div>
 
-          <label htmlFor="institution"><b>Institution</b></label>
+        <div className={styles.authItem}>
+          <label className={styles.authLabel} htmlFor="institution"><b>Institution</b></label>
           <select
             name="institution"
             value={formData.institution}
@@ -114,12 +124,16 @@ export default function Signup() {
             <option value="NTNU">NTNU</option>
             <option value="Other">Other</option>
           </select>
-
-          <button data-testid="signup-signupButton" type="submit">Signup</button>
         </div>
+
+          <button className={styles.signupButton} data-testid="signup-signupButton" type="submit">Signup</button>
+          {error && <div className={styles.errorMessage}>{error}</div>}
+          {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
+
+          <div className={styles.container}>
+            <p>Already have an account? <a data-testid="login-link" href="/">Login in here!</a></p>
+          </div>
       </form>
-      {error && <div className="error errorMessage">{error}</div>}
-      {successMessage && <div className="successMessage">{successMessage}</div>}
     </div>
   );
 }

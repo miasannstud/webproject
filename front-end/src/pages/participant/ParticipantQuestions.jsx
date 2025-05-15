@@ -27,13 +27,15 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
 
   // latin-square order for artifacts
   const initialArtifacts = useMemo(() => {
-    const arts = Array.isArray(currentQuestion.artifact) ? currentQuestion.artifact : [];
+    const arts = Array.isArray(currentQuestion.artifact)
+      ? currentQuestion.artifact
+      : [];
     const n = arts.length;
     if (n <= 1) return arts;
 
     const square = generateLatinSquare(n);
     const row = pickLatinIndex(sessionData._id, n);
-    return square[row].map(i => arts[i]);
+    return square[row].map((i) => arts[i]);
   }, [currentQuestion.artifact, sessionData._id]);
 
   // allow participant to reorder artifacts (for ranked questions)
@@ -47,10 +49,16 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
   const changeArtifactOrder = (index, direction) => {
     const newOrder = [...artifactOrder];
     if (direction === "left" && index > 0) {
-      [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
+      [newOrder[index - 1], newOrder[index]] = [
+        newOrder[index],
+        newOrder[index - 1],
+      ];
     }
     if (direction === "right" && index < newOrder.length - 1) {
-      [newOrder[index + 1], newOrder[index]] = [newOrder[index], newOrder[index + 1]];
+      [newOrder[index + 1], newOrder[index]] = [
+        newOrder[index],
+        newOrder[index + 1],
+      ];
     }
     setArtifactOrder(newOrder);
   };
@@ -71,7 +79,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
                   name="mc"
                   value={opt.text}
                   checked={answer === opt.text}
-                  onChange={e => setAnswer(e.target.value)}
+                  onChange={(e) => setAnswer(e.target.value)}
                 />
                 {opt.text}
               </label>
@@ -85,7 +93,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             className={styles.answerInput}
             value={answer}
             placeholder="Your answer..."
-            onChange={e => setAnswer(e.target.value)}
+            onChange={(e) => setAnswer(e.target.value)}
           />
         );
       case "slider":
@@ -103,7 +111,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
               min="0"
               max="10"
               value={answer === "" ? 0 : answer}
-              onChange={e => setAnswer(e.target.value)}
+              onChange={(e) => setAnswer(e.target.value)}
               className={styles.sliderInput}
             />
             <div className={styles.sliderValue}>
@@ -117,21 +125,25 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
           <div className={styles.rankedContainer}>
             <div className={styles.rankedRow}>
               {artifactOrder.map((artifact, i) => (
-                <div key={artifact.artId || artifact._id} className={styles.artifactItem}>
+                <div
+                  key={artifact.artId || artifact._id}
+                  className={styles.artifactItem}
+                >
                   {rankedLabels && rankedLabels[i] && (
-                    <div className={styles.rankedLabels}>
-                      {rankedLabels[i]}
-                    </div>
+                    <div className={styles.rankedLabels}>{rankedLabels[i]}</div>
                   )}
                   {renderArtifactContent({
                     url: artifact.artId?.url || artifact.artUrl,
                     filename:
                       artifact.artId?.filename ||
                       artifact.filename ||
-                      (typeof artifact.artUrl === "string" 
-                        ? artifact.artUrl.split("/").pop() 
+                      (typeof artifact.artUrl === "string"
+                        ? artifact.artUrl.split("/").pop()
                         : undefined),
-                    mimetype: artifact.artId?.mimetype || artifact.artType || artifact.mimetype,
+                    mimetype:
+                      artifact.artId?.mimetype ||
+                      artifact.artType ||
+                      artifact.mimetype,
                   })}
                   <ReorderButton
                     onMoveLeft={() => changeArtifactOrder(i, "left")}
@@ -151,7 +163,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
             className={styles.answerInput}
             value={answer}
             placeholder="Your answer..."
-            onChange={e => setAnswer(e.target.value)}
+            onChange={(e) => setAnswer(e.target.value)}
           />
         );
     }
@@ -166,15 +178,22 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
     let answerToSend;
 
     if (currentQuestion.questionType === "ranked") {
-      answerToSend = artifactOrder.map((a, i) =>({
+      answerToSend = artifactOrder.map((a, i) => ({
         id: a.artId || a._id,
-        filename: a.filename || (a.artUrl ? a.artUrl.split("/").pop() : undefined),
-        label: currentQuestion.rankedLabels?.[i] || `${i+1}`
+        filename:
+          a.filename || (a.artUrl ? a.artUrl.split("/").pop() : undefined),
+        label: currentQuestion.rankedLabels?.[i] || `${i + 1}`,
       }));
       if (!answerToSend.length) {
         alert("Please rank the artifacts.");
         return;
       }
+    } else if (currentQuestion.questionType === "slider") {
+      answerToSend = {
+        minLabel: currentQuestion.sliderRange?.minLabel,
+        maxLabel: currentQuestion.sliderRange?.maxLabel,
+        response: answer,
+      };
     } else {
       if (answer.trim() === "") {
         alert("Please provide an answer.");
@@ -215,7 +234,9 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
 
           const filename =
             art.artId?.filename ||
-            (typeof art.artUrl === "string" ? art.artUrl.split("/").pop() : `artifact-${i}`);
+            (typeof art.artUrl === "string"
+              ? art.artUrl.split("/").pop()
+              : `artifact-${i}`);
           const mimetype = art.artId?.mimetype || art.mimetype;
 
           return (
@@ -231,7 +252,10 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
         <button
           onClick={handleNext}
           className={styles.nextButton}
-          disabled={loading || (currentQuestion.questionType !== "ranked" && answer.trim() === "")}
+          disabled={
+            loading ||
+            (currentQuestion.questionType !== "ranked" && answer.trim() === "")
+          }
         >
           {idx === orderedQuestions.length - 1 ? "Submit" : "Next"}
         </button>
