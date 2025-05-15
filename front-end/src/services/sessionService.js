@@ -24,7 +24,7 @@ export async function createSession(studyId, demographics) {
 export async function fetchSessionCount(studyId) {
   try {
     const res = await fetch(
-      `${API_BASE_URL}/studies/${studyId}/api/sessions/count`
+      `${API_BASE_URL}/api/studies/${studyId}/sessions/count`
     );
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
