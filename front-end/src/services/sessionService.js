@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../config';
 // create a new session for a study
 export async function createSession(studyId, demographics) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/sessions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ export async function createSession(studyId, demographics) {
 export async function fetchSessionCount(studyId) {
   try {
     const res = await fetch(
-      `${API_BASE_URL}/studies/${studyId}/sessions/count`
+      `${API_BASE_URL}/studies/${studyId}/api/sessions/count`
     );
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
@@ -40,7 +40,7 @@ export async function fetchSessionCount(studyId) {
 // answer a specific question for a session in a study
 export async function answerQuestions(studyId, sessionId, questionId, answers) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/${sessionId}/answers/${questionId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/sessions/${sessionId}/answers/${questionId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

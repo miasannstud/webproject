@@ -8,7 +8,7 @@ export async function uploadArtifacts(files, studyId) {
   formData.append('studyId', studyId);
 
   try {
-    const res = await fetch(`${API_BASE_URL}/artifact/upload`, {
+    const res = await fetch(`${API_BASE_URL}/api/artifact/upload`, {
       method: 'POST',
       body: formData,
     });
@@ -26,7 +26,7 @@ export async function uploadArtifacts(files, studyId) {
 
 export async function fetchArtifacts() {
   try {
-    const res = await fetch(`${API_BASE_URL}/artifact`);
+    const res = await fetch(`${API_BASE_URL}/api/artifact`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -39,7 +39,7 @@ export async function fetchArtifacts() {
 
 export async function fetchArtifactsByStudy(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/artifact/study/${studyId}`);
+    const res = await fetch(`${API_BASE_URL}/api/artifact/study/${studyId}`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -52,7 +52,7 @@ export async function fetchArtifactsByStudy(studyId) {
 
 export async function deleteArtifact(artifactId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/artifact/${artifactId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/artifact/${artifactId}`, {
       method: 'DELETE',
     });
 

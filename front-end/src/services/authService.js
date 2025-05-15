@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../config';
 
 export async function fetchLoginUser(formData) {
-  const res = await fetch(`${API_BASE_URL}/users/login`, {
+  const res = await fetch(`${API_BASE_URL}/api/users/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData),
@@ -22,7 +22,7 @@ export async function fetchLoginUser(formData) {
 }
 
 export async function fetchSignupUser(formData) {
-  const res = await fetch(`${API_BASE_URL}/users/signup`, {
+  const res = await fetch(`${API_BASE_URL}/api/users/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData),

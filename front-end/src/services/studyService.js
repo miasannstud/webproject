@@ -11,7 +11,7 @@ import { API_BASE_URL } from '../config';
 // for retrieving all studies
 export async function fetchStudies() {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies`);
+    const res = await fetch(`${API_BASE_URL}/api/studies`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -32,7 +32,7 @@ export async function fetchStudiesByResearcherId() {
     return null;
   }
   try {
-    const res = await fetch(`${API_BASE_URL}/users/${researcherId}/studies`);
+    const res = await fetch(`${API_BASE_URL}/api/users/${researcherId}/studies`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -46,7 +46,7 @@ export async function fetchStudiesByResearcherId() {
 // for retrieving a specific study, for researcher
 export async function getStudyById(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}`);
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -60,7 +60,7 @@ export async function getStudyById(studyId) {
 // for retrieving a specific study, for participant
 export async function getParticipantStudy(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/participant/${studyId}`);
+    const res = await fetch(`${API_BASE_URL}/api/studies/participant/${studyId}`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -74,7 +74,7 @@ export async function getParticipantStudy(studyId) {
 // for creating a study
 export async function createStudy(studyData) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ export async function updateStudy(studyId, studyData) {
       expirationDate,
     };
 
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ export async function updateStudy(studyId, studyData) {
 // for deleting a study
 export async function deleteStudy(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}`, {
       method: 'DELETE'
     });
     if (!res.ok) {
@@ -136,7 +136,7 @@ export async function deleteStudy(studyId) {
 // for marking/updating a study as published
 export async function publishStudy(studyId, publishData) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/public`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/public`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -156,7 +156,7 @@ export async function publishStudy(studyId, publishData) {
 // for getting a link for a study, for participants
 export async function getStudyLink(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/studyUrl`);
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/studyUrl`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -170,7 +170,7 @@ export async function getStudyLink(studyId) {
 // for downloading session data from a study, as json
 export async function downloadStudyDataJSON(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/download/json`);
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/sessions/download/json`);
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
@@ -185,7 +185,7 @@ export async function downloadStudyDataJSON(studyId) {
 // for downloading session data from a study, as csv
 export async function downloadStudyDataCSV(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/download/csv`);
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/sessions/download/csv`);
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
@@ -201,7 +201,7 @@ export async function downloadStudyDataCSV(studyId) {
 // for creating a question
 export async function createQuestion(studyId, questionData) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/questions`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/questions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -221,7 +221,7 @@ export async function createQuestion(studyId, questionData) {
 // for updating a question
 export async function updateQuestion(studyId, questionId, questionData) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/questions/${questionId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/questions/${questionId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -241,7 +241,7 @@ export async function updateQuestion(studyId, questionId, questionData) {
 // for deleting a question
 export async function deleteQuestion(studyId, questionId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/questions/${questionId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/studies/${studyId}/questions/${questionId}`, {
       method: 'DELETE'
     });
     if (!res.ok) {
