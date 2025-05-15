@@ -1,5 +1,7 @@
-// const API_BASE_URL = "http://localhost:8286/api";
-const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8286/api' : 'https://group6-api.sustainability.it.ntnu.no/api';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const API_BASE_URL = process.env.API_BASE_URL;
 
 // create a new session for a study
 export async function createSession(studyId, demographics) {

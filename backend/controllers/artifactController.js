@@ -1,5 +1,9 @@
 import Artifact from '../models/artifactSchema.js';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const API_BASE_URL = process.env.API_BASE_URL;
 
 export const uploadArtifacts = async (req, res) => {
     try {
@@ -16,7 +20,7 @@ export const uploadArtifacts = async (req, res) => {
                 mimetype: file.mimetype,
                 path: file.path,
                 size: file.size,
-                url: `http://localhost:8286/uploads/${file.filename}`,
+                url: `${API_BASE_URL}/uploads/${file.filename}`,
                 studyId: studyId || null,
             });
             await artifactData.save();

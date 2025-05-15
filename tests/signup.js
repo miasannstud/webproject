@@ -5,10 +5,10 @@ import { test, describe, before, after } from 'node:test';
 import Researcher from '../backend/models/researcherSchema.js';
 import assert from 'node:assert/strict';
 
-const FRONTEND_BASE_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8186/"
-    : "https://group6.sustainability.it.ntnu.no/";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 dotenv.config();
 
@@ -31,7 +31,7 @@ describe('User signup and login testing, removing required attribute', () => {
   });
 
   test('sign-up with missing fields shows validation error', async () => {
-    await page.goto(`${FRONTEND_BASE_URL}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${FRONTEND_URL}`, { waitUntil: 'domcontentloaded' });
     await page.click('[data-testid="signup-link"]');
 
     // Intentionally bypassing the "required" attribute in the form field
@@ -49,7 +49,7 @@ describe('User signup and login testing, removing required attribute', () => {
   });
 
   test('signup rejects duplicate username', async () => {
-    await page.goto(`${FRONTEND_BASE_URL}signup`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${FRONTEND_URL}signup`, { waitUntil: 'domcontentloaded' });
     await page.type('input[name=firstName]', 'admin');
     await page.type('input[name=lastName]', 'admin');
     await page.type('input[name=username]', 'admin');
@@ -67,7 +67,7 @@ describe('User signup and login testing, removing required attribute', () => {
   });
 
   test('creating a user and logging in works end-to-end', async () => {
-    await page.goto(`${FRONTEND_BASE_URL}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${FRONTEND_URL}`, { waitUntil: 'domcontentloaded' });
     await page.click('[data-testid="signup-link"]');
 
     await page.waitForSelector('input[name=firstName]');

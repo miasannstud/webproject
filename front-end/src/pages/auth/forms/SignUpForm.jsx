@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { fetchSignupUser } from "../../../services/authService";
 import styles from "./Forms.module.css";
 
-const FRONTEND_BASE_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8186/"
-    : "https://group6.sustainability.it.ntnu.no/";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -31,7 +31,7 @@ export default function SignupForm() {
     try {
       const data = await fetchSignupUser(formData);
 
-        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href={`${FRONTEND_BASE_URL}`}>Please login here</a></p>);
+        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href={`${FRONTEND_URL}`}>Please login here</a></p>);
         setError(null);
         setFormData({
           firstName: "",

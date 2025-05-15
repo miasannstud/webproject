@@ -3,10 +3,10 @@ import puppeteer from 'puppeteer';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-const FRONTEND_BASE_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8186/"
-    : "https://group6.sustainability.it.ntnu.no/";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,7 +25,7 @@ describe('Login and create a study', () => {
   });
 
   test('allows a user to log in with valid credentials and create a study', async (t) => {
-    await page.goto(`${FRONTEND_BASE_URL}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${FRONTEND_URL}`, { waitUntil: 'domcontentloaded' });
 
     await page.type('input[name="username"]', 'admin');
     await page.type('input[name="password"]', 'admin');

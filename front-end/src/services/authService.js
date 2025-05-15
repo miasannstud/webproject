@@ -1,7 +1,7 @@
-const API_BASE_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8286/api"
-    : "https://group6-api.sustainability.it.ntnu.no/api";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const API_BASE_URL = process.env.API_BASE_URL;
 
 export async function fetchLoginUser(formData) {
   const res = await fetch(`${API_BASE_URL}/users/login`, {

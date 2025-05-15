@@ -4,8 +4,10 @@
 // These functions focus solely on communicating with the backend (e.g., fetchStudies(), deleteStudy(id), etc.).
 
 // this is nice because if the API URL ever changes, we only have to update it in one place
-// const API_BASE_URL = 'http://localhost:8286/api';
-const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8286/api' : 'https://group6-api.sustainability.it.ntnu.no/api';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const API_BASE_URL = process.env.API_BASE_URL;
 
 // STUDY ROUTES
 
