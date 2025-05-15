@@ -16,7 +16,7 @@ export const uploadArtifacts = async (req, res) => {
                 mimetype: file.mimetype,
                 path: file.path,
                 size: file.size,
-                url: `http://localhost:8080/uploads/${file.filename}`,
+                url: `http://localhost:8286/uploads/${file.filename}`,
                 studyId: studyId || null,
             });
             await artifactData.save();

@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "type": "module",
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:8286",
   "scripts": {
     "start": "node server",
     "dev": "node --watch --env-file=.env server",

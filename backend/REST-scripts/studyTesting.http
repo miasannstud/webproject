@@ -6,7 +6,7 @@
 @questionId = 67f41fa9f93b80b85b5e2717
 
 ### create a study
-POST http://localhost:8080/api/studies
+POST http://localhost:8286/api/studies
 Content-Type: application/json
 
 {
@@ -53,13 +53,13 @@ Content-Type: application/json
 # }
 
 ### get all studies
-GET http://localhost:8080/api/studies
+GET http://localhost:8286/api/studies
 
 ### get study by id
-GET http://localhost:8080/api/studies/{{studyId}}
+GET http://localhost:8286/api/studies/{{studyId}}
 
 ### update study
-PATCH http://localhost:8080/api/studies/{{studyId}}
+PATCH http://localhost:8286/api/studies/{{studyId}}
 Content-Type: application/json
 Authorization: {{token}}
 
@@ -69,22 +69,22 @@ Authorization: {{token}}
 }
 
 ### delete study
-DELETE http://localhost:8080/api/studies/{{studyId}}
+DELETE http://localhost:8286/api/studies/{{studyId}}
 Authorization: {{token}}
 
 ### publish study
-PATCH http://localhost:8080/api/studies/{{studyId}}/public
+PATCH http://localhost:8286/api/studies/{{studyId}}/public
 Authorization: {{token}}
 
 ### get study sharable url
-GET http://localhost:8080/api/studies/{{studyId}}/studyUrl
+GET http://localhost:8286/api/studies/{{studyId}}/studyUrl
 
 ### download every session from a study
-GET http://localhost:8080/api/studies/{{studyId}}/sessions/download
+GET http://localhost:8286/api/studies/{{studyId}}/sessions/download
 
 
 ### make a question for a study
-POST http://localhost:8080/api/studies/{{studyId}}/questions
+POST http://localhost:8286/api/studies/{{studyId}}/questions
 Content-Type: application/json
 Authorization: {{token}}
 
@@ -99,7 +99,7 @@ Authorization: {{token}}
 }
 
 ### update question
-PATCH http://localhost:8080/api/studies/{{studyId}}/questions/{{questionId}}
+PATCH http://localhost:8286/api/studies/{{studyId}}/questions/{{questionId}}
 Content-Type: application/json
 Authorization: {{token}}
 
@@ -109,12 +109,12 @@ Authorization: {{token}}
 }
 
 ### delete question
-DELETE http://localhost:8080/api/studies/{{studyId}}/questions/{{questionId}}
+DELETE http://localhost:8286/api/studies/{{studyId}}/questions/{{questionId}}
 Authorization: {{token}}
 
 
 ### session
-POST http://localhost:8080/api/studies/{{studyId}}/sessions
+POST http://localhost:8286/api/studies/{{studyId}}/sessions
 Content-Type: application/json
 
 {
