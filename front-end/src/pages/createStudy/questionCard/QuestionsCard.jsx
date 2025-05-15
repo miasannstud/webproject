@@ -82,7 +82,7 @@ function QuestionsCard({
 
     if (
       questionType === "ranked" &&
-      rankedLabels.some(label => !label.trim())
+      rankedLabels.some((label) => !label.trim())
     ) {
       setError("Ranked labels must be filled out");
       return;
@@ -101,7 +101,7 @@ function QuestionsCard({
       questionText,
       questionType,
       options: questionType === "multiple-choice" ? options : [],
-      rankedLabels: questionType ===  "ranked" ? rankedLabels: [], 
+      rankedLabels: questionType === "ranked" ? rankedLabels : [],
       artifact: mappedArtifacts,
       ...(questionType === "slider" && {
         sliderRange: {
@@ -293,26 +293,28 @@ function QuestionsCard({
         {questionType === "ranked" && (
           <div className={styles.optionsContainer}>
             <ul className={styles.optionsList}>
-              <li className={styles.optionsItem}>
-                <h4>Ranked Label:</h4>
+              <li className={styles.rankedLabels}>
+                <h4>Ranked Labels:</h4>
                 {rankedLabels.map((rankedLabel, index) => (
-                <div key={index} className={styles.optionsItem}>
-                  <input
-                    type="text"
-                    value={rankedLabel}
-                    onChange={e => handleRankedLabelChange(index, e.target.value)}
-                    className={styles.input}
-                  />
-                  <button
-                    data-testid="create-study-removeRankedLabelButton"
-                    onClick={() => removeRankedLabel(index)}
-                    className={styles.removeButton}
-                  >
-                    Remove
-                  </button>
-                </div>
+                  <div key={index} className={styles.rankedLabels}>
+                    <input
+                      type="text"
+                      value={rankedLabel}
+                      onChange={(e) =>
+                        handleRankedLabelChange(index, e.target.value)
+                      }
+                      className={styles.input}
+                    />
+                    <button
+                      data-testid="create-study-removeRankedLabelButton"
+                      onClick={() => removeRankedLabel(index)}
+                      className={styles.removeButton}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 ))}
-                <button                   
+                <button
                   data-testid="create-study-addRankedLabelButton"
                   onClick={addRankedLabel}
                   className={styles.addOptionButton}

@@ -1,5 +1,5 @@
 // src/hooks/participant/useParticipantNavigation.js
-import { useState } from 'react';
+import { useState } from "react";
 
 function useParticipantNavigation(initialStep = 0) {
   const [currentStep, setCurrentStep] = useState(initialStep);

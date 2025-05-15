@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { fetchSessionCount } from '../services/sessionService';
+import { useState, useEffect } from "react";
+import { fetchSessionCount } from "../services/sessionService";
 
 function useFetchSessionCount(studyId) {
   const [sessionCount, setSessionCount] = useState(0);

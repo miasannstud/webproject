@@ -57,3 +57,14 @@
   border: 1px solid #c3e6cb;
 }
 
+.artifactMedia {
+  max-width: 220px;
+  max-height: 220px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+

@@ -10,7 +10,7 @@ const sessionSchema = new mongoose.Schema({
   },
   demographics: {
     type: Object,
-    default: {}
+    default: {},
   },
   answers: [
     {

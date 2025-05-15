@@ -23,7 +23,7 @@ export default function SignupForm() {
   };
 
   const handleSignup = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
     try {
       const data = await fetchSignupUser(formData);
@@ -43,7 +43,6 @@ export default function SignupForm() {
       setTimeout(() => {
         navigate("/");
       }, 2000);
-
     } catch (error) {
       console.error("Signup error:", error);
       setError(error.message || "An error occurred. Please try again.");
@@ -56,7 +55,9 @@ export default function SignupForm() {
       <h1>Signup</h1>
       <form onSubmit={handleSignup} className={styles.authForm}>
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="firstName"><b>First Name</b></label>
+          <label className={styles.authLabel} htmlFor="firstName">
+            <b>First Name</b>
+          </label>
           <input
             type="text"
             placeholder="Enter First Name"
@@ -68,7 +69,9 @@ export default function SignupForm() {
         </div>
 
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="lastName"><b>Last Name</b></label>
+          <label className={styles.authLabel} htmlFor="lastName">
+            <b>Last Name</b>
+          </label>
           <input
             type="text"
             placeholder="Enter Last Name"
@@ -80,7 +83,9 @@ export default function SignupForm() {
         </div>
 
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="username"><b>Username</b></label>
+          <label className={styles.authLabel} htmlFor="username">
+            <b>Username</b>
+          </label>
           <input
             type="text"
             placeholder="Enter Username"
@@ -92,7 +97,9 @@ export default function SignupForm() {
         </div>
 
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="email"><b>Email</b></label>
+          <label className={styles.authLabel} htmlFor="email">
+            <b>Email</b>
+          </label>
           <input
             type="email"
             placeholder="Enter Email"
@@ -102,9 +109,11 @@ export default function SignupForm() {
             required
           />
         </div>
-        
+
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="password"><b>Password</b></label>
+          <label className={styles.authLabel} htmlFor="password">
+            <b>Password</b>
+          </label>
           <input
             type="password"
             placeholder="Enter Password"
@@ -116,7 +125,9 @@ export default function SignupForm() {
         </div>
 
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="institution"><b>Institution</b></label>
+          <label className={styles.authLabel} htmlFor="institution">
+            <b>Institution</b>
+          </label>
           <select
             name="institution"
             value={formData.institution}
@@ -128,13 +139,26 @@ export default function SignupForm() {
           </select>
         </div>
 
-          <button className={styles.signupButton} data-testid="signup-signupButton" type="submit">Signup</button>
-          {error && <div className={styles.errorMessage}>{error}</div>}
-          {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
+        <button
+          className={styles.signupButton}
+          data-testid="signup-signupButton"
+          type="submit"
+        >
+          Signup
+        </button>
+        {error && <div className={styles.errorMessage}>{error}</div>}
+        {successMessage && (
+          <div className={styles.successMessage}>{successMessage}</div>
+        )}
 
-          <div className={styles.container}>
-            <p>Already have an account? <a data-testid="login-link" href="/">Login in here!</a></p>
-          </div>
+        <div className={styles.container}>
+          <p>
+            Already have an account?{" "}
+            <a data-testid="login-link" href="/">
+              Login in here!
+            </a>
+          </p>
+        </div>
       </form>
     </div>
   );

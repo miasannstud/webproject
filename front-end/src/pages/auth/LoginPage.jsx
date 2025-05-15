@@ -1,5 +1,5 @@
 import LoginForm from "./forms/LoginForm";
-import styles from "./authPage.module.css"
+import styles from "./authPage.module.css";
 import waveImg from "../../assets/wave.svg";
 
 export default function LoginPage() {
@@ -10,7 +10,11 @@ export default function LoginPage() {
       </section>
 
       <section className={styles.sections}>
-        <img className={styles.waveImg} src={waveImg} alt="illustration of some waves" />
+        <img
+          className={styles.waveImg}
+          src={waveImg}
+          alt="illustration of some waves"
+        />
       </section>
     </main>
   );

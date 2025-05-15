@@ -45,7 +45,10 @@ export const getParticipantStudy = async (req, res) => {
     if (!study.published) {
       return res.status(400).json({ message: "Study is not published" });
     }
-    if (study.expirationDate && Date.now() > new Date(study.expirationDate).getTime()) {
+    if (
+      study.expirationDate &&
+      Date.now() > new Date(study.expirationDate).getTime()
+    ) {
       return res.status(410).json({ message: "Study has expired" });
     }
     return res.json(study);
@@ -58,7 +61,15 @@ export const getParticipantStudy = async (req, res) => {
 // POST /studies
 const createStudy = async (req, res) => {
   try {
-    const { studyTitle, description, published, questions, createdBy, expirationDate, consent } = req.body;
+    const {
+      studyTitle,
+      description,
+      published,
+      questions,
+      createdBy,
+      expirationDate,
+      consent,
+    } = req.body;
     // Use req.user._id if available, otherwise fallback to req.body.createdBy
     const creatorId = req.user ? req.user._id : createdBy;
 
@@ -73,9 +84,7 @@ const createStudy = async (req, res) => {
       published,
       consent,
       questions,
-      expirationDate: expirationDate
-        ? new Date(expirationDate)
-        : undefined,
+      expirationDate: expirationDate ? new Date(expirationDate) : undefined,
     });
 
     await newStudy.save();
@@ -141,7 +150,11 @@ const publishStudy = async (req, res) => {
     const { studyId } = req.params;
     const { published } = req.body;
 
-    const study = await Study.findByIdAndUpdate(studyId, { published }, { new: true });
+    const study = await Study.findByIdAndUpdate(
+      studyId,
+      { published },
+      { new: true }
+    );
 
     if (!study) {
       return res.status(404).json({ message: "Study not found" });
@@ -179,7 +192,8 @@ const getStudyLink = async (req, res) => {
     // host being: localhost somthing.. 8186 in our case
     // the study page should be served at /participant/:studyId
     // Use an environment variable for the frontend URL if set, fallback otherwise.
-    const frontendUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;
+    const frontendUrl =
+      process.env.FRONTEND_URL || `${req.protocol}://${req.get("host")}`;
     const studyUrl = `${frontendUrl}/participant/${studyId}`;
 
     res.status(200).json({ studyUrl });
@@ -231,14 +245,16 @@ function convertSessionsToCSV(sessions) {
   }
 
   const demographicKeys = new Set();
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     if (session.demographics && typeof session.demographics === "object") {
-      Object.keys(session.demographics).forEach(key => demographicKeys.add(key));
+      Object.keys(session.demographics).forEach((key) =>
+        demographicKeys.add(key)
+      );
     }
   });
 
   let maxAnswers = 0;
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     if (Array.isArray(session.answers)) {
       maxAnswers = Math.max(maxAnswers, session.answers.length);
     }
@@ -249,29 +265,46 @@ function convertSessionsToCSV(sessions) {
     "studyId",
     ...Array.from(demographicKeys),
     ...Array.from({ length: maxAnswers }, (_, i) => `answer_${i + 1}`),
-    "createdAt"
+    "createdAt",
   ];
   const csvRows = [];
   csvRows.push(headers.join(";"));
 
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     const row = [
-      escapeCSV(session._id),
+      escapeCSV(session._id), //
       escapeCSV(session.studyId),
-      ...Array.from(demographicKeys).map(key => escapeCSV(session.demographics?.[key])),
+      ...Array.from(demographicKeys).map((key) =>
+        escapeCSV(session.demographics?.[key])
+      ),
       ...(Array.isArray(session.answers)
-        ? session.answers.map(ans => {
+        ? session.answers.map((ans) => {
             if (ans && typeof ans === "object" && "response" in ans) {
-        // If response is an array of objects as they will be for the ranked question, stringify it
-        if (Array.isArray(ans.response) && typeof ans.response[0] === "object") {
-          return escapeCSV(JSON.stringify(ans.response));
-        }
-        return escapeCSV(ans.response); 
-        }
-        return escapeCSV(ans);        
-       })
-    : []),
-      escapeCSV(session.createdAt)
+              // If answer is slider answers with minLabel/maxLabel
+              if (
+                ans.response &&
+                typeof ans.response === "object" &&
+                "minLabel" in ans.response &&
+                "maxLabel" in ans.response &&
+                "response" in ans.response
+              ) {
+                return escapeCSV(
+                  `Response:${ans.response.response} MinLabel:${ans.response.minLabel}, MaxLabel:${ans.response.maxLabel}`
+                );
+              }
+              // If answer is ranked question, stringify it
+              if (
+                Array.isArray(ans.response) &&
+                typeof ans.response[0] === "object"
+              ) {
+                return escapeCSV(JSON.stringify(ans.response));
+              }
+              return escapeCSV(ans.response);
+            }
+            return escapeCSV(ans);
+          })
+        : []),
+      escapeCSV(session.createdAt),
     ];
 
     while (row.length < headers.length) {
@@ -306,7 +339,6 @@ const downloadStudyDataCSV = async (req, res) => {
   }
 };
 
-
 // QUESTION ROUTES
 
 // create a question
@@ -314,8 +346,15 @@ const downloadStudyDataCSV = async (req, res) => {
 const createQuestion = async (req, res) => {
   try {
     const { studyId } = req.params;
-    console.log('Received studyId:', studyId); // Log the studyId
-    const { questionText, questionType, artifact, options, sliderRange, rankedLabels } = req.body;
+    console.log("Received studyId:", studyId); // Log the studyId
+    const {
+      questionText,
+      questionType,
+      artifact,
+      options,
+      sliderRange,
+      rankedLabels,
+    } = req.body;
 
     const study = await Study.findById(studyId);
 
@@ -343,7 +382,7 @@ const createQuestion = async (req, res) => {
         minLabel: sliderRange?.minLabel || "Add your own minimum parameters",
         maxLabel: sliderRange?.maxLabel || "Add your own maximum parameters",
         minValue: 0,
-        maxValue: 10
+        maxValue: 10,
       },
       rankedLabels: rankedLabels || [],
     };
@@ -353,7 +392,9 @@ const createQuestion = async (req, res) => {
     res.status(200).json(newQuestion);
   } catch (error) {
     console.error("Error creating question:", error.message); // Log the error
-    res.status(500).json({ message: "Failed to create question", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to create question", error: error.message });
   }
 };
 

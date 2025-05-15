@@ -1,6 +1,6 @@
 // src/hooks/participant/useParticipantStudy.js
-import { useState, useEffect } from 'react';
-import { getParticipantStudy } from '../services/studyService';
+import { useState, useEffect } from "react";
+import { getParticipantStudy } from "../services/studyService";
 
 function useParticipantStudy(studyId) {
   const [study, setStudy] = useState(null);

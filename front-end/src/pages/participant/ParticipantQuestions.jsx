@@ -130,7 +130,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
                   className={styles.artifactItem}
                 >
                   {rankedLabels && rankedLabels[i] && (
-                    <div className={styles.rankedLabels}>{rankedLabels[i]}</div>
+                    <h3 className={styles.rankedLabels}>{rankedLabels[i]}</h3>
                   )}
                   {renderArtifactContent({
                     url: artifact.artId?.url || artifact.artUrl,
@@ -226,10 +226,12 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
         Question {idx + 1} of {orderedQuestions.length}
       </h2>
 
+      <h3>{currentQuestion.questionText || "No question text provided."}</h3>
+
       {currentQuestion.questionType !== "ranked" &&
         Array.isArray(currentQuestion.artifact) &&
         initialArtifacts.map((art, i) => {
-          const src = art.artId?.url || art.artUrl || art.url || '';
+          const src = art.artId?.url || art.artUrl || art.url || "";
           if (!src) return null;
 
           const filename =
@@ -246,7 +248,6 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
           );
         })}
 
-      <p>{currentQuestion.questionText || "No question text provided."}</p>
       {renderAnswerInput()}
       <div className={styles.buttonContainer}>
         <button

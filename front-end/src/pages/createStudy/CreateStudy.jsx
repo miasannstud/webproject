@@ -19,7 +19,12 @@ function CreateStudy() {
   const [successMessage, setSuccessMessage] = useState("");
   const [studyId, setStudyId] = useState(null);
   const [demographics, setDemographics] = useState([]);
-  const [consent, setConsent] = useState({ title: "", author: "", subtitle: "", text: "", });
+  const [consent, setConsent] = useState({
+    title: "",
+    author: "",
+    subtitle: "",
+    text: "",
+  });
 
   useEffect(() => {
     if (!studyId) {
@@ -30,7 +35,12 @@ function CreateStudy() {
         questions: [],
         createdBy: researcherId,
         expirationDate,
-        consent: { title: "Draft Title", author: "", subtitle: "", text: "Draft Text" },
+        consent: {
+          title: "Draft Title",
+          author: "",
+          subtitle: "",
+          text: "Draft Text",
+        },
         draft: true,
       }).then((draft) => {
         setStudyId(draft._id);
@@ -55,10 +65,12 @@ function CreateStudy() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [title, description, questions, artifacts, successMessage]);
 
-  const handleConsentTitle = (val) => setConsent(c => ({ ...c, title: val }));
-  const handleConsentAuthor = (val) => setConsent(c => ({ ...c, author: val }));
-  const handleConsentSubtitle = (val) => setConsent(c => ({ ...c, subtitle: val }));
-  const handleConsentText = (val) => setConsent(c => ({ ...c, text: val }));
+  const handleConsentTitle = (val) => setConsent((c) => ({ ...c, title: val }));
+  const handleConsentAuthor = (val) =>
+    setConsent((c) => ({ ...c, author: val }));
+  const handleConsentSubtitle = (val) =>
+    setConsent((c) => ({ ...c, subtitle: val }));
+  const handleConsentText = (val) => setConsent((c) => ({ ...c, text: val }));
 
   const handleAddQuestion = (newQuestion) => {
     setQuestions([...questions, newQuestion]);
@@ -91,8 +103,8 @@ function CreateStudy() {
         ...q,
         options: Array.isArray(q.options)
           ? q.options.map((opt) =>
-            typeof opt === "string" ? { text: opt } : opt
-          )
+              typeof opt === "string" ? { text: opt } : opt
+            )
           : [],
       }));
 
