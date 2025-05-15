@@ -1,15 +1,15 @@
 services:
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: backend
+      dockerfile: Dockerfile
     command: ["npm", "run", "dev"] # use watch script: node --watch --env-file=.env server
-    volumes:
-      - ./backend:/app # bind‐mount your working dir into /app
-      - /app/node_modules # prevent overwriting container’s node_modules
+    #volumes:
+      #- ./backend:/app # bind‐mount your working dir into /app
+      #- /app/node_modules # prevent overwriting container’s node_modules
     container_name: project-backend
     ports:
-      - "8286:8286"
+      - 8286:8286
     env_file:
       - ./backend/.env
 
@@ -18,7 +18,8 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
     container_name: project-frontend
+    # command: sh -c "cd front-end && npm install @rollup/rollup-linux-x64-gnu"
     ports:
-      - "8186:8186"
+      - 8186:8186
     depends_on:
       - backend
