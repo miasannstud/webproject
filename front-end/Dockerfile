@@ -6,6 +6,8 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npm install @rollup/rollup-linux-x64-gnu --no-save
+
 COPY . .
 
 EXPOSE 8186
