@@ -229,7 +229,7 @@ function ParticipantQuestions({ questions, sessionData, studyId, onComplete }) {
       {currentQuestion.questionType !== "ranked" &&
         Array.isArray(currentQuestion.artifact) &&
         initialArtifacts.map((art, i) => {
-          const src = art.artId?.url || art.artUrl;
+          const src = art.artId?.url || art.artUrl || art.url || '';
           if (!src) return null;
 
           const filename =

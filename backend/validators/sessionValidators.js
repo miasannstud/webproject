@@ -1,4 +1,4 @@
-/* import { param, body, validationResult } from 'express-validator';
+import { param, body, validationResult } from 'express-validator';
 
 const handleValidation = (req, res, next) => {
     const errors = validationResult(req);
@@ -41,4 +41,4 @@ export const validateCreateSession = [
       .isString().withMessage('Answers must be a string'),
 
     handleValidation
-  ]; */
+  ];
