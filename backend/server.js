@@ -12,7 +12,13 @@ const app = express();
 const PORT = process.env.PORT || 8286;
 
 // Enable CORS
-const origins = ['http://localhost:8186', 'https://group6.sustainability.it.ntnu.no']
+const origins = [
+    'http://localhost:8186', 
+    'https://group6.sustainability.it.ntnu.no',
+    'http://group6.sustainability.it.ntnu.no',
+    'https://group6-api.sustainability.it.ntnu.no',
+    'http://group6-api.sustainability.it.ntnu.no',
+]
 app.use(cors({origin: origins, credentials: true, }));
 
 // calling the function to connect to mongoDB

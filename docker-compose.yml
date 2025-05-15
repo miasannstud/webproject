@@ -1,6 +1,6 @@
 services:
   backend:
-    image: viljaah/webproject-backend:latest
+    image: viljaah/vilja-webproject-backend:latest
     ports:
       - "8286:8286"
     restart: always 
@@ -8,7 +8,7 @@ services:
       - .env
 
   frontend:
-    image: viljaah/webproject-front-end:latest
+    image: viljaah/vilja-webproject-frontend:latest
     ports:
       - "8186:8186"
     env_file:
