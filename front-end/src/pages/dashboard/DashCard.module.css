@@ -28,7 +28,6 @@
   flex: 1;
   margin: 8px 4px;
   padding: 8px 12px;
-  background-color: #5bccd6;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -36,6 +35,32 @@
   transition: background-color 0.2s ease-in-out;
 }
 
-.actions button:hover {
-  background-color: #509aa9;
+.editButton, .resultsButton, .getLinkButton {
+    background-color: #5bccd6;
 }
+
+.editButton:hover, .resultsButton:hover, .getLinkButton:hover{
+  background-color: #509aa9;
+} 
+
+.deleteButton {
+  background-color: #fe7979;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.deleteButton:hover, .published:hover {
+  background-color: #cc0000;
+}
+
+.unpublished {
+  background-color: #77ca7a; 
+}
+
+.unpublished:hover {
+  background-color: #246f18;
+}
+
+.published {
+  background-color: #fe7979; 
+}
+

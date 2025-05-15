@@ -14,7 +14,7 @@ function ConsentCard({
   return (
     <div className={styles.consentContainer}>
       <div className={styles.consentCard}>
-      <div>
+      <div className={styles.optionsItem}>
         <label htmlFor="consent-title">Consent Title</label>
         <input
           id="consent-title"
@@ -23,10 +23,11 @@ function ConsentCard({
           value={consentTitle}
           onChange={(e) => onTitleChange(e.target.value)}
           placeholder="Welcome to the Study"
+          className={styles.input}
         />
       </div>
 
-      <div>
+      <div className={styles.optionsItem}>
         <label htmlFor="consent-author">Author</label>
         <input
           id="consent-author"
@@ -34,10 +35,11 @@ function ConsentCard({
           value={consentAuthor}
           onChange={(e) => onAuthorChange(e.target.value)}
           placeholder="Add your name"
+          className={styles.input}
         />
       </div>
 
-      <div>
+      <div className={styles.optionsItem}>
         <label htmlFor="consent-subtitle">Consent Subtitle</label>
         <input
           id="consent-subtitle"
@@ -45,10 +47,11 @@ function ConsentCard({
           value={consentSubtitle}
           onChange={(e) => onSubtitleChange(e.target.value)}
           placeholder="Please read carefully"
+          className={styles.input}
         />
       </div>
 
-      <div>
+      <div className={styles.optionsItem}>
         <label htmlFor="consent-text">Consent Description</label>
         <textarea
           id="consent-text"
@@ -57,6 +60,7 @@ function ConsentCard({
           value={consentText}
           onChange={(e) => onTextChange(e.target.value)}
           placeholder="Full consent information goes here..."
+          className={styles.input}
         />
       </div>
       </div>

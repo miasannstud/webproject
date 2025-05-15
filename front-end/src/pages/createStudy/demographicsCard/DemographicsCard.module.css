@@ -16,3 +16,27 @@
 li{
     list-style: none;
 }
+
+.optionsItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.optionsItem input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.optionsList, .lablesList {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.optionsItem, .lablesItem{
+  margin-bottom: 5px;
+}
