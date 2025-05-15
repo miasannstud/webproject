@@ -39,7 +39,7 @@ services:
       - "8186:8186"
     env_file:
       - ./.env
-    command: sh -c "cd /app/front-end && npm install @rollup/rollup-linux-x64-gnu && npm run build && npx serve -s dist -l 8186"   
+    command: sh -c "npm install @rollup/rollup-linux-x64-gnu && npm run build && npx serve -s dist -l 8186"   
     restart: always
     depends_on:
       - backend
