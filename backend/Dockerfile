@@ -22,7 +22,7 @@
 
 # CMD ["node", "server.js"]
 
-FROM node:20-slim
+FROM node:22.13.0-slim
 
 LABEL author="Group 6"
 LABEL version="1.0.0"
