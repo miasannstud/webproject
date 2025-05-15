@@ -7,17 +7,21 @@ on:
     branches: ["main"]
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 21.x
-  #         cache: npm
-  #     - run: cd front-end && npm ci
-  #     - name: all of our tests
-  #       run: cd front-end && npm run test
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 21.x
+          cache: npm
+          cache-dependency-path: front-end/package-lock.json
+      - run: npm ci
+        working-directory: front-end
+
+      - name: all of our tests
+        run: npm test
+        working-directory: front-end
 
 
   build:
