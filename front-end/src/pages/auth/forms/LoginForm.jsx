@@ -1,7 +1,7 @@
 // import InputField from "../InputField";
 import { useState } from "react";
 import { fetchLoginUser } from "../../../services/authService";
-import styles from "./forms.module.css";
+import styles from "./Forms.module.css";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
