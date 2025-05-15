@@ -32,7 +32,7 @@ jobs:
 
       - name: Clear Node Modules and Cache
         run: |
-          rm -rf front-end/node_modules front-end/package-lock.json
+          rm -rf front-end/node_modules
       - name: Install Dependencies
         run: |
           cd front-end
