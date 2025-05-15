@@ -9,10 +9,11 @@ import sessionRoutes from './routes/sessionRoutes.js';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8286;
 
 // Enable CORS
-app.use(cors({origin: 'http://localhost:8186', credentials: true, }));
+const origins = ['http://localhost:8186', 'https://group6.sustainability.it.ntnu.no']
+app.use(cors({origin: origins, credentials: true, }));
 
 // calling the function to connect to mongoDB
 connectDB();

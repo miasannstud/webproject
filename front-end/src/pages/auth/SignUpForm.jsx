@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { fetchSignupUser } from "../../services/authService";
 import "./SignupForm.css";
 
+const FRONTEND_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8186/"
+    : "https://group6.sustainability.it.ntnu.no/";
+
 export default function Signup() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -26,7 +31,7 @@ export default function Signup() {
     try {
       const data = await fetchSignupUser(formData);
 
-        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href="http://localhost:8186/">Please login here</a></p>);
+        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href={`${FRONTEND_BASE_URL}`}>Please login here</a></p>);
         setError(null);
         setFormData({
           firstName: "",
