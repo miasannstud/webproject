@@ -2,7 +2,10 @@
 // has a "Download" button that uses the studies/:studyId/sessions/download endpoint
 
 import styles from "./ResultsCard.module.css";
-import { downloadStudyDataJSON, downloadStudyDataCSV } from "../../services/studyService";
+import {
+  downloadStudyDataJSON,
+  downloadStudyDataCSV,
+} from "../../services/studyService";
 import useFetchSessionCount from "../../hooks/useFetchSessionCount";
 
 function ResultsCard({ study }) {
@@ -63,16 +66,21 @@ function ResultsCard({ study }) {
       </p>
       {error && <p className={styles.error}>Error fetching session count</p>}
       <p className={styles.info}>
-        <strong>Expiration Date:</strong> {" "}
-          {expirationDate
-            ? new Date(expirationDate).toLocaleDateString()
-            : "—"
-          }
+        <strong>Expiration Date:</strong>{" "}
+        {expirationDate ? new Date(expirationDate).toLocaleDateString() : "—"}
       </p>
-      <button data-testid="results-downloadjson" className={styles.downloadButton} onClick={handleDownloadJSON}>
+      <button
+        data-testid="results-downloadjson"
+        className={styles.downloadButton}
+        onClick={handleDownloadJSON}
+      >
         Download data as JSON
       </button>
-      <button data-testid="results-downloadcsv" className={styles.downloadButton} onClick={handleDownloadCSV}>
+      <button
+        data-testid="results-downloadcsv"
+        className={styles.downloadButton}
+        onClick={handleDownloadCSV}
+      >
         Download data as CSV
       </button>
     </div>

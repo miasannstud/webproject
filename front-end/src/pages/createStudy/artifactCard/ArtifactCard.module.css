@@ -1,4 +1,6 @@
 .artifactContainer {
+  min-height: 320px; 
+  min-width: 240px;
   margin: 40px auto;
   text-align: center;
   width: 80%;

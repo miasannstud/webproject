@@ -1,11 +1,14 @@
 // studyService.js:
-// This file is your API service layer. 
-// It contains functions that make raw API calls (e.g., using fetch). 
+// This file is your API service layer.
+// It contains functions that make raw API calls (e.g., using fetch).
 // These functions focus solely on communicating with the backend (e.g., fetchStudies(), deleteStudy(id), etc.).
 
 // this is nice because if the API URL ever changes, we only have to update it in one place
 // const API_BASE_URL = 'http://localhost:8286/api';
-const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8286/api' : 'https://group6-api.sustainability.it.ntnu.no/api';
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8286/api"
+    : "https://group6-api.sustainability.it.ntnu.no/api";
 
 // STUDY ROUTES
 
@@ -18,7 +21,7 @@ export async function fetchStudies() {
     }
     return await res.json();
   } catch (error) {
-    console.error('Error fetching studies:', error);
+    console.error("Error fetching studies:", error);
     throw error;
   }
 }
@@ -29,7 +32,7 @@ export async function fetchStudiesByResearcherId() {
   const researcherId = localStorage.getItem("researcherId");
 
   if (!researcherId) {
-    console.error('Researcher ID not found in local storage');
+    console.error("Researcher ID not found in local storage");
     return null;
   }
   try {
@@ -39,10 +42,10 @@ export async function fetchStudiesByResearcherId() {
     }
     return await res.json();
   } catch (error) {
-    console.error('Error fetching studies:', error);
+    console.error("Error fetching studies:", error);
     throw error;
   }
-};
+}
 
 // for retrieving a specific study, for researcher
 export async function getStudyById(studyId) {
@@ -53,7 +56,7 @@ export async function getStudyById(studyId) {
     }
     return await res.json();
   } catch (error) {
-    console.error('Error fetching study by id:', error);
+    console.error("Error fetching study by id:", error);
     throw error;
   }
 }
@@ -67,7 +70,7 @@ export async function getParticipantStudy(studyId) {
     }
     return await res.json();
   } catch (error) {
-    console.error('Error fetching study:', error);
+    console.error("Error fetching study:", error);
     throw error;
   }
 }
@@ -76,18 +79,18 @@ export async function getParticipantStudy(studyId) {
 export async function createStudy(studyData) {
   try {
     const res = await fetch(`${API_BASE_URL}/studies`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(studyData)
+      body: JSON.stringify(studyData),
     });
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     return await res.json();
   } catch (error) {
-    console.error('Error creating study:', error);
+    console.error("Error creating study:", error);
     throw error;
   }
 }
@@ -102,18 +105,18 @@ export async function updateStudy(studyId, studyData) {
     };
 
     const res = await fetch(`${API_BASE_URL}/studies/${studyId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     return await res.json();
   } catch (error) {
-    console.error('Error updating study:', error);
+    console.error("Error updating study:", error);
     throw error;
   }
 }
@@ -122,14 +125,14 @@ export async function updateStudy(studyId, studyData) {
 export async function deleteStudy(studyId) {
   try {
     const res = await fetch(`${API_BASE_URL}/studies/${studyId}`, {
-      method: 'DELETE'
+      method: "DELETE",
     });
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     return await res.json();
   } catch (error) {
-    console.error('Error deleting study:', error);
+    console.error("Error deleting study:", error);
     throw error;
   }
 }
@@ -138,18 +141,18 @@ export async function deleteStudy(studyId) {
 export async function publishStudy(studyId, publishData) {
   try {
     const res = await fetch(`${API_BASE_URL}/studies/${studyId}/public`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(publishData)
+      body: JSON.stringify(publishData),
     });
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     return await res.json();
   } catch (error) {
-    console.error('Error publishing study:', error);
+    console.error("Error publishing study:", error);
     throw error;
   }
 }
@@ -163,7 +166,7 @@ export async function getStudyLink(studyId) {
     }
     return await res.json();
   } catch (error) {
-    console.error('Error getting study link:', error);
+    console.error("Error getting study link:", error);
     throw error;
   }
 }
@@ -171,14 +174,16 @@ export async function getStudyLink(studyId) {
 // for downloading session data from a study, as json
 export async function downloadStudyDataJSON(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/download/json`);
+    const res = await fetch(
+      `${API_BASE_URL}/studies/${studyId}/sessions/download/json`
+    );
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     // For file downloads, you might handle the response as a blob: ...??
     return await res.blob();
   } catch (error) {
-    console.error('Error downloading study data:', error);
+    console.error("Error downloading study data:", error);
     throw error;
   }
 }
@@ -186,13 +191,15 @@ export async function downloadStudyDataJSON(studyId) {
 // for downloading session data from a study, as csv
 export async function downloadStudyDataCSV(studyId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/download/csv`);
+    const res = await fetch(
+      `${API_BASE_URL}/studies/${studyId}/sessions/download/csv`
+    );
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
     return await res.blob();
   } catch (error) {
-    console.error('Error downloading study data (CSV):', error);
+    console.error("Error downloading study data (CSV):", error);
     throw error;
   }
 }
@@ -203,18 +210,18 @@ export async function downloadStudyDataCSV(studyId) {
 export async function createQuestion(studyId, questionData) {
   try {
     const res = await fetch(`${API_BASE_URL}/studies/${studyId}/questions`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(questionData)
+      body: JSON.stringify(questionData),
     });
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     return await res.json();
   } catch (error) {
-    console.error('Error creating question:', error);
+    console.error("Error creating question:", error);
     throw error;
   }
 }
@@ -222,19 +229,22 @@ export async function createQuestion(studyId, questionData) {
 // for updating a question
 export async function updateQuestion(studyId, questionId, questionData) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/questions/${questionId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(questionData)
-    });
+    const res = await fetch(
+      `${API_BASE_URL}/studies/${studyId}/questions/${questionId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(questionData),
+      }
+    );
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     return await res.json();
   } catch (error) {
-    console.error('Error updating question:', error);
+    console.error("Error updating question:", error);
     throw error;
   }
 }
@@ -242,22 +252,24 @@ export async function updateQuestion(studyId, questionId, questionData) {
 // for deleting a question
 export async function deleteQuestion(studyId, questionId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/questions/${questionId}`, {
-      method: 'DELETE'
-    });
+    const res = await fetch(
+      `${API_BASE_URL}/studies/${studyId}/questions/${questionId}`,
+      {
+        method: "DELETE",
+      }
+    );
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
     return await res.json();
   } catch (error) {
-    console.error('Error deleting question:', error);
+    console.error("Error deleting question:", error);
     throw error;
   }
 }
 
-
-// The function parameters (studyId, questionId, questionData) in your updateQuestion function are meant to identify 
-// which study and which question to update, and to carry the new data, respectively. The names of these parameters themselves 
+// The function parameters (studyId, questionId, questionData) in your updateQuestion function are meant to identify
+// which study and which question to update, and to carry the new data, respectively. The names of these parameters themselves
 // don't need to match the field names in your schema. What matters is that the properties inside the questionData object align
 // with your schema's field names.
 // When you call updateQuestion, ensure that the questionData object contains keys that match these names
@@ -267,5 +279,5 @@ export async function deleteQuestion(studyId, questionId) {
 //     questionType: 'multiple-choice',
 //     // add other fields as needed, e.g., artifact, options
 //   };
-  
+
 //   updateQuestion(studyId, questionId, updatedData);

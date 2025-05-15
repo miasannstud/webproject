@@ -1,5 +1,8 @@
 // const API_BASE_URL = "http://localhost:8286/api";
-const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8286/api' : 'https://group6-api.sustainability.it.ntnu.no/api';
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8286/api"
+    : "https://group6-api.sustainability.it.ntnu.no/api";
 
 // create a new session for a study
 export async function createSession(studyId, demographics) {
@@ -41,13 +44,16 @@ export async function fetchSessionCount(studyId) {
 // answer a specific question for a session in a study
 export async function answerQuestions(studyId, sessionId, questionId, answers) {
   try {
-    const res = await fetch(`${API_BASE_URL}/studies/${studyId}/sessions/${sessionId}/answers/${questionId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ answers }),
-    });
+    const res = await fetch(
+      `${API_BASE_URL}/studies/${studyId}/sessions/${sessionId}/answers/${questionId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ answers }),
+      }
+    );
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }

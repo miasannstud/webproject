@@ -5,7 +5,7 @@ function StudyOverview({ study, onNext }) {
     <div className={styles.overviewContainer}>
       <h2>{study.studyTitle}</h2>
       <p>{study.description}</p>
-      <button onClick={onNext}>Next</button>
+      <button className={styles.nextButton} onClick={onNext}>Next</button>
     </div>
   );
 }

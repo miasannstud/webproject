@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 
-import useParticipantStudy from '../../hooks/useParticipantStudy';
-import { createSession } from '../../services/sessionService';
+import useParticipantStudy from "../../hooks/useParticipantStudy";
+import { createSession } from "../../services/sessionService";
 
-import ConsentForm from './ConsentForm';
-import DemographicsForm from './DemographicsForm';
-import StudyOverview from './StudyOverview';
-import ParticipantQuestions from './ParticipantQuestions';
-import ThankYou from './ThankYou';
+import ConsentForm from "./ConsentForm";
+import DemographicsForm from "./DemographicsForm";
+import StudyOverview from "./StudyOverview";
+import ParticipantQuestions from "./ParticipantQuestions";
+import ThankYou from "./ThankYou";
 
 function ParticipantFlow() {
   const { studyId } = useParams();
@@ -17,7 +17,7 @@ function ParticipantFlow() {
   const { study, loading, error } = useParticipantStudy(studyId);
 
   const [consent, setConsent] = useState(false);
-  const [demographics, setDemographics] = useState({ age: '', gender: '' });
+  const [demographics, setDemographics] = useState({ age: "", gender: "" });
   const [sessionData, setSessionData] = useState(null);
 
   const handleConsentNext = () => {
@@ -32,14 +32,16 @@ function ParticipantFlow() {
   const handleDemographicsSubmit = async () => {
     try {
       const filteredDemographics = Object.fromEntries(
-        Object.entries(demographics).filter(([, v]) => v !== "" && v !== undefined && v !== null)
+        Object.entries(demographics).filter(
+          ([, v]) => v !== "" && v !== undefined && v !== null
+        )
       );
       const session = await createSession(studyId, filteredDemographics);
       setSessionData(session);
       navigate(`/participant/${studyId}/info`);
     } catch (err) {
       console.error(err);
-      alert('Failed to start session, please try again.');
+      alert("Failed to start session, please try again.");
     }
   };
 
@@ -54,7 +56,7 @@ function ParticipantFlow() {
       navigate(`/participant/${studyId}/questions/0`);
     } catch (err) {
       console.error(err);
-      alert('Failed to start session, please try again.');
+      alert("Failed to start session, please try again.");
     }
   };
 
@@ -68,45 +70,48 @@ function ParticipantFlow() {
   return (
     <div>
       <Routes>
-        <Route index element={
-          <ConsentForm
-            agreeConsent={consent}
-            onConsentChange={setConsent}
-            onNext={handleConsentNext}
-            consentTitle={study.consent.title}
-            consentAuthor={study.consent.author}
-            consentSubtitle={study.consent.subtitle}
-            consentText={study.consent.text}
-          />
-        }
+        <Route
+          index
+          element={
+            <ConsentForm
+              agreeConsent={consent}
+              onConsentChange={setConsent}
+              onNext={handleConsentNext}
+              consentTitle={study.consent.title}
+              consentAuthor={study.consent.author}
+              consentSubtitle={study.consent.subtitle}
+              consentText={study.consent.text}
+            />
+          }
         />
 
-        <Route path="demographics" element={
-          <DemographicsForm
-            demographicsList={study.demographics || []}
-            demographics={demographics}
-            onChange={setDemographics}
-            onSubmit={handleDemographicsSubmit}
-          />
-        }
+        <Route
+          path="demographics"
+          element={
+            <DemographicsForm
+              demographicsList={study.demographics || []}
+              demographics={demographics}
+              onChange={setDemographics}
+              onSubmit={handleDemographicsSubmit}
+            />
+          }
         />
 
-        <Route path="info" element={
-          <StudyOverview
-            study={study}
-            onNext={handleOverviewNext}
-          />
-        }
+        <Route
+          path="info"
+          element={<StudyOverview study={study} onNext={handleOverviewNext} />}
         />
 
-        <Route path="questions/:questionIndex" element={
-          <ParticipantQuestions
-            questions={study.questions}
-            sessionData={sessionData}
-            studyId={studyId}
-            onComplete={handleQuestionsComplete}
-          />
-        }
+        <Route
+          path="questions/:questionIndex"
+          element={
+            <ParticipantQuestions
+              questions={study.questions}
+              sessionData={sessionData}
+              studyId={studyId}
+              onComplete={handleQuestionsComplete}
+            />
+          }
         />
 
         <Route path="thanks" element={<ThankYou />} />

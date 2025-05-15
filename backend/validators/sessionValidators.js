@@ -38,7 +38,11 @@ export const validateCreateSession = [
       .isMongoId().withMessage('Invalid Question ID'),
     body('answers')
       .notEmpty().withMessage('Answer is required')
-      .isString().withMessage('Answers must be a string'),
+      .custom((value) => {
+        if (typeof value === "string") return true;
+        if (typeof value === "object" && value !== null) return true;
+        return false;
+      }).withMessage('Answers must be a string or object'),
 
     handleValidation
   ];

@@ -40,36 +40,51 @@ export default function LoginForm() {
 
       <form className={styles.authForm} onSubmit={handleLogin}>
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="username"><b>Username</b></label>
+          <label className={styles.authLabel} htmlFor="username">
+            <b>Username</b>
+          </label>
           <input
             type="text"
             placeholder="Enter Username"
             name="username"
             value={formData.username}
             onChange={handleChange}
-            required />
+            required
+          />
         </div>
 
         <div className={styles.authItem}>
-          <label className={styles.authLabel} htmlFor="password"><b>Password</b></label>
+          <label className={styles.authLabel} htmlFor="password">
+            <b>Password</b>
+          </label>
           <input
             type="password"
             placeholder="Enter Password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            required />
+            required
+          />
         </div>
 
-          <button className={styles.signupButton} type="submit">Login</button>
+        <button className={styles.signupButton} type="submit">
+          Login
+        </button>
 
-          {error && <div className={styles.errorMessage}>{error}</div>}
-          {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
+        {error && <div className={styles.errorMessage}>{error}</div>}
+        {successMessage && (
+          <div className={styles.successMessage}>{successMessage}</div>
+        )}
 
         <div className={styles.container}>
-          <p>New here? <a data-testid="signup-link" href="/signup">Sign Up here !</a></p>
+          <p>
+            New here?{" "}
+            <a data-testid="signup-link" href="/signup">
+              Sign Up here !
+            </a>
+          </p>
         </div>
       </form>
-  </div>
+    </div>
   );
 }

@@ -1,16 +1,19 @@
 // const API_BASE_URL = 'http://localhost:8286/api';
-const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8286/api' : 'https://group6-api.sustainability.it.ntnu.no/api';
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8286/api"
+    : "https://group6-api.sustainability.it.ntnu.no/api";
 
 export async function uploadArtifacts(files, studyId) {
   const formData = new FormData();
   for (const file of files) {
-    formData.append('artifact', file);
+    formData.append("artifact", file);
   }
-  formData.append('studyId', studyId);
+  formData.append("studyId", studyId);
 
   try {
     const res = await fetch(`${API_BASE_URL}/artifact/upload`, {
-      method: 'POST',
+      method: "POST",
       body: formData,
     });
 
@@ -20,7 +23,7 @@ export async function uploadArtifacts(files, studyId) {
 
     return await res.json();
   } catch (error) {
-    console.error('Error uploading artifact:', error);
+    console.error("Error uploading artifact:", error);
     throw error;
   }
 }
@@ -33,7 +36,7 @@ export async function fetchArtifacts() {
     }
     return await res.json();
   } catch (error) {
-    console.error('Error fetching artifacts:', error);
+    console.error("Error fetching artifacts:", error);
     throw error;
   }
 }
@@ -46,7 +49,7 @@ export async function fetchArtifactsByStudy(studyId) {
     }
     return await res.json();
   } catch (error) {
-    console.error('Error fetching artifacts:', error);
+    console.error("Error fetching artifacts:", error);
     throw error;
   }
 }
@@ -54,7 +57,7 @@ export async function fetchArtifactsByStudy(studyId) {
 export async function deleteArtifact(artifactId) {
   try {
     const res = await fetch(`${API_BASE_URL}/artifact/${artifactId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
 
     if (!res.ok) {
@@ -63,7 +66,7 @@ export async function deleteArtifact(artifactId) {
 
     return await res.json();
   } catch (error) {
-    console.error('Error deleting artifact:', error);
+    console.error("Error deleting artifact:", error);
     throw error;
   }
 }
@@ -74,20 +77,36 @@ export function renderArtifactContent(artifact) {
     return <p>Unknown artifact type</p>;
   }
 
-  if (mimetype.startsWith('image/')) {
-    return <img src={artifact.url || artifact.artUrl} alt={artifact.filename} style={{ maxWidth: '100px', maxHeight: '100px' }} />;
-  } else if (mimetype === 'text/plain') {
-    return <iframe src={artifact.url || artifact.artUrl} title={artifact.filename} style={{ width: '100px', height: '100px' }} />;
-  } else if (mimetype.startsWith('audio/')) {
+  if (mimetype.startsWith("image/")) {
+    return (
+      <img
+        src={artifact.url || artifact.artUrl}
+        alt={artifact.filename}
+        style={{ width: "7vw", height: "auto" }}
+      />
+    );
+  } else if (mimetype === "text/plain") {
+    return (
+      <iframe
+        src={artifact.url || artifact.artUrl}
+        title={artifact.filename}
+        style={{ width: "7vw", height: "auto" }}
+      />
+    );
+  } else if (mimetype.startsWith("audio/")) {
     return (
       <audio controls>
-        <source src={artifact.url || artifact.artUrl} type={mimetype} />
+        <source
+          src={artifact.url || artifact.artUrl}
+          type={mimetype}
+          style={{ width: "7vw", height: "auto" }}
+        />
         Your browser does not support the audio element.
       </audio>
     );
-  } else if (mimetype.startsWith('video/')) {
+  } else if (mimetype.startsWith("video/")) {
     return (
-      <video controls width="100px" height="100px">
+      <video controls style={{ width: "7vw", height: "auto" }}>
         <source src={artifact.url || artifact.artUrl} type={mimetype} />
         Your browser does not support the video tag.
       </video>

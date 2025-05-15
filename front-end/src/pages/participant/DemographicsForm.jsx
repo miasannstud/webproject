@@ -1,5 +1,5 @@
-import styles from './DemographicsForm.module.css';
-import { getNames } from 'country-list';
+import styles from "./DemographicsForm.module.css";
+import { getNames } from "country-list";
 
 const countries = getNames();
 
@@ -11,7 +11,7 @@ const demographicOptions = {
         id="age"
         type="number"
         value={value || ""}
-        onChange={e => onChange("age", e.target.value)}
+        onChange={(e) => onChange("age", e.target.value)}
       />
     ),
   },
@@ -21,9 +21,11 @@ const demographicOptions = {
       <select
         id="gender"
         value={value || ""}
-        onChange={e => onChange("gender", e.target.value)}
+        onChange={(e) => onChange("gender", e.target.value)}
       >
-        <option value="" disabled>Select...</option>
+        <option value="" disabled>
+          Select...
+        </option>
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Other">Prefer not to say</option>
@@ -36,9 +38,11 @@ const demographicOptions = {
       <select
         id="education"
         value={value || ""}
-        onChange={e => onChange("education", e.target.value)}
+        onChange={(e) => onChange("education", e.target.value)}
       >
-        <option value="" disabled>Select...</option>
+        <option value="" disabled>
+          Select...
+        </option>
         <option value="High school">High school</option>
         <option value="Bachelor's">Bachelor's</option>
         <option value="Master's">Master's</option>
@@ -53,19 +57,27 @@ const demographicOptions = {
       <select
         id="country"
         value={value || ""}
-        onChange={e => onChange("country", e.target.value)}
+        onChange={(e) => onChange("country", e.target.value)}
       >
-        <option value="" disabled>Select...</option>
-        {countries.map(country => (
-          <option key={country} value={country}>{country}</option>
+        <option value="" disabled>
+          Select...
+        </option>
+        {countries.map((country) => (
+          <option key={country} value={country}>
+            {country}
+          </option>
         ))}
       </select>
     ),
   },
 };
 
-function DemographicsForm({ demographicsList, demographics, onChange, onSubmit }) {
-
+function DemographicsForm({
+  demographicsList,
+  demographics,
+  onChange,
+  onSubmit,
+}) {
   const handleFieldChange = (key, value) => {
     onChange({ ...demographics, [key]: value });
   };
@@ -73,7 +85,7 @@ function DemographicsForm({ demographicsList, demographics, onChange, onSubmit }
   return (
     <div className={styles.demographicsContainer}>
       <h2>Please Provide Your Demographics</h2>
-      {demographicsList.map(key => {
+      {demographicsList.map((key) => {
         const option = demographicOptions[key];
         if (!option) return null;
         return (

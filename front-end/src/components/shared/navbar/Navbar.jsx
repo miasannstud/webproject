@@ -1,17 +1,16 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import styles from './Navbar.module.css';
+import { NavLink, useNavigate } from "react-router-dom";
+import styles from "./Navbar.module.css";
 
 function Navbar() {
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('firstName');
-    localStorage.removeItem('researcherId');
+    localStorage.removeItem("token");
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("researcherId");
 
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   return (
     <nav className={styles.navbar}>

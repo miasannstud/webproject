@@ -1,4 +1,4 @@
-import styles from './ReorderButton.module.css';
+import styles from "./ReorderButton.module.css";
 
 function ReorderButton({ onMoveLeft, onMoveRight, disableLeft, disableRight }) {
   return (
@@ -8,7 +8,7 @@ function ReorderButton({ onMoveLeft, onMoveRight, disableLeft, disableRight }) {
         onClick={onMoveLeft}
         disabled={disableLeft}
       >
-        &larr;  {/* This shows a left arrow emoji */}
+        &larr; {/* This shows a left arrow emoji */}
       </button>
 
       <button
