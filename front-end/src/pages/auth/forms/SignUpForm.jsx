@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchSignupUser } from "../../../services/authService";
 import styles from "./Forms.module.css";
 
-import { FRONTEND_URL } from '../config';
+import { FRONTEND_URL } from '../../../config';
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
