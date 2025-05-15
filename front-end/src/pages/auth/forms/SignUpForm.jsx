@@ -28,7 +28,7 @@ export default function SignupForm() {
     try {
       const data = await fetchSignupUser(formData);
 
-        setSuccessMessage(<p>Signup successful! <a data-testid="signup-redirectlogin" href={`${FRONTEND_URL}`}>Please login here</a></p>);
+        setSuccessMessage(<p>Signup successful!{" "} <a data-testid="signup-redirectlogin" href={`${FRONTEND_URL}`}>Please login here</a></p>);
         setError(null);
         setFormData({
           firstName: "",
