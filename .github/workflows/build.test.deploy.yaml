@@ -15,9 +15,9 @@ jobs:
         with:
           node-version: 21.x
           cache: npm
-      - run: npm ci
+      - run: cd front-end && npm ci
       - name: all of our tests
-        run: npm run test
+        run: cd front-end && npm run test
 
 
   build:
@@ -29,15 +29,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Clear Node Modules and Cache
-        run: |
-          rm -rf front-end/node_modules
-      - name: Install Dependencies
-        run: |
-          cd front-end
-          npm install
-          npm ci
 
       # Build and push backend image
       - name: Build and push backend image
