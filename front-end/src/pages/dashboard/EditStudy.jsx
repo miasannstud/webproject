@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getStudyById, updateStudy } from "../../services/studyService";
 import { fetchArtifactsByStudy } from "../../services/ArtifactService";
 import StudyPreview from "../createStudy/studyPreview/StudyPreview";
-// import DemographicsCard from "../createStudy/demographicsCard/DemographicsCard";
+import DemographicsCard from "../createStudy/demographicsCard/DemographicsCard";
 import ArtifactApp from "../createStudy/artifactCard/ArtifactCard";
 import QuestionsCard from "../createStudy/questionCard/QuestionsCard";
 import ExpireDate from "../createStudy/expireCard/ExpireDate";
@@ -115,11 +115,11 @@ function EditStudy() {
           onTextChange={handleConsentText}
         />
       </div>
-      {/* <div className={styles.demographicsContainer}>
+      <div className={styles.demographicsContainer}>
         <DemographicsCard
           demographics={demographics}
           setDemographics={setDemographics}/>
-      </div> */}
+      </div>
       <div className={styles.artifactContainer}>
         <ArtifactApp onArtifactsChange={setArtifacts} studyId={studyId} />
       </div>
