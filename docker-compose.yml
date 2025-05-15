@@ -5,14 +5,14 @@ services:
       - "8286:8286"
     restart: always 
     env_file:
-      - ./backend/.env
+      - ./.env
 
   frontend:
     image: viljaah/webproject-front-end:latest
     ports:
       - "8186:8186"
     env_file:
-      - ./front-end/.env
+      - ./.env
     command: sh -c "npm install @rollup/rollup-linux-x64-gnu && npm run build && npx serve -s dist -l 8186"   
     restart: always
     depends_on:
