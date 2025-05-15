@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 23.x
+          node-version: 21.x
           cache: npm
       - run: npm ci
       - name: all of our tests
@@ -29,6 +29,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Clear Node Modules and Cache
+        run: |
+          rm -rf front-end/node_modules front-end/package-lock.json
+      - name: Install Dependencies
+        run: |
+          cd front-end && npm ci
 
       # Build and push backend image
       - name: Build and push backend image
