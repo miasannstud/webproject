@@ -14,9 +14,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 21.x
-          cache: npm
-          cache-dependency-path: front-end/package-lock.json
-      - run: npm ci
+      
+      - name: Install dependencies
+        run: npm install
         working-directory: front-end
 
       - name: all of our tests
