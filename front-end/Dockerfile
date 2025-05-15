@@ -1,4 +1,4 @@
-FROM node:21.6.1-slim
+FROM node:20-slim
 
 WORKDIR /app
 
@@ -7,6 +7,8 @@ RUN npm install --no-optional
 
 COPY . .
 RUN npm run build
+
+RUN npm prune --production
 
 RUN npm install -g serve
 

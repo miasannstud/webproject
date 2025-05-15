@@ -1,4 +1,4 @@
-FROM node:21.6.1-slim
+FROM node:20-slim
 
 LABEL author="Group 6"
 LABEL version="1.0.0"
