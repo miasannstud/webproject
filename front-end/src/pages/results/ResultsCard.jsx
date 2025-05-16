@@ -14,10 +14,7 @@ function ResultsCard({ study }) {
 
   async function handleDownloadJSON() {
     try {
-      // i dont know if i am going to keep this code, i have to fix the controlle for this endpoint first and see if it even works..
-      // call the download endpoint and expect a blob in response, what is a blob?
       const blob = await downloadStudyDataJSON(_id);
-      // create a temporaru url for the blob
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;

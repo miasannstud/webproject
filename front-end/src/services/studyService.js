@@ -174,7 +174,6 @@ export async function downloadStudyDataJSON(studyId) {
     if (!res.ok) {
       throw new Error(`HTTP error. status: ${res.status}`);
     }
-    // For file downloads, you might handle the response as a blob: ...??
     return await res.blob();
   } catch (error) {
     console.error("Error downloading study data:", error);
