@@ -1,6 +1,6 @@
 services:
   backend:
-    image: viljaah/vilja-webproject-backend:latest
+    image: viljaah/vilja-webproject-backend
     container_name: vilja-backend
     ports:
       - "8286:8286"
@@ -9,7 +9,7 @@ services:
       - .env
 
   frontend:
-    image: viljaah/vilja-webproject-frontend:latest
+    image: viljaah/vilja-webproject-frontend
     container_name: vilja-frontend
     ports:
       - "8186:8186"
